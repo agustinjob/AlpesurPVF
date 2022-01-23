@@ -28,8 +28,12 @@ public class AreaDAO {
          try {
           
              Statement s = conn.createStatement();
+             
+             
              String sql="INSERT INTO `area`(`nombre`,`realizadaEn`,`estatus`,`operacion`,`propietario`,`idSucursal`) VALUES ('"+nombre+"','Local','"+estatus+"','"+operacion+"','"+Datos.propietario+"','"+Datos.idSucursal+"')";
              int rs = s.executeUpdate(sql);
+             
+             
              return 1;
          } catch (SQLException ex) {
                    Utilidades.escribirLog(ex.getLocalizedMessage());
