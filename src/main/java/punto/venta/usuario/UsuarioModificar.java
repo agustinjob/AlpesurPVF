@@ -40,7 +40,6 @@ public class UsuarioModificar extends javax.swing.JPanel implements ActionListen
         initComponents();
         formulario.setVisible(false);
         ImageIcon check = new ImageIcon("iconos/check.png");
-        obj.setConn(Conexion.conexi.getLocal());
         btnGuardar.setIcon(check);
         llenarCombo();
         AutoCompleteDecorator.decorate(comboUsuario, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
@@ -380,45 +379,31 @@ public class UsuarioModificar extends javax.swing.JPanel implements ActionListen
             mensajeG("Por favor ingresa todos los datos solicitados");
         } else {
 
-                Usuario temporal = new Usuario();
-                temporal.setUsername(usu.getUsername());
-                temporal.setPassword(usu.getPassword());
-                temporal.setNombre(usu.getNombre());
-                usu.setNombre(a[0]);
-                usu.setDireccion(a[1]);
-                usu.setUsername(a[2]);
-                usu.setPassword(a[3]);
-                usu.setTipo(a[4]);
-                usu.setTelefono(a[5]);
-                Conexion.getConexiones();
-                String x = "";
-                String estatus = "En proceso";
-                if (Conexion.conexi.isInternet()) {
-                    obj.setConn(Conexion.conexi.getHost());
-                    String res = obj.modificarDatosUsuario(usu, temporal, "Actualizada", "Modificacion");
-                    if (res.equalsIgnoreCase("Datos del usuario modificados correctamente")) {
-                        estatus = "Actualizada";
-                    }
-                    obj.setConn(Conexion.conexi.getLocal());
-                    x = obj.modificarDatosUsuario(usu, temporal, estatus, "Modificacion");
-
-                } else {
-                    obj.setConn(Conexion.conexi.getLocal());
-                    x = obj.modificarDatosUsuario(usu, temporal, "En proceso", "Modificacion");
-                }
-                if (x.equalsIgnoreCase("Datos del usuario modificados correctamente")) {
-                    mensajeB(x);
-                    formulario.setVisible(false);
-                    llenarCombo();
-                    nombre.setText("");
-                    direccion.setText("");
-                    email.setText("");
-                    password.setText("");
-                    telefono.setText("");
-                } else {
-                    mensajeG(x);
-                }
-     
+            Usuario temporal = new Usuario();
+            temporal.setUsername(usu.getUsername());
+            temporal.setPassword(usu.getPassword());
+            temporal.setNombre(usu.getNombre());
+            usu.setNombre(a[0]);
+            usu.setDireccion(a[1]);
+            usu.setUsername(a[2]);
+            usu.setPassword(a[3]);
+            usu.setTipo(a[4]);
+            usu.setTelefono(a[5]);
+            String x = "";
+            String estatus = "En proceso";
+            String res = obj.modificarDatosUsuario(usu, temporal, "Actualizada", "Modificacion");
+            if (x.equalsIgnoreCase("Datos del usuario modificados correctamente")) {
+                mensajeB(x);
+                formulario.setVisible(false);
+                llenarCombo();
+                nombre.setText("");
+                direccion.setText("");
+                email.setText("");
+                password.setText("");
+                telefono.setText("");
+            } else {
+                mensajeG(x);
+            }
 
         }
     }

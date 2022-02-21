@@ -34,11 +34,8 @@ public class TicketDAO {
     String idUsuario = "";
     Confirmacion confir;
     Boolean hayInternet;
-    Connection conn;
-    
-    public TicketDAO(){
-    bi.setConn(Conexion.conexi.getLocal());
-    }
+    Connection conn=Conexion.conectarMySQL();
+
     
      public void setConn(Connection conn){
      this.conn=conn;
@@ -54,7 +51,7 @@ public class TicketDAO {
             System.out.println("UPDATE `ticketc` SET `numero`=" + numero + " where idTicket=1;");
             conn.commit();
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             System.out.println(ex.toString());
         }
     }
@@ -82,7 +79,7 @@ public class TicketDAO {
             numero = rs.getInt("numero");
             System.out.println("Ticket: " + numero);
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             System.out.println(ex.toString() + " " + ex.getLocalizedMessage());
         }
     }
@@ -99,7 +96,7 @@ public class TicketDAO {
             insertarTicket();
 
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             System.out.println(ex.toString());
         }
 
@@ -114,7 +111,7 @@ public class TicketDAO {
 
             return datos;
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             System.out.println(ex.toString() + " " + ex.getLocalizedMessage());
         }
         return datos;
@@ -143,10 +140,10 @@ public class TicketDAO {
             s.executeUpdate(sql);
             Utilidades.mensajePorTiempo("Se ha realizado la devolución");
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Logger.getLogger(TicketDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             System.out.println(ex.getLocalizedMessage());
         }
     }
@@ -184,10 +181,10 @@ public class TicketDAO {
             
             Utilidades.mensajePorTiempo("Se ha realizado la devolución");
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Utilidades.mensajePorTiempo("Hubo un error en el sistema");
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
            Utilidades.mensajePorTiempo("Hubo un error con la base de datos");
         }
     }

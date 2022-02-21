@@ -42,9 +42,7 @@ public class Devoluciones extends javax.swing.JFrame {
         setTitle("Devoluciones");
         setLocationRelativeTo(null);
         this.ventas=ventas;
-        t.setConn(Conexion.conexi.getLocal());
-        v.setConn(Conexion.conexi.getLocal());
-        
+ 
         seleccionaFecha.setDate(d);
             //ancho,largo
         setSize(350,500);
@@ -59,7 +57,7 @@ public class Devoluciones extends javax.swing.JFrame {
                 modelo.removeRow(0);
             }
         } catch (Exception e) {
-                  Utilidades.escribirLog(e.getLocalizedMessage());
+               
             Utilidades.confirma(confir, "Error al limpiar la tabla");
         }
     }
@@ -89,7 +87,7 @@ public class Devoluciones extends javax.swing.JFrame {
 
             }
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
            Utilidades.confirma(confir, "Error con la conexión a la base de datos");
         }
     }
@@ -342,7 +340,7 @@ public class Devoluciones extends javax.swing.JFrame {
 
             }
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Logger.getLogger(Devoluciones.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_tablaTicketseventoClickTablaTickets

@@ -29,38 +29,38 @@ public class ProductoEliminar extends javax.swing.JPanel {
 
     ProductoDAO obj = new ProductoDAO();
     ArrayList<Producto> lista = new ArrayList();
-    Confirmacion confirma= new Confirmacion();
+    Confirmacion confirma = new Confirmacion();
 
     public ProductoEliminar() {
         initComponents();
-        obj.setConn(Conexion.conexi.getLocal());
         llenarCombo();
         AutoCompleteDecorator.decorate(comboProductos, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
     }
-     public void requerirFoco(){
-    comboProductos.setFocusable(true);
-    comboProductos.requestFocus();
+
+    public void requerirFoco() {
+        comboProductos.setFocusable(true);
+        comboProductos.requestFocus();
     }
-     
-     public void setTextCombo(String n){
-     comboProductos.setSelectedItem(n);
-     }
+
+    public void setTextCombo(String n) {
+        comboProductos.setSelectedItem(n);
+    }
 
     public void llenarCombo() {
         try {
             lista = obj.obtenerProductosSiHuboModificacion(lista, true);
-             comboProductos.removeAllItems();
-        int i = 0;
-        comboProductos.addItem("");
-        while (i < lista.size()) {
-            comboProductos.addItem(lista.get(i).getNombre());
-            i++;
-        }
+            comboProductos.removeAllItems();
+            int i = 0;
+            comboProductos.addItem("");
+            while (i < lista.size()) {
+                comboProductos.addItem(lista.get(i).getNombre());
+                i++;
+            }
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+           
             Logger.getLogger(ProductoEliminar.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+           
             Logger.getLogger(ProductoEliminar.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -165,77 +165,62 @@ public class ProductoEliminar extends javax.swing.JPanel {
 
         guardar();
     }//GEN-LAST:event_btn5ActionPerformed
-  public void mensaje(String men){
-    confirma.setMensaje(men);
-    confirma.setVisible(true);
+    public void mensaje(String men) {
+        confirma.setMensaje(men);
+        confirma.setVisible(true);
     }
 
-    public void guardar(){
+    public void guardar() {
         Utilidades.im(comboProductos.getSelectedItem().toString());
-         if(comboProductos.getSelectedItem().toString().equalsIgnoreCase("")){
-             mensaje("Por favor ingresa el nombre o código de un producto");
-             Timer timer = new Timer(1000, new ActionListener(){
+        if (comboProductos.getSelectedItem().toString().equalsIgnoreCase("")) {
+            mensaje("Por favor ingresa el nombre o código de un producto");
+            Timer timer = new Timer(1000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                 confirma.dispose();
-                 comboProductos.requestFocus();
+                    confirma.dispose();
+                    comboProductos.requestFocus();
                 }
-             });
-             timer.setRepeats(false);
+            });
+            timer.setRepeats(false);
             timer.start();
-             
-         }else{
-        String nombre = (String) comboProductos.getSelectedItem();
 
-        Producto info = new Producto();
-        info = obj.getDatosProducto(nombre, lista);
-
-        if (info.getNombre().equalsIgnoreCase("")) {
-           mensaje("Producto no encontrado en la base de datos");
         } else {
-            String estatus="En proceso";
-         
-                String x ="";
-                Conexion.getConexiones();
-                if(Conexion.conexi.isInternet()){
-                    obj.setConn(Conexion.conexi.getHost());
-                    x=obj.eliminarProducto(info,"Actualizada","Eliminacion");
-                    
-                    if(x.equalsIgnoreCase("Datos del producto eliminados")){
-                    estatus="Actualizada";
-                    }
-                    obj.setConn(Conexion.conexi.getLocal());
-                    x=obj.eliminarProducto(info,estatus,"Eliminacion");
-                    
-                }else{
-                    obj.setConn(Conexion.conexi.getLocal());
-                    x=obj.eliminarProducto(info,"En proceso","Eliminacion");
-                }
-                
+            String nombre = (String) comboProductos.getSelectedItem();
+
+            Producto info = new Producto();
+            info = obj.getDatosProducto(nombre, lista);
+
+            if (info.getNombre().equalsIgnoreCase("")) {
+                mensaje("Producto no encontrado en la base de datos");
+            } else {
+                String estatus = "En proceso";
+
+                String x = "";
+
+                x = obj.eliminarProducto(info, "Actualizada", "Eliminacion");
+
                 mensaje(x);
-                if(x.equalsIgnoreCase("Datos del producto eliminados")){
-                    Timer timer = new Timer(1000, new ActionListener(){
+                if (x.equalsIgnoreCase("Datos del producto eliminados")) {
+                    Timer timer = new Timer(1000, new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             confirma.dispose();
                             comboProductos.requestFocus();
                         }
-                        
+
                     });
-                    
+
                     timer.setRepeats(false);
                     timer.start();
                     llenarCombo();
                 }
-       
-            
-         
+
+            }
         }
-         }
     }
     private void btn5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn5KeyPressed
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-      guardar();
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            guardar();
         }
 
     }//GEN-LAST:event_btn5KeyPressed

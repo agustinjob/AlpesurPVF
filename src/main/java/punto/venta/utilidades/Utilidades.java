@@ -41,29 +41,7 @@ public class Utilidades {
 static Confirmacion confirma = new Confirmacion();
 
  
-public static void escribirLog(String mensaje) {
 
-        Logger logger = Logger.getLogger("MyLog");
-        FileHandler fh;
-
-        try {
-
-            fh = new FileHandler("C:\\punto_venta\\archivo.log",true);
-            logger.addHandler(fh);
-
-            SimpleFormatter formatter = new SimpleFormatter();
-            fh.setFormatter(formatter);
-
-            logger.info(mensaje);
-
-        } catch (SecurityException e) {
-                  Utilidades.escribirLog(e.getLocalizedMessage());
-            e.printStackTrace();
-        } catch (IOException e) {
-                  Utilidades.escribirLog(e.getLocalizedMessage());
-            e.printStackTrace();
-        }
-    }
 
  
   

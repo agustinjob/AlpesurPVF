@@ -46,7 +46,7 @@ public class ReporteProducto extends javax.swing.JPanel {
         llenarCombo();
         
         }catch(Exception e){
-                  Utilidades.escribirLog(e.getLocalizedMessage());
+               
         }
         AutoCompleteDecorator.decorate(comboProductos, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
        
@@ -302,12 +302,12 @@ public class ReporteProducto extends javax.swing.JPanel {
                     }
 
                 }catch(NumberFormatException e){
-                          Utilidades.escribirLog(e.getLocalizedMessage());
+                       
                    mensaje("Has ingresado datos incorrectos, por favor verifica lo que ingresaste");
 
                 } catch (SQLException ex) {
                     mensaje("Error en la base de datos");
-                        Utilidades.escribirLog(ex.getLocalizedMessage());
+                       
                 }
 
             }

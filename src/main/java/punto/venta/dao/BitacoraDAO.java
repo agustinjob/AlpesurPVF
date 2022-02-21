@@ -26,11 +26,8 @@ public class BitacoraDAO {
     DateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
     DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
     int idUsuario = UsuarioDAO.getIdUsuario();
-      Connection conn;
+      Connection conn=Conexion.conectarMySQL();;
       
-     public void setConn(Connection conn){
-     this.conn=conn;
-     }
      
      public void registrarBitacora(String descripcion) throws ClassNotFoundException, SQLException{
    
@@ -45,7 +42,7 @@ public class BitacoraDAO {
             ResultSet datos = s.executeQuery("SELECT nombre,descripcion,bi.fecha,bi.hora FROM bitacora as bi, usuario as usu where bi.fecha ='"+formatoFecha.format(d)+"' and usu.idUsuario = bi.idUsuario");
             return datos;
         } catch ( SQLException e) {
-      Utilidades.escribirLog(e.getLocalizedMessage());
+   
         }
        
         return null;
@@ -62,7 +59,7 @@ public class BitacoraDAO {
             ResultSet datos = s.executeQuery("SELECT u.nombre,bi.descripcion,bi.fecha,bi.hora FROM bitacora as bi,  usuario as u where bi.fecha >='"+formatoFecha.format(inicio)+"' and bi.fecha<='"+formatoFecha.format(fin)+"' and bi.idUsuario = u.idUsuario");
              return datos;
         } catch (SQLException e) {
-      Utilidades.escribirLog(e.getLocalizedMessage());
+   
         }
        
         return null;

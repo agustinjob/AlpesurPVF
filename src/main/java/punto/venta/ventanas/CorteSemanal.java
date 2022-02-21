@@ -83,7 +83,7 @@ double finalTotal;
     //    txtNumeroVentas.setText(formatoImporte.format(totalNumeroVentas));
         }
     } catch (SQLException ex) {
-              Utilidades.escribirLog(ex.getLocalizedMessage());
+             
     }
              
      }

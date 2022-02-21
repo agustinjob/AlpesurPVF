@@ -42,10 +42,10 @@ public class InsVarios extends javax.swing.JFrame {
             p = obj.obtenerProductosSiHuboModificacion(p, true);
             setIconImage(new ImageIcon("iconos/punto-de-venta.png").getImage());
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Utilidades.confirma(confir, "Hubo un error en el sistema");
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
            Utilidades.confirma(confir, "Hubo un error de conexión a la base de datos");
         }
     }

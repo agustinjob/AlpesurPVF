@@ -26,10 +26,6 @@ public class CreditoDAO {
     DateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
     Connection conn;
 
-    public CreditoDAO() {
-        bita.setConn(Conexion.conexi.getLocal());
-    }
-
     public void setConn(Connection conn) {
         this.conn = conn;
     }
@@ -52,11 +48,11 @@ public class CreditoDAO {
             }
             conn.commit();
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             System.out.println(ex.getLocalizedMessage());
             Utilidades.confirma(confirma, "Hubo un error en el sistema");
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
              System.out.println(ex.getLocalizedMessage());
             if (conn != null) {
                 try {
@@ -101,10 +97,10 @@ public class CreditoDAO {
             String mensajeBita = "Se realizó un abono a la cuenta con ticket " + idTicket + "con fecha de " + fecha + " por el monto de $" + abono;
             bita.registrarBitacora(mensajeBita);
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Utilidades.confirma(confirma, "Hubo un error con la conexion a la base de datos");
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Utilidades.confirma(confirma, "Hubo un error en el sistema");
         }
     }

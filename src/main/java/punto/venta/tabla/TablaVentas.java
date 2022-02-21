@@ -190,7 +190,7 @@ Utilidades.im("SI fue tabla ventas");
                 eliminaCelda(1);
             }
         }catch(NumberFormatException exc){
-            Utilidades.escribirLog(exc.getLocalizedMessage());
+            
            mensaje("Haz ingresado una letra u otro caracter en lugar de un número. Por favor revisa los datos ingresados");
         }
 

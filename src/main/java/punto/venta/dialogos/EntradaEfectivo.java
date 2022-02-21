@@ -38,7 +38,7 @@ public class EntradaEfectivo extends javax.swing.JFrame {
         ImageIcon a = new ImageIcon("iconos/check.png");
         ImageIcon b = new ImageIcon("iconos/cancelar.png");
         ImageIcon c = new ImageIcon("iconos/entradas_pasadas.png");
-        obj.setConn(Conexion.conexi.getLocal());
+      
         btnguardaref.setIcon(a);
         btnc.setIcon(b);
         btnverEntradas.setIcon(c);
@@ -96,10 +96,10 @@ public class EntradaEfectivo extends javax.swing.JFrame {
                 tablaEntradas.setModel(modelo);
             }
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             mensaje ("Hubo un error en el sistema");
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             mensaje ("Hubo un error con la conexión a la base de datos");
         }
         
@@ -342,13 +342,13 @@ guardar();
                 this.dispose();
 
             } catch (ClassNotFoundException ex) {
-                      Utilidades.escribirLog(ex.getLocalizedMessage());
+                     
                 mensaje ("Hubo un error en el sistema");
             } catch (SQLException ex) {
-                      Utilidades.escribirLog(ex.getLocalizedMessage());
+                     
                 mensaje ("Hubo un error con la conexión a la base de datos");
             }catch(NumberFormatException e){
-                      Utilidades.escribirLog(e.getLocalizedMessage());
+                   
                 mensaje ("Por favor, revisa los datos ingresados");
             }
 

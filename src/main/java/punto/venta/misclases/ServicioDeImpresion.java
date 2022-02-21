@@ -67,7 +67,7 @@ public class ServicioDeImpresion {
                     //DocPrintJob pjb;
                     // job = service.createPrintJob();
                 } catch (PrinterException ex) {
-                          Utilidades.escribirLog(ex.getLocalizedMessage());
+                         
                     Logger.getLogger(ServicioDeImpresion.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -115,7 +115,7 @@ public class ServicioDeImpresion {
         try {
             job.print(doc, null);
         } catch (PrintException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             System.out.println(ex);
         }
 
@@ -144,7 +144,7 @@ public class ServicioDeImpresion {
         try {
             job.print(doc, null);
         } catch (PrintException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             System.out.println(ex);
         }
     }

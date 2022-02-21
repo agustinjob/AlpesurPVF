@@ -31,7 +31,7 @@ public class Abono extends javax.swing.JFrame {
       //  setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE); 
         ImageIcon mone = new ImageIcon("iconos/oro.png");
         Utilidades.im("RESTOO " + resto);
-        objCre.setConn(Conexion.conexi.getLocal());
+     
         monedas.setIcon(mone);
         this.cre = cre;
         this.resto = resto;
@@ -158,7 +158,7 @@ public class Abono extends javax.swing.JFrame {
        
        this.dispose();}
     }catch(NumberFormatException e){
-              Utilidades.escribirLog(e.getLocalizedMessage());
+           
         Utilidades.mensajePorTiempo("Por favor ingresa un valor valido");
     }
     }//GEN-LAST:event_btnrealizaAbonoActionPerformed

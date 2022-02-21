@@ -50,8 +50,6 @@ public class InventarioAgregar extends javax.swing.JPanel {
         ImageIcon agregar = new ImageIcon("iconos/check.png");
         btnBuscar.setIcon(lupa);
         btnAgregar.setIcon(agregar);
-        obj.setConn(Conexion.conexi.getLocal());
-        objArea.setConn(Conexion.conexi.getLocal());
         llenarCombo();
         llenarComboArea();
         AutoCompleteDecorator.decorate(comboProductos, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
@@ -70,10 +68,10 @@ public class InventarioAgregar extends javax.swing.JPanel {
                 i++;
             }
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             mensaje("Hubo un error en el sistema");
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             mensaje("Hubo un error en la conexion a la base de datos");
         }
 
@@ -92,7 +90,7 @@ public class InventarioAgregar extends javax.swing.JPanel {
                     i++;
                 }
             } catch (SQLException ex) {
-                      Utilidades.escribirLog(ex.getLocalizedMessage());
+                     
                 Logger.getLogger(ProductoArea.class.getName()).log(Level.SEVERE, null, ex);
             }
 
@@ -433,7 +431,7 @@ public class InventarioAgregar extends javax.swing.JPanel {
                 }
 
             } catch (SQLException ex) {
-                      Utilidades.escribirLog(ex.getLocalizedMessage());
+                     
                 Logger.getLogger(InventarioAgregar.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -465,24 +463,10 @@ public class InventarioAgregar extends javax.swing.JPanel {
         if (ban == false) {
             try {
                 double total = Double.parseDouble(a[0]) + Double.parseDouble(a[1]);
-                Conexion.getConexiones();
                 String x = "";
-                String estatus = "En proceso";
-                if (Conexion.conexi.isInternet()) {
-                    obj.setConn(Conexion.conexi.getHost());
                     x = obj.agregarInventarioProducto(total, a[2], a[1], "Actualizada", "Modificacion");
                     
-                    if (x.equalsIgnoreCase("Inventario agregado exitosamente")) {
-                        estatus = "Actualizada";
-                    }
-
-                    obj.setConn(Conexion.conexi.getLocal());
-                    x = obj.agregarInventarioProducto(total, a[2], a[1], estatus, "Modificacion");
-
-                } else {
-                    obj.setConn(Conexion.conexi.getLocal());
-                    x = obj.agregarInventarioProducto(total, a[2], a[1], "Actualizada", "Modificacion");
-                }
+                
                 if (x.equalsIgnoreCase("Inventario agregado exitosamente")) {
                     llenarCombo();
                     limpiar();
@@ -490,7 +474,7 @@ public class InventarioAgregar extends javax.swing.JPanel {
                 }
                 mensaje(x);
             } catch (NumberFormatException e) {
-                      Utilidades.escribirLog(e.getLocalizedMessage());
+                   
                 mensaje("Por favor revisa los datos agregados");
 
             } 

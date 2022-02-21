@@ -205,29 +205,17 @@ public class UsuarioAgregar extends javax.swing.JPanel {
             mensaje("Por favor ingresa todos los datos solicitados");
         } else {
             String estatus = "En proceso";
-              String res ="";
-                Conexion.getConexiones();
-                if (Conexion.conexi.isInternet()) {
-                    obj.setConn(Conexion.conexi.getHost());
-                     res = obj.almacena(a, "Actualizada", "Registro");
-                    if (res.equalsIgnoreCase("Usuario agregado exitosamente")) {
-                        estatus = "Actualizada";
-                    }
-                    obj.setConn(Conexion.conexi.getLocal());
-                    obj.almacena(a, estatus, "Registro");
-                } else {
-                    obj.setConn(Conexion.conexi.getLocal());
-                    obj.almacena(a, "En proceso", "Registro");
-                }
+            String res = "";
+            res = obj.almacena(a, "Actualizada", "Registro");
+            obj.almacena(a, estatus, "Registro");
 
-                mensaje(res);
-                nombre.setText("");
-                direccion.setText("");
-                email.setText("");
-                password.setText("");
-                telefono.setText("");
+            mensaje(res);
+            nombre.setText("");
+            direccion.setText("");
+            email.setText("");
+            password.setText("");
+            telefono.setText("");
 
-          
         }
 
     }

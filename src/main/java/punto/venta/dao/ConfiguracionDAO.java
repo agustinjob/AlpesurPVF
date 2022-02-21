@@ -24,14 +24,8 @@ public class ConfiguracionDAO {
     Conexion SQL = new Conexion();
     BitacoraDAO bita = new BitacoraDAO();
     Confirmacion confir;
-    Connection conn;
- 
-    public ConfiguracionDAO(){
-     bita.setConn(Conexion.conexi.getLocal());
-     }
-  public void setConn(Connection conn){
-     this.conn=conn;
-     }
+    Connection conn= Conexion.conectarMySQL();
+
 
     public String almacena(String[] a) throws ClassNotFoundException, SQLException {
    

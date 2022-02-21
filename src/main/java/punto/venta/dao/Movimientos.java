@@ -28,15 +28,9 @@ public class Movimientos {
       int idUsuario = UsuarioDAO.getIdUsuario();
       BitacoraDAO bita = new BitacoraDAO();
       
-      Connection conn;
+      Connection conn=Conexion.conectarMySQL();
+
       
-      public Movimientos(){
-      bita.setConn(Conexion.conexi.getLocal());
-      }
-      
-     public void setConn(Connection conn){
-     this.conn=conn;
-     }
     
       public ResultSet obteneEfectivoInicial(int id) throws ClassNotFoundException, SQLException {
         
@@ -93,7 +87,7 @@ public class Movimientos {
               
               return rs;
           } catch (SQLException ex) {
-                    Utilidades.escribirLog(ex.getLocalizedMessage());
+                   
               Logger.getLogger(Movimientos.class.getName()).log(Level.SEVERE, null, ex);
           }
           return rs;

@@ -35,14 +35,13 @@ public class UsuarioEliminar extends javax.swing.JPanel {
 
     public UsuarioEliminar() {
         initComponents();
-        obj.setConn(Conexion.conexi.getLocal());
         llenarCombo();
         AutoCompleteDecorator.decorate(comboUsuario, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
     }
-    
-   public void requerirFoco(){
-    comboUsuario.setFocusable(true);
-    comboUsuario.requestFocus();
+
+    public void requerirFoco() {
+        comboUsuario.setFocusable(true);
+        comboUsuario.requestFocus();
     }
 
     public void llenarCombo() {
@@ -129,72 +128,57 @@ public class UsuarioEliminar extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn4ActionPerformed
-      eliminar();
+        eliminar();
     }//GEN-LAST:event_btn4ActionPerformed
 
     private void btn4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn4KeyPressed
-       if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-       eliminar();
-       }
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            eliminar();
+        }
     }//GEN-LAST:event_btn4KeyPressed
-  public void mensaje(String men){
-    confirma.setMensaje(men);
-    confirma.setVisible(true);
-    Timer timer = new Timer(1000, new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                 confirma.dispose();
-                 comboUsuario.requestFocus();
-                }
-                
-            });
+    public void mensaje(String men) {
+        confirma.setMensaje(men);
+        confirma.setVisible(true);
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                confirma.dispose();
+                comboUsuario.requestFocus();
+            }
 
-    timer.setRepeats(false);
-            timer.start();
+        });
+
+        timer.setRepeats(false);
+        timer.start();
     }
 
-    public void eliminar(){
-      String nombreU = (String) comboUsuario.getSelectedItem();
+    public void eliminar() {
+        String nombreU = (String) comboUsuario.getSelectedItem();
         int i = 0;
-            if(nombreU.equalsIgnoreCase("")){
-            mensaje( "Por favor ingresa los datos");
-        }else{
-       
-              while(i<lista.size()){
-                  if(lista.get(i).getNombre().equalsIgnoreCase(nombreU)){
-                      usu = lista.get(i);
-                      break;
-                  }
-                  i++;
-              }
-              Conexion.getConexiones();
-              String x= "";
-              String estatus="En proceso";
-              if(Conexion.conexi.isInternet()){
-                  obj.setConn(Conexion.conexi.getHost());
-                 x= obj.eliminarDatosUsuario(usu,"Actualizada","Eliminacion");
-                 if(x.equalsIgnoreCase("Datos del usuario eliminados correctamente")){
-                     estatus="Actualizada";
-                 }
-                  
-                  obj.setConn(Conexion.conexi.getLocal());
-                  x = obj.eliminarDatosUsuario(usu,estatus,"Eliminacion");
-              }else{
-                  obj.setConn(Conexion.conexi.getLocal());
-                  x = obj.eliminarDatosUsuario(usu,"En proceso","Eliminacion");
-              }
-              
-              if(x.equalsIgnoreCase("Datos del usuario eliminados correctamente")){
-                  
-                  mensaje(x);
-                  llenarCombo();
-              }else{
-                  mensaje(x);
-                  
-              }
-       
-            
-         
+        if (nombreU.equalsIgnoreCase("")) {
+            mensaje("Por favor ingresa los datos");
+        } else {
+
+            while (i < lista.size()) {
+                if (lista.get(i).getNombre().equalsIgnoreCase(nombreU)) {
+                    usu = lista.get(i);
+                    break;
+                }
+                i++;
+            }
+            String x = "";
+            String estatus = "En proceso";
+            x = obj.eliminarDatosUsuario(usu, "Actualizada", "Eliminacion");
+
+            if (x.equalsIgnoreCase("Datos del usuario eliminados correctamente")) {
+
+                mensaje(x);
+                llenarCombo();
+            } else {
+                mensaje(x);
+
+            }
+
         }
     }
 

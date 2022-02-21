@@ -441,16 +441,16 @@ public class EstructuraGeneral extends javax.swing.JFrame implements ActionListe
                 }
             }
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             java.util.logging.Logger.getLogger(EstructuraGeneral.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             java.util.logging.Logger.getLogger(EstructuraGeneral.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             java.util.logging.Logger.getLogger(EstructuraGeneral.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             java.util.logging.Logger.getLogger(EstructuraGeneral.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>

@@ -73,8 +73,6 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
             btn1.setVisible(false);
             btn1.setEnabled(false);
             tipoPrecio = 1;
-            obj.setConn(Conexion.conexi.getLocal());
-            tick.setConn(Conexion.conexi.getLocal());
             md = new DefaultTableModel();
             //   this.txtTabla.setModel(md);
             txtCodigo.requestFocus();
@@ -176,10 +174,10 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
                 i++;
             }
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Logger.getLogger(VentasEstructura.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Logger.getLogger(VentasEstructura.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -872,10 +870,10 @@ public void buscarDesdeCombo(){
             tick.modificarEstatus();
             txtTicket.setText("Folio ticket: " + tick.getNumero());// TODO add your handling code here:
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             mensaje("Ocurrio un error con el sistema",1);
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Logger.getLogger(VentasEstructura.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnReiniciarFolioActionPerformed
@@ -914,7 +912,7 @@ public void buscarDesdeCombo(){
                 obj.requerirFoco();
             }
             }catch(NumberFormatException e){
-                      Utilidades.escribirLog(e.getLocalizedMessage());
+                   
                 mensaje("Ingresaste una letra u otro caracter en lugar de un número. Por favor revisa la información ingresada",1);
             }
         }
@@ -1012,7 +1010,7 @@ getToolkit().beep();
         try {
             llenarCombo();
         } catch (Exception ClassNotFoundException) {
-                  Utilidades.escribirLog(ClassNotFoundException.getLocalizedMessage());
+                  
         }
         AutoCompleteDecorator.decorate(comboProductos, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
     }

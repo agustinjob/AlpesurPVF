@@ -212,8 +212,7 @@ public class ClienteAgregar extends javax.swing.JPanel {
     public void guardar(){
       
             ClienteDAO obj = new ClienteDAO();
-            //obj.setConn(Conexion.conexi.getLocal());
-            Conexion.getConexiones();
+     
             String [] a = new String[7];
             a[0]= txtnombrec.getText();
             a[1]=txtdireccion.getText();
@@ -230,24 +229,18 @@ public class ClienteAgregar extends javax.swing.JPanel {
             }else{
                 try {
                     Double.parseDouble(a[3]);
-                    if(Conexion.conexi.isInternet()){
-                        obj.setConn(Conexion.conexi.getHost());
-                        ban =obj.almacena(a,"Actualizada","Registro");
+                   
                         
                         String estatus= ban.equalsIgnoreCase("Datos del cliente agregados correctamente")?"Actualizada":"En proceso";
                         
-                        obj.setConn(Conexion.conexi.getLocal());
-                        ban =obj.almacena(a,estatus,"Registro");
+                      ban =obj.almacena(a,estatus,"Registro");
                    
-                    }else{
-                        obj.setConn(Conexion.conexi.getLocal());
-                        ban =obj.almacena(a,"En proceso","Registro");
-                    }
+             
                     
                     mensaje(ban);
                
                 }catch(NumberFormatException e){
-                          Utilidades.escribirLog(e.getLocalizedMessage());
+                       
                     mensaje("Por favor revisa los datos que ingresaste");
                 }
                 if(ban.equalsIgnoreCase("Datos del cliente agregados correctamente")){

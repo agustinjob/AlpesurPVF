@@ -40,7 +40,6 @@ public class ReporteVentas extends javax.swing.JPanel {
 
     public ReporteVentas() {
         initComponents();
-        ven.setConn(Conexion.conexi.getLocal());
           tablaVentas.getTableHeader().setPreferredSize(new Dimension(0,0));
         llenaTabla();
         centrarTabla();
@@ -98,7 +97,7 @@ public void llenaTabla(){
         }
     } catch (SQLException ex) {
       mensaje("Error en la base de datos");
-      Utilidades.escribirLog(ex.getLocalizedMessage());
+     
     }
              
      }

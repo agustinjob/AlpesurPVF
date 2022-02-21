@@ -28,16 +28,9 @@ public class ProductoDAO {
     Movimientos mov = new Movimientos();
     Confirmacion x;
 
-    Connection conn;
+    Connection conn=Conexion.conectarMySQL();
 
-    public ProductoDAO() {
-        bita.setConn(Conexion.conexi.getLocal());
-        mov.setConn(Conexion.conexi.getLocal());
-    }
 
-    public void setConn(Connection conn) {
-        this.conn = conn;
-    }
 
     public String almacena(String[] a, String estatus, String operacion) throws ClassNotFoundException, SQLException {
 
@@ -189,7 +182,7 @@ public class ProductoDAO {
             p.setpVenta(pro.getDouble("precioVenta"));
             return p;
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Logger.getLogger(ProductoDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -248,7 +241,7 @@ public class ProductoDAO {
             }
 
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Logger.getLogger(ProductoDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -272,7 +265,7 @@ public class ProductoDAO {
             return "Hubo un problema con la conexion a la base de datos";
 
         } catch (ClassNotFoundException ex) {
-      Utilidades.escribirLog(ex.getLocalizedMessage());
+     
             System.out.println(ex.getLocalizedMessage());
             return "Hubo un problema vuelve a intentarlo por favor";
         }
@@ -287,10 +280,10 @@ public class ProductoDAO {
             bita.registrarBitacora(mensajeBita);
             return "Datos del producto eliminados";
         } catch (SQLException e) {
-                  Utilidades.escribirLog(e.getLocalizedMessage());
+               
             return "Ocurrio un error en la conexion a la base de datos";
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             return "Ocurrio un error en el sistema";
         }
     }
@@ -314,7 +307,7 @@ public class ProductoDAO {
             bita.registrarBitacora(mensajeBita);
             return "Transacción realizada exitosamente";
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             if (conn != null) {
 
                 try {
@@ -322,7 +315,7 @@ public class ProductoDAO {
                     return "A ocurrido un error vuelve a intentarlo por favor";
 
                 } catch (SQLException exs) {
-                          Utilidades.escribirLog(ex.getLocalizedMessage());
+                         
                     return "Ocurrio un error con la conexion a la base de datos";
                 }
             }
@@ -338,17 +331,17 @@ public class ProductoDAO {
             Statement s = conn.createStatement();
             boolean modificar = s.execute("UPDATE producto SET `cantidad`=" + cantidad + ", estatus='" + estatus + "', operacion='" + operacion + "' WHERE codigo ='" + codigo + "' and idSucursal =" + Datos.idSucursal);
 
-            mov.setConn(conn);
+   
             mov.registrarEfectivoInicial(agregar + "", "registro_producto", codigo, "Actualizada", "Modificacion");
             String mensajeBita = "Agregó inventario al producto con código " + codigo;
             bita.registrarBitacora(mensajeBita);
             return "Inventario agregado exitosamente";
         } catch (SQLException e) {
-                  Utilidades.escribirLog(e.getLocalizedMessage());
+               
             System.out.println(e.getLocalizedMessage());
             return ("Hubo un error con la conexion a la base de datos");
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             return ("Hubo un error con el sistema");
         }
     }
@@ -362,7 +355,7 @@ public class ProductoDAO {
 
             return datos;
         } catch (Exception e) {
-      Utilidades.escribirLog(e.getLocalizedMessage());
+   
         }
 
         return null;
@@ -379,7 +372,7 @@ public class ProductoDAO {
 
             return datos;
         } catch (Exception e) {
-      Utilidades.escribirLog(e.getLocalizedMessage());
+   
         }
 
         return null;

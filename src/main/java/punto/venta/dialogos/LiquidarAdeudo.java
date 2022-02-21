@@ -29,8 +29,6 @@ public class LiquidarAdeudo extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         ImageIcon icon = new ImageIcon("iconos/ticket.png");
         icoTicket.setIcon(icon);
-        objCliente.setConn(Conexion.conexi.getLocal());
-        
         this.cli = cli;
         lblAdeudo.setText(monto);
         this.monto=monto;

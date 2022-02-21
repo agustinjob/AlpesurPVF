@@ -28,15 +28,10 @@ public class PruebaRestService {
             try {
                 Thread.sleep(5000);
                 
-                    Conexion.getConexiones();
-                
-                if(Conexion.conexi.isInternet()){
-                System.out.println("Es true");
-                }else{
-                 System.out.println("Es false");
-                }
+               
+              
             } catch (InterruptedException ex) {
-                       Utilidades.escribirLog(ex.getLocalizedMessage());
+                      
             }
             
         }

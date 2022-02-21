@@ -20,106 +20,99 @@ import punto.venta.dao.SucursalDAO;
 import punto.venta.misclases.TransferenciaProductos;
 import punto.venta.utilidades.Utilidades;
 
-
 /**
  *
  * @author agus_
  */
 public class Paso1 extends javax.swing.JPanel {
 
-    TransferenciaProductos transP= new TransferenciaProductos();
-    SucursalDAO sucursales= new SucursalDAO();
+    TransferenciaProductos transP = new TransferenciaProductos();
+    SucursalDAO sucursales = new SucursalDAO();
     DefaultTableCellRenderer dt = new DefaultTableCellRenderer();
     DefaultTableModel md;
     String data[][] = {};
     String cabeza[] = {"Nombre", "Dirección", "id"};
-    
+
     public Paso1() {
-           initComponents();
-           String men="Estas en la sucursal:" + Datos.sucursal + ", por favor selecciona a que sucursal vas a enviar los productos";
-           
-         
-           md = new DefaultTableModel();
-           this.tablaSucursales.setModel(md);
-           md = new DefaultTableModel(data, cabeza) {
+        initComponents();
+        String men = "Estas en la sucursal:" + Datos.sucursal + ", por favor selecciona a que sucursal vas a enviar los productos";
+
+        md = new DefaultTableModel();
+        this.tablaSucursales.setModel(md);
+        md = new DefaultTableModel(data, cabeza) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
+
+        centrarTabla();
+        try {
+            llenarTabla();
+        } catch (Exception e) {
          
-         centrarTabla();
-         try{
-         llenarTabla();
-         }catch(Exception e){
-                   Utilidades.escribirLog(e.getLocalizedMessage());
-         men="No hay intener, por favor revisa tu conexión y vuelve a intentarlo";
-         }
-         
-           jLabel1.setText(men);
-       
+            men = "No hay intener, por favor revisa tu conexión y vuelve a intentarlo";
+        }
+
+        jLabel1.setText(men);
+
     }
 
-    public void requerirFoco(){
-   // txtCodigo.setFocusable(true);
-   // txtCodigo.requestFocus();
+    public void requerirFoco() {
+        // txtCodigo.setFocusable(true);
+        // txtCodigo.requestFocus();
     }
-    public void llenarTabla(){
-        Conexion.getConexiones();
-        if(!Conexion.conexi.isInternet()){
-        Utilidades.mensajePorTiempo("Por favor revisa tu conexión a internet, no es posible obtener los datos en este momento");
-        }else{
-        sucursales.setConn(Conexion.conexi.getHost());
-           
+
+    public void llenarTabla() {
+
         try {
-            ResultSet res= sucursales.obtenerSucursales();
+            ResultSet res = sucursales.obtenerSucursales();
             res.last();
             if (res.getRow() != 0) {
                 res.beforeFirst();
                 String datos[] = new String[3];
-                while(res.next()){
-                datos[0]=res.getString("nombre");
-                datos[1]=res.getString("direccion");
-                datos[2]=res.getString("idSucursal");
-                md.addRow(datos);
+                while (res.next()) {
+                    datos[0] = res.getString("nombre");
+                    datos[1] = res.getString("direccion");
+                    datos[2] = res.getString("idSucursal");
+                    md.addRow(datos);
                 }
             }
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+           
             Logger.getLogger(Paso1.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         }
     }
-    public void centrarTabla(){
-        
+
+    public void centrarTabla() {
+
         JTableHeader tablaCabe = tablaSucursales.getTableHeader();
         DefaultTableCellRenderer render = (DefaultTableCellRenderer) tablaSucursales.getTableHeader().getDefaultRenderer();
         render.setHorizontalAlignment(SwingConstants.CENTER);
         tablaCabe.setDefaultRenderer(render);
         tablaSucursales.setModel(md);
-         dt.setHorizontalAlignment(SwingConstants.CENTER);
+        dt.setHorizontalAlignment(SwingConstants.CENTER);
         tablaSucursales.getColumnModel().getColumn(0).setCellRenderer(dt);
         tablaSucursales.getColumnModel().getColumn(0).setWidth(360);
         tablaSucursales.getColumnModel().getColumn(0).setMinWidth(360);
         tablaSucursales.getColumnModel().getColumn(0).setMaxWidth(360);
-   
+
         tablaSucursales.getColumnModel().getColumn(1).setCellRenderer(dt);
-         tablaSucursales.getColumnModel().getColumn(1).setWidth(360);
+        tablaSucursales.getColumnModel().getColumn(1).setWidth(360);
         tablaSucursales.getColumnModel().getColumn(1).setMinWidth(360);
         tablaSucursales.getColumnModel().getColumn(1).setMaxWidth(360);
-      
+
         tablaSucursales.getColumnModel().getColumn(2).setWidth(0);
         tablaSucursales.getColumnModel().getColumn(2).setMinWidth(0);
         tablaSucursales.getColumnModel().getColumn(2).setMaxWidth(0);
         tablaSucursales.setRowHeight(30);
-        
+
         tablaSucursales.setRowSelectionAllowed(true);
         tablaSucursales.setColumnSelectionAllowed(false);
-        
-       
+
     }
-    
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -211,26 +204,26 @@ public class Paso1 extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //llenar datos en el modelo
-        if(transP.getIdSucursalEnvio()!=0){
-        Paso2 paso2=TransferenciaEstructura.transferencia.getPaso2();
-        paso2.setTrans(transP);
-        paso2.llenarTabla();
-        paso2.setVisible(true);
-        this.setVisible(false);
-        TransferenciaEstructura.transferencia.getContenedor().add(paso2);
-        }else{
-        Utilidades.mensajePorTiempo("Selecciona la sucursal a enviar los productos");
+        if (transP.getIdSucursalEnvio() != 0) {
+            Paso2 paso2 = TransferenciaEstructura.transferencia.getPaso2();
+            paso2.setTrans(transP);
+            paso2.llenarTabla();
+            paso2.setVisible(true);
+            this.setVisible(false);
+            TransferenciaEstructura.transferencia.getContenedor().add(paso2);
+        } else {
+            Utilidades.mensajePorTiempo("Selecciona la sucursal a enviar los productos");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void tablaSucursalesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaSucursalesMouseClicked
-int row = tablaSucursales.getSelectedRow();
-           String nombre = (String) tablaSucursales.getValueAt(row, 0);
-           String direccion = (String) tablaSucursales.getValueAt(row, 1);
-           int idSucursal = Integer.parseInt((String)tablaSucursales.getValueAt(row, 2));
-          jLabel2.setText("Usted ha seleccionado la sucursal: " + nombre); 
-transP.setIdSucursalEnvio(idSucursal);
-transP.setSucursalEnvio(nombre);
+        int row = tablaSucursales.getSelectedRow();
+        String nombre = (String) tablaSucursales.getValueAt(row, 0);
+        String direccion = (String) tablaSucursales.getValueAt(row, 1);
+        int idSucursal = Integer.parseInt((String) tablaSucursales.getValueAt(row, 2));
+        jLabel2.setText("Usted ha seleccionado la sucursal: " + nombre);
+        transP.setIdSucursalEnvio(idSucursal);
+        transP.setSucursalEnvio(nombre);
 // TODO add your handling code here:
     }//GEN-LAST:event_tablaSucursalesMouseClicked
 

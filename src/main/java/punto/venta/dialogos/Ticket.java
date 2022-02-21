@@ -141,7 +141,6 @@ public class Ticket extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         TicketDAO obj = new TicketDAO();
-        obj.setConn(Conexion.conexi.getLocal());
         double cantidadText = Double.parseDouble(txtCanti.getText());
         double cantidadPro = Double.parseDouble(cantidad);
         double montod = Double.parseDouble(monto);

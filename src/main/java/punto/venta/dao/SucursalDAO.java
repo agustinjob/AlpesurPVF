@@ -23,13 +23,11 @@ import punto.venta.utilidades.Utilidades;
  * @author agus_
  */
 public class SucursalDAO {
-     Connection conn;
+     Connection conn=Conexion.conectarMySQL();
      DateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
         Date d = new Date();
      
-     public void setConn(Connection conn){
-     this.conn=conn;
-     }
+   
      public  ResultSet obtenerSucursales(){
          try {
              ResultSet res=null;
@@ -41,7 +39,7 @@ public class SucursalDAO {
              
            
          } catch (SQLException ex) {
-                   Utilidades.escribirLog(ex.getLocalizedMessage());
+                  
              Logger.getLogger(SucursalDAO.class.getName()).log(Level.SEVERE, null, ex);
          }
            return null;
@@ -57,7 +55,7 @@ public class SucursalDAO {
              
            
          } catch (SQLException ex) {
-                   Utilidades.escribirLog(ex.getLocalizedMessage());
+                  
              Logger.getLogger(SucursalDAO.class.getName()).log(Level.SEVERE, null, ex);
          }
            return null;
@@ -73,7 +71,7 @@ public class SucursalDAO {
              
            
          } catch (SQLException ex) {
-                   Utilidades.escribirLog(ex.getLocalizedMessage());
+                  
              Logger.getLogger(SucursalDAO.class.getName()).log(Level.SEVERE, null, ex);
          }
            return null;
@@ -118,13 +116,13 @@ public class SucursalDAO {
              }
               conn.commit();
          } catch (SQLException ex) {
-                   Utilidades.escribirLog(ex.getLocalizedMessage());
+                  
              try {
                   System.out.println("Entro acá");
                  System.out.println(ex.getLocalizedMessage());
                  conn.rollback();
              } catch (SQLException ex1) {
-                     Utilidades.escribirLog(ex.getLocalizedMessage());
+                    
                  return "Hubo un error con la conexion a la base de datos, no se pudo regresar la información a como estaba anteriormente. Por favor revisa tus datos";
                
              }

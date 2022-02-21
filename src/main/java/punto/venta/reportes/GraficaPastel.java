@@ -32,7 +32,6 @@ public class GraficaPastel extends javax.swing.JPanel {
      
     public GraficaPastel() {
         initComponents();
-        ventas.setConn(Conexion.conexi.getLocal());
        grafica = ChartFactory.createPieChart("Número de productos", defaultpiedataset, true, true, false);
         llenarDatosGraficaDePastel();
     }
@@ -58,7 +57,7 @@ public class GraficaPastel extends javax.swing.JPanel {
 
             }
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
         }
 
         

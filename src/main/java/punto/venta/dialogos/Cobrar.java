@@ -62,8 +62,6 @@ public class Cobrar extends javax.swing.JFrame {
         ImageIcon g = new ImageIcon("iconos/hoja.png");
         ImageIcon cli = new ImageIcon("iconos/clientesGrande.png");
         setIconImage(new ImageIcon("iconos/punto-de-venta.png").getImage());
-        ventas.setConn(Conexion.conexi.getLocal());
-        obj.setConn(Conexion.conexi.getLocal());
         btnefectivo.setIcon(a);
         btnCredito.setIcon(cli);
         btn1.setIcon(d);
@@ -124,10 +122,10 @@ public class Cobrar extends javax.swing.JFrame {
                 i++;
             }
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             mensaje("Hubo un error en el sistema", tipoVenta);
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             mensaje("Hubo un error con la conexion a la base de datos", tipoVenta);
         }
 
@@ -588,27 +586,13 @@ public class Cobrar extends javax.swing.JFrame {
                 idCliente = cliente.getId();
             }
             if (ban == true) {
-                Conexion.getConexiones();
-               
-                if (Conexion.conexi.isInternet()) {
-                   
-                ventas.asignarFechaYHora(datos[0], datos[1]);
-                    ventas.setConn(Conexion.conexi.getHost());
+                
                     x= ventas.registrarVenta(md, tipoVenta, idCliente, "Local", "Actualizada", "Registro", numTic);
                 
             
-                    String estatus= x.equalsIgnoreCase("Hubo un error en la base de datos")?"En proceso":"Actualizada";
-                    ventas.setConn(Conexion.conexi.getLocal());
-                    x = ventas.registrarVenta(md, tipoVenta, idCliente, "Local", estatus, "Registro", numTic); 
-
                    
-
-                } else {
-
-                    x= ventas.registrarVenta(md, tipoVenta, idCliente, "Local", "En proceso", "Registro", numTic);
-                }
                
-                tick.setConn(Conexion.conexi.getLocal());
+                
                 tick.sumarTicket();
                    obj.asignarFechaYHora(datos[0], datos[1]);
                 String res = obj.convertirModeloAString(md, txtn2.getText());
@@ -617,7 +601,6 @@ public class Cobrar extends javax.swing.JFrame {
                 ven3.eliminaCelda(2);
                 ven3.tablas[indexTabbed].setNumArticulos(0);
                 ven3.tablas[indexTabbed].setTotal(0);
-                tick.setConn(Conexion.conexi.getLocal());
                 ven3.llenarCombo();
                 ven3.actualizaTicket(tick.getNumero() + "");
                 ven3.requerirFoco();
@@ -627,10 +610,10 @@ public class Cobrar extends javax.swing.JFrame {
               mensaje(x, tipoVenta);
 
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             mensaje("Ocurrio un error con el sistema", tipoVenta);
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Logger.getLogger(Cobrar.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Cobrar.class.getName()).log(Level.SEVERE, null, ex);
@@ -659,26 +642,15 @@ public class Cobrar extends javax.swing.JFrame {
             }
             if (ban == true) {
                 String x = "";
-                Conexion.getConexiones();
-                tick.setConn(Conexion.conexi.getLocal());
+               
                    String datos[]=rest.sendPOST2();
                 int numTic = tick.getNumero();
                
-                if (Conexion.conexi.isInternet()) {
-                         ventas.asignarFechaYHora(datos[0], datos[1]);
-                    ventas.setConn(Conexion.conexi.getHost());
+                
                     x = ventas.registrarVenta(md, tipoVenta, idCliente, "Local", "Actualizada", "Registro", numTic);
                    
-                    String estatus= x.equalsIgnoreCase("Hubo un error en la base de datos")?"En proceso":"Actualizada";
-                    ventas.setConn(Conexion.conexi.getLocal());
-                    x = ventas.registrarVenta(md, tipoVenta, idCliente, "Local", estatus, "Registro", numTic);                
-
-                } else {
-                    ventas.setConn(Conexion.conexi.getLocal());
-                    x = ventas.registrarVenta(md, tipoVenta, idCliente, "Local", "En proceso", "Registro", numTic);
-                }
-                Conexion.conexi.setHora("");
-                Conexion.conexi.setFecha("");
+                
+               
               
                 tick.sumarTicket();
                 if (x.equalsIgnoreCase("Venta registrada con exito")) {
@@ -697,10 +669,10 @@ public class Cobrar extends javax.swing.JFrame {
             }
 
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             System.out.println(ex.getLocalizedMessage());
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Logger.getLogger(Cobrar.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Cobrar.class.getName()).log(Level.SEVERE, null, ex);

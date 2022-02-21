@@ -30,53 +30,52 @@ import punto.venta.utilidades.Utilidades;
  */
 public class ProductoAgregar extends javax.swing.JPanel {
 
-    Confirmacion confirma= new Confirmacion();
+    Confirmacion confirma = new Confirmacion();
     ProductoDAO obj = new ProductoDAO();
     AreaDAO objArea = new AreaDAO();
-     
+
     public ProductoAgregar() {
         initComponents();
         ImageIcon guardar = new ImageIcon("iconos/check.png");
         btnGuardar.setIcon(guardar);
         ImageIcon catalogo = new ImageIcon("iconos/catalogo.png");
-        obj.setConn(Conexion.conexi.getLocal());
-        objArea.setConn(Conexion.conexi.getLocal());
+
         btnMostrarTodos.setIcon(catalogo);
         txtCodigo.requestFocus();
-     
-    
+
         llenarCombo();
     }
-    
-    public void requerirFoco(){
-    txtCodigo.setFocusable(true);
-    txtCodigo.requestFocus();
+
+    public void requerirFoco() {
+        txtCodigo.setFocusable(true);
+        txtCodigo.requestFocus();
     }
 
-     public void mensaje(String men){
-    confirma.setMensaje(men);
-    confirma.setVisible(true);
+    public void mensaje(String men) {
+        confirma.setMensaje(men);
+        confirma.setVisible(true);
     }
 
-      public void llenarCombo() {
+    public void llenarCombo() {
 
-       
-           ResultSet areas= objArea.obtenerAreas();
-           if(areas!=null){
-               try {
-                   comboArea.removeAllItems();
-                  
-                   int i = 0;
-                   while (areas.next()) {
-                       comboArea.addItem(areas.getString(2));
-                       i++;
-                   }  } catch (SQLException ex) {
-                             Utilidades.escribirLog(ex.getLocalizedMessage());
-                   Logger.getLogger(ProductoArea.class.getName()).log(Level.SEVERE, null, ex);
-               }
+        ResultSet areas = objArea.obtenerAreas();
+        if (areas != null) {
+            try {
+                comboArea.removeAllItems();
 
-           }
-  }
+                int i = 0;
+                while (areas.next()) {
+                    comboArea.addItem(areas.getString(2));
+                    i++;
+                }
+            } catch (SQLException ex) {
+               
+                Logger.getLogger(ProductoArea.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -369,13 +368,13 @@ public class ProductoAgregar extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-guardar();
+        guardar();
     }//GEN-LAST:event_btnGuardarActionPerformed
- 
-    public void guardar(){
-            String dni, nom, dep, pvv, pmm, pgg;
+
+    public void guardar() {
+        String dni, nom, dep, pvv, pmm, pgg;
         String a[] = new String[9];
-       
+
         // `codigo`, `descripcion`, `precioCosto`, `precioVenta`, `precioMayoreo`, `cantidad`, `inventarioMinimo "
         a[0] = txtCodigo.getText();
         a[1] = txtNombre.getText();
@@ -384,25 +383,25 @@ guardar();
         a[2] = txtPrecioCosto.getText();
         a[5] = cantidad.getText();
         a[6] = inventarioMinimo.getText();
-        a[7] =(String)comboArea.getSelectedItem()==null?"- Sin Departamento -":(String)comboArea.getSelectedItem();
+        a[7] = (String) comboArea.getSelectedItem() == null ? "- Sin Departamento -" : (String) comboArea.getSelectedItem();
         a[8] = txtPrecioDistribuidor.getText();
 
         boolean bandera = Utilidades.hayVacios(a);
         boolean banLimpiar = false;
         if (bandera == true) {
-           mensaje("Por favor ingresa todos los datos solicitados");
-           Timer timer = new Timer(1000, new ActionListener(){
+            mensaje("Por favor ingresa todos los datos solicitados");
+            Timer timer = new Timer(1000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                 confirma.dispose();
-                 txtCodigo.requestFocus();
+                    confirma.dispose();
+                    txtCodigo.requestFocus();
                 }
-                
+
             });
 
-    timer.setRepeats(false);
+            timer.setRepeats(false);
             timer.start();
-         
+
         } else {
             try {
 
@@ -412,91 +411,74 @@ guardar();
                 double n4 = Double.parseDouble(a[5]);// Cantidad
                 double n5 = Double.parseDouble(a[6]);// Inventario
                 double n6 = Double.parseDouble(a[8]);// Distribuidor
-                
-                if(n3>=n2){
-                mensaje("El precio costo no puede ser mayor o igual que el precio de venta");
-                 Timer timer = new Timer(1000, new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                 confirma.dispose();
-                 txtPrecioCosto.requestFocus();
-                }
-                
-            });
-                   timer.setRepeats(false);
-            timer.start();
-               
-                }else{
-                     String men="";
-                    
-                        Conexion.getConexiones();
-                   
-                    if(Conexion.conexi.isInternet()){
-                        obj.setConn(Conexion.conexi.getHost());
-                         try {
-                             men= obj.almacena(a,"Actualizada","Registro");
-                             
-                             obj.setConn(Conexion.conexi.getLocal());
-                              men= obj.almacena(a,"Actualizada","Registro");
-                         } catch (SQLException ex) {
-                                   Utilidades.escribirLog(ex.getLocalizedMessage());
-                               obj.setConn(Conexion.conexi.getLocal());
-                              men= obj.almacena(a,"En proceso","Registro");
-                         }
-                    }else{
-                     obj.setConn(Conexion.conexi.getLocal());
-                        men= obj.almacena(a,"En proceso","Registro");
+
+                if (n3 >= n2) {
+                    mensaje("El precio costo no puede ser mayor o igual que el precio de venta");
+                    Timer timer = new Timer(1000, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            confirma.dispose();
+                            txtPrecioCosto.requestFocus();
+                        }
+
+                    });
+                    timer.setRepeats(false);
+                    timer.start();
+
+                } else {
+                    String men = "";
+
+                    men = obj.almacena(a, "Actualizada", "Registro");
+
+                    mensaje(men);
+                    Timer timer = new Timer(1000, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            confirma.dispose();
+                            txtCodigo.requestFocus();
+                        }
+
+                    });
+                    timer.setRepeats(false);
+                    timer.start();
+                    if (men.equalsIgnoreCase("Ya existe un producto con ese código o nombre registrado en la base de datos")) {
+
+                    } else {
+                        limpiar();
+
                     }
-                 mensaje(men);
-                    Timer timer = new Timer(1000, new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                 confirma.dispose();
-                 txtCodigo.requestFocus();
-                }
-                
-            });
-                   timer.setRepeats(false);
-            timer.start();
-            if(men.equalsIgnoreCase("Ya existe un producto con ese código o nombre registrado en la base de datos")){
-            
-            }else{
-            limpiar();
-            
-            }
-               
-                }
-                
-                
-            } catch (ClassNotFoundException ex) {
-                      Utilidades.escribirLog(ex.getLocalizedMessage());
-                Logger.getLogger(ProductoAgregar.class.getName()).log(Level.SEVERE, null, ex);
-            }catch(NumberFormatException e){
-                      Utilidades.escribirLog(e.getLocalizedMessage());
-                mensaje("Por favor ingresa el tipo de dato que se te solicita para dar de alta el producto");
-                 Timer timer = new Timer(1000, new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                 confirma.dispose();
-                 txtCodigo.requestFocus();
-                }
-                
-            });
-                 
-                   timer.setRepeats(false);
-            timer.start();
-                
-               
-            }   catch (SQLException ex) {
-                      Utilidades.escribirLog(ex.getLocalizedMessage());
-                    Logger.getLogger(ProductoAgregar.class.getName()).log(Level.SEVERE, null, ex);
+
                 }
 
+            } catch (ClassNotFoundException ex) {
+               
+                Logger.getLogger(ProductoAgregar.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NumberFormatException e) {
+             
+                mensaje("Por favor ingresa el tipo de dato que se te solicita para dar de alta el producto");
+                Timer timer = new Timer(1000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        confirma.dispose();
+                        txtCodigo.requestFocus();
+                    }
+
+                });
+
+                timer.setRepeats(false);
+                timer.start();
+
+            } catch (SQLException ex) {
+               
+                Logger.getLogger(ProductoAgregar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
         }
-        if(banLimpiar==true){
+        if (banLimpiar == true) {
             limpiar();
         }
     }
+
     public void limpiar() {
         txtCodigo.setText("");
         txtNombre.setText("");
@@ -509,7 +491,7 @@ guardar();
         inventarioMinimo.setText("");
         //    cboDpto.setSelectedIndex(-1);
     }
-    
+
     private void mostrarListado(JTable tabla) throws ClassNotFoundException, SQLException {
 
         DefaultTableModel modelo = new DefaultTableModel();
@@ -519,13 +501,12 @@ guardar();
         modelo.addColumn("Precio Venta");
         modelo.addColumn("Precio Mayoreo");
         modelo.addColumn("Cantidad");
-              
 
         Object datos[] = new Object[7];
         Producto pro;
         ArrayList<Producto> lista = new ArrayList<Producto>();
-       lista= obj.obtenerProductosSiHuboModificacion(lista, true);
-       
+        lista = obj.obtenerProductosSiHuboModificacion(lista, true);
+
         for (int i = 0; i < lista.size(); i++) {
             pro = lista.get(i);
 
@@ -546,17 +527,17 @@ guardar();
         try {
             mostrarListado(tblListado);
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+           
             Logger.getLogger(ProductoAgregar.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+           
             Logger.getLogger(ProductoAgregar.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnMostrarTodosActionPerformed
 
     private void btnGuardarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnGuardarKeyPressed
-       if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-      guardar();
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            guardar();
         }
 
     }//GEN-LAST:event_btnGuardarKeyPressed

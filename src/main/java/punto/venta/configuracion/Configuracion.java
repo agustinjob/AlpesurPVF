@@ -33,7 +33,6 @@ public class Configuracion extends javax.swing.JPanel {
     
     public Configuracion() {
         initComponents();
-        conf.setConn(Conexion.conexi.getLocal());
         llenarCombo();
         llenarDatos();
     }
@@ -72,10 +71,10 @@ public class Configuracion extends javax.swing.JPanel {
             
             informacionLocal.setText("Impresora seleccionada: "+ info);
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -291,10 +290,10 @@ public class Configuracion extends javax.swing.JPanel {
             llenarDatos();
           }
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

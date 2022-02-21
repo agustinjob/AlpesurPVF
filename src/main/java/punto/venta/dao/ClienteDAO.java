@@ -31,15 +31,7 @@ public class ClienteDAO {
     Confirmacion confirma;
     Date d = new Date();
     DateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
-     Connection conn;
-     
-     public ClienteDAO(){
-     bita.setConn(Conexion.conexi.getLocal());
-     }
-
-  public void setConn(Connection conn){
-     this.conn=conn;
-     }
+     Connection conn= Conexion.conectarMySQL(); 
 
     public String almacena(String[] a, String estatus, String operacion){
     
@@ -61,10 +53,10 @@ public class ClienteDAO {
                }
             
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
           return "Error en la base de datos";
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
            return "Error en la base de datos";
         }
     }
@@ -113,10 +105,10 @@ public class ClienteDAO {
             bita.registrarBitacora(mensajeBita);
             return modificar;
         } catch (SQLException e) {
-                  Utilidades.escribirLog(e.getLocalizedMessage());
+               
             Utilidades.mensajePorTiempo( "Hubo un error con la conexion a la base de datos");
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Utilidades.mensajePorTiempo( "Hubo un error en el sistema");
         }
         
@@ -133,11 +125,11 @@ public class ClienteDAO {
             bita.registrarBitacora(mensajeBita);
             return modificar;
         } catch (SQLException e) {
-                  Utilidades.escribirLog(e.getLocalizedMessage());
+               
             Utilidades.mensajePorTiempo( "Hubo un error en la conexion a la base de datos");
             System.out.println(e.getLocalizedMessage());
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Utilidades.mensajePorTiempo("Error en el sistema");
         }
         return 0;
@@ -162,7 +154,7 @@ public class ClienteDAO {
             return rs;
         
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
              Utilidades.mensajePorTiempo( "Hubo un error con la conexión a la base de datos");
         }
      return null;
@@ -180,7 +172,7 @@ public class ClienteDAO {
          
             
         } catch (SQLException ex) { 
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
           Utilidades.mensajePorTiempo( "Hubo un error con la conexión a la base de datos");
         } 
 
@@ -201,7 +193,7 @@ public class ClienteDAO {
             suma=datos.getDouble("importe");
             
         } catch (SQLException ex) { 
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
           Utilidades.mensajePorTiempo("Hubo un error con la conexión a la base de datos");
         } 
           return suma;
@@ -218,7 +210,7 @@ public class ClienteDAO {
           
             
         } catch (SQLException ex) { 
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
           Utilidades.mensajePorTiempo( "Hubo un error con la conexión a la base de datos");
         }
 
@@ -251,7 +243,7 @@ public class ClienteDAO {
             }
           
         } catch (SQLException ex) {
-              Utilidades.escribirLog(ex.getLocalizedMessage());
+             
              Utilidades.mensajePorTiempo("Hubo un error en la base de datos");
         }
           
@@ -276,10 +268,10 @@ public class ClienteDAO {
             conn.commit();
             Utilidades.mensajePorTiempo("Se liquido el adeudo total del cliente");
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Utilidades.mensajePorTiempo( "Hubo un error en el sistema");
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             System.out.println(ex.getLocalizedMessage());
             if (conn != null) {
                 try {

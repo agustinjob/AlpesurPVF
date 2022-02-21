@@ -32,7 +32,7 @@ public class GraficaBarras extends javax.swing.JPanel {
     public GraficaBarras() {
         initComponents();
         graficaDeBarras = ChartFactory.createBarChart("Resumen de ventas", "Días", "Ventas", datos);
-        ventas.setConn(Conexion.conexi.getLocal());
+       
         llenarDatosGraficaDeBarras();
     }
 
@@ -56,7 +56,7 @@ public class GraficaBarras extends javax.swing.JPanel {
                 jPanel14.validate();
             }
         } catch (SQLException ex) {
-                Utilidades.escribirLog(ex.getLocalizedMessage());
+               
         }
 
     }

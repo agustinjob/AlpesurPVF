@@ -13,6 +13,6 @@ import punto.venta.utilidades.Utilidades;
  */
 public class PruebasLog {
     public static void main(String [] Job){
-    Utilidades.escribirLog("Error en el log");
+
     }
 }

@@ -35,7 +35,6 @@ public class ProductoVentas extends javax.swing.JPanel {
         initComponents();
         ImageIcon lupa = new ImageIcon("iconos/lupa.png");
         ImageIcon excel = new ImageIcon("iconos/excel.png");
-        objVen.setConn(Conexion.conexi.getLocal());
         btnGenerarExcel.setIcon(excel);
         btnBuscar.setIcon(lupa);
         btnBuscarLapso.setIcon(lupa);
@@ -342,7 +341,7 @@ public void llenaTabla() throws SQLException {
             }
            }
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
           mensaje("Hubo error con la conexion a la base de datos");
           
          
@@ -386,10 +385,10 @@ public void llenaTabla() throws SQLException {
                 
               
             } catch (SQLException ex) {
-                      Utilidades.escribirLog(ex.getLocalizedMessage());
+                     
                  Utilidades.im(ex.getLocalizedMessage());
             } catch (Exception ex) {
-                      Utilidades.escribirLog(ex.getLocalizedMessage());
+                     
                  mensaje( "Ocurrio un error en el sistema");
                 Utilidades.im(ex.getMessage());
             }

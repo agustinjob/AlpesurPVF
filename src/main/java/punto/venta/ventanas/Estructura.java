@@ -333,9 +333,9 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
         try {
             Utilidades.capturaPantalla("ProductosVendidos");
         } catch (AWTException ex) {
-                Utilidades.escribirLog(ex.getLocalizedMessage());
+               
         } catch (IOException ex) {
-                Utilidades.escribirLog(ex.getLocalizedMessage());
+               
         }
     }//GEN-LAST:event_btnCapturaActionPerformed
 
@@ -633,16 +633,16 @@ actualizaciones.setVisible(false);
                 }
             }
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             java.util.logging.Logger.getLogger(Estructura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             java.util.logging.Logger.getLogger(Estructura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             java.util.logging.Logger.getLogger(Estructura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             java.util.logging.Logger.getLogger(Estructura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>

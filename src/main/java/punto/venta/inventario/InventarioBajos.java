@@ -37,7 +37,6 @@ public class InventarioBajos extends javax.swing.JPanel {
         modelo.addColumn("Precio venta");
         modelo.addColumn("Existencia");
         modelo.addColumn("Inventario minimo");
-       obj.setConn(Conexion.conexi.getLocal());
         ResultSet res = obj.productosBajoInventario();
         
         int i = 0;
@@ -65,7 +64,7 @@ public class InventarioBajos extends javax.swing.JPanel {
             }
             }
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
            Utilidades.confirma(confir, "Hubo un error con la conexion a la base de datos");
         }
     }

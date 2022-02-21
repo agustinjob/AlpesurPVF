@@ -24,12 +24,8 @@ public class CorteDAO {
     DateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
     DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
     int idUsuario = UsuarioDAO.getIdUsuario();
-    Connection conn;
+    Connection conn= Conexion.conectarMySQL();
 
-    
-    public void setConn(Connection conn){
-     this.conn=conn;
-     }
 
 
     public String[] getDatosPorDia() {
@@ -112,7 +108,7 @@ public class CorteDAO {
             }
 
         } catch (SQLException e) {
-                  Utilidades.escribirLog(e.getLocalizedMessage());
+               
             System.out.println(e.getLocalizedMessage());
         }
 

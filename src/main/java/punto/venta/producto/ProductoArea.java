@@ -20,32 +20,32 @@ import punto.venta.utilidades.Utilidades;
 public class ProductoArea extends javax.swing.JPanel {
 
     AreaDAO objArea = new AreaDAO();
-    
+
     public ProductoArea() {
         initComponents();
-        objArea.setConn(Conexion.conexi.getLocal());
         llenarCombo();
     }
 
-  public void llenarCombo() {
+    public void llenarCombo() {
 
-       
-           ResultSet areas= objArea.obtenerAreas();
-           if(areas!=null){
-               try {
-                   comboAreas.removeAllItems();
-                   comboAreas.addItem("");
-                   int i = 0;
-                   while (areas.next()) {
-                       comboAreas.addItem(areas.getString(2));
-                       i++;
-                   }  } catch (SQLException ex) {
-                             Utilidades.escribirLog(ex.getLocalizedMessage());
-                   Logger.getLogger(ProductoArea.class.getName()).log(Level.SEVERE, null, ex);
-               }
+        ResultSet areas = objArea.obtenerAreas();
+        if (areas != null) {
+            try {
+                comboAreas.removeAllItems();
+                comboAreas.addItem("");
+                int i = 0;
+                while (areas.next()) {
+                    comboAreas.addItem(areas.getString(2));
+                    i++;
+                }
+            } catch (SQLException ex) {
+               
+                Logger.getLogger(ProductoArea.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
-           }
-  }
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -155,70 +155,41 @@ public class ProductoArea extends javax.swing.JPanel {
 
     private void rformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rformed
 
-        String nombre=txtArea.getText();
-        if(nombre.trim().equalsIgnoreCase("")){
-        Utilidades.mensajePorTiempo("Por favor ingresa la información solicitada");
-        }else{
-          boolean ban=objArea.encontrarAreasPorNombre(nombre);
-          if(ban==true){
-               Utilidades.mensajePorTiempo("Ya existe un área con ese nombre, por favor ingresa uno nuevo");
-          }else{
-            
-                  String estatus="En proceso";
-                  Conexion.getConexiones();
-                  if(Conexion.conexi.isInternet()){
-                      objArea.setConn(Conexion.conexi.getHost());
-                      int res=objArea.guardar(nombre,"Actualizada","Registro");
-                      
-                      if(res>=1){
-                      estatus="Actualizada";
-                      }
-                      
-                      objArea.setConn(Conexion.conexi.getLocal());
-                      objArea.guardar(nombre,estatus,"Registro");
-                      
-                  }else{
-                      objArea.setConn(Conexion.conexi.getLocal());
-                      objArea.guardar(nombre,"En proceso","Registro");
-                  }
-                  Utilidades.mensajePorTiempo("Área registrada con exito");
-                  llenarCombo();
-                  txtArea.setText("");
-           
-}
+        String nombre = txtArea.getText();
+        if (nombre.trim().equalsIgnoreCase("")) {
+            Utilidades.mensajePorTiempo("Por favor ingresa la información solicitada");
+        } else {
+            boolean ban = objArea.encontrarAreasPorNombre(nombre);
+            if (ban == true) {
+                Utilidades.mensajePorTiempo("Ya existe un área con ese nombre, por favor ingresa uno nuevo");
+            } else {
+
+                int res = objArea.guardar(nombre, "Actualizada", "Registro");
+
+                Utilidades.mensajePorTiempo("Área registrada con exito");
+                llenarCombo();
+                txtArea.setText("");
+
+            }
         }
     }//GEN-LAST:event_rformed
 
     private void comboAreasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboAreasActionPerformed
-     
+
     }//GEN-LAST:event_comboAreasActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-     String nombre= (String)comboAreas.getSelectedItem();
-          if(nombre.trim().equalsIgnoreCase("")){
-                Utilidades.mensajePorTiempo("Por favor ingresa la información solicitada");
-          }    else{
-       
-             String estatus="En proceso";
-             Conexion.getConexiones();
-             if(Conexion.conexi.isInternet()){
-                 objArea.setConn(Conexion.conexi.getHost());
-                 int num=objArea.eliminar(nombre,"Actualizada","Eliminacion");
-                 if(num==1){
-                 estatus="Actualizada";
-                 }
-                 
-                 objArea.setConn(Conexion.conexi.getLocal());
-                 objArea.eliminar(nombre,estatus,"Eliminacion");
-                 
-             }else{
-                 objArea.setConn(Conexion.conexi.getLocal());
-                 objArea.eliminar(nombre,"En proceso","Eliminacion");
-             }
-             Utilidades.mensajePorTiempo("Área eliminada con exito");
-             llenarCombo();
-     
-          }
+        String nombre = (String) comboAreas.getSelectedItem();
+        if (nombre.trim().equalsIgnoreCase("")) {
+            Utilidades.mensajePorTiempo("Por favor ingresa la información solicitada");
+        } else {
+
+            String estatus = "En proceso";
+            int num = objArea.eliminar(nombre, "Actualizada", "Eliminacion");
+            Utilidades.mensajePorTiempo("Área eliminada con exito");
+            llenarCombo();
+
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
 

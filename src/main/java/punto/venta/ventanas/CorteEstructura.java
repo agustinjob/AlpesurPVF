@@ -48,8 +48,6 @@ public class CorteEstructura extends javax.swing.JPanel {
         ImageIcon entrada = new ImageIcon("iconos/entradas_dinero.png");
         ImageIcon salida = new ImageIcon("iconos/salida.png");
         ImageIcon ventaTotal = new ImageIcon("iconos/ventas_totales.png");
-        corted.setConn(Conexion.conectarMySQL());
-        mv.setConn(Conexion.conectarMySQL());
         ImageIcon gananciaTotal = new ImageIcon("iconos/ganacias.png");
         txtEntrada.setIcon(entrada);
         txtSalida.setIcon(salida);
@@ -417,16 +415,16 @@ hacerCorte();
                         tablaSalidas.setModel(modelo);
                     }
                 } catch (SQLException ex) {
-                          Utilidades.escribirLog(ex.getLocalizedMessage());
+                         
                     Logger.getLogger(CorteEstructura.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             }
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Logger.getLogger(CorteEstructura.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
            System.out.println(ex.getLocalizedMessage());
         }
      
@@ -440,7 +438,7 @@ hacerCorte();
                 modelo.removeRow(0);
             }
         } catch (Exception e) {
-                  Utilidades.escribirLog(e.getLocalizedMessage());
+               
             JOptionPane.showMessageDialog(null, "Error al limpiar la tabla.");
         }
     }

@@ -33,7 +33,6 @@ public class ClienteEliminar extends javax.swing.JPanel {
 
     public ClienteEliminar() {
         initComponents();
-        obj.setConn(Conexion.conexi.getLocal());
         llenarCombo();
         AutoCompleteDecorator.decorate(jComboBox1, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
     }
@@ -58,10 +57,10 @@ public class ClienteEliminar extends javax.swing.JPanel {
                 i++;
             }
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Utilidades.confirma(confi, "Hubo un error en el sistema");
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Utilidades.confirma(confi, "Hubo un error con la conexion a la base de datos");
         }
 
@@ -178,18 +177,9 @@ eliminar();
                
               
                     cliente = c.get(i);
-                    Conexion.getConexiones();
-                    if(Conexion.conexi.isInternet()){
-                        obj.setConn(Conexion.conexi.getHost());
+                   
                         x= obj.eliminarDatosCliente(cliente,"Actualizada","Eliminacion");
-                        String estatus=x==0?"En proceso":"Actualizada";
-                        obj.setConn(Conexion.conexi.getLocal());
-                        x= obj.eliminarDatosCliente(cliente,estatus,"Eliminacion");
                         
-                    }else{
-                        obj.setConn(Conexion.conexi.getLocal());
-                        x= obj.eliminarDatosCliente(cliente,"En proceso","Eliminacion");
-                    }
                     llenarCombo();
                     break;
                

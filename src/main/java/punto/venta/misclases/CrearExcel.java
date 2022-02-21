@@ -48,19 +48,16 @@ public class CrearExcel {
     DateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat formatoHora = new SimpleDateFormat("HH mm");
     
-        public CrearExcel(){
-        objP.setConn(Conexion.conexi.getLocal());
-        }
-    
+     
     public  void consultarInventario(){
         try {
             producto=objP.obtenerProductosBusquedaParametrizada();
             
         } catch (ClassNotFoundException ex) {
-                Utilidades.escribirLog(ex.getLocalizedMessage());  
+                 
           Utilidades.confirma( confir ," Ocurrio un error en el sistema");
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
           Utilidades.confirma( confir ," Ocurrio un error con el acceso a la base de datos");
         }
     }

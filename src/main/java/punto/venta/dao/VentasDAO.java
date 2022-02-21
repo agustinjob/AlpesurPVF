@@ -21,36 +21,34 @@ public class VentasDAO {
     DefaultTableModel tm;
    
     Date d = new Date();
-    DateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
-    DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
+    DateFormat formatoFecha;
+    DateFormat formatoHora;
     Confirmacion confir;
     int idUsuario;
-    String fecha;
-    String hora;
+      String fecha,hora;
     BitacoraDAO bita = new BitacoraDAO();
  
-     Connection conn;
-     
-     public void setConn(Connection conn){
-     this.conn=conn;
-     }
-     
+     Connection conn=Conexion.conectarMySQL();
      public VentasDAO(){
-     bita.setConn(Conexion.conexi.getLocal());
+     String datos[]=RestDatos.sendPOST();
+         formatoFecha=new SimpleDateFormat("yyyy-MM-dd");
+     formatoHora=new SimpleDateFormat("HH:mm:ss");
+  
+     
+     if(datos[0].equalsIgnoreCase("")){
+         fecha=formatoFecha.format(d);
+         hora= formatoHora.format(d);
+     }else{
+     fecha=datos[0];
+     hora=datos[1];
+     
      }
      
-     
-     public void asignarFechaYHora(String fecha, String hora) throws IOException{
-         if(fecha.equalsIgnoreCase("")){
-        this.fecha= formatoFecha.format(d);
-        this.hora =formatoHora.format(d);
-         }else{
-         
-         this.fecha=fecha;
-         this.hora=hora;
-                 
-         }
      }
+
+     
+     
+ 
      
  
     public String registrarVenta(DefaultTableModel md, int tipoCompra,String idCliente, String realizadaEn,String estatus, String operacion, int numTic) throws ClassNotFoundException, SQLException {
@@ -97,14 +95,14 @@ public class VentasDAO {
              return "Venta registrada con exito";
            
         } catch (SQLException e) {
-                  Utilidades.escribirLog(e.getLocalizedMessage());
+               
       
             System.out.println(e.getLocalizedMessage());
             if (conn != null) {
                 try {
                     conn.rollback();
                 } catch (SQLException ex) {
-                          Utilidades.escribirLog(ex.getLocalizedMessage());
+                         
                     System.out.println(ex.toString());
                 }
             }
@@ -128,7 +126,7 @@ public class VentasDAO {
        cantidad = Double.parseDouble(datos.getString("cantidad"));
        }
          }catch (Exception e) {
-      Utilidades.escribirLog(e.getLocalizedMessage());
+   
         }
          
          return cantidad;
@@ -157,7 +155,7 @@ public class VentasDAO {
             datos = s.executeQuery(sql);
        
         } catch (Exception e) {
-      Utilidades.escribirLog(e.getLocalizedMessage());
+   
         }
 
         return datos;
@@ -174,7 +172,7 @@ public class VentasDAO {
             datos = s.executeQuery(sql);
         
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             System.out.println(ex.getLocalizedMessage());
         }
 
@@ -194,7 +192,7 @@ public class VentasDAO {
             datos = s.executeQuery(sql);
 
         } catch (Exception e) {
-      Utilidades.escribirLog(e.getLocalizedMessage());
+   
         }
 
         return datos;
@@ -212,7 +210,7 @@ public class VentasDAO {
             datos = s.executeQuery(sql);
      
         } catch (Exception e) {
-      Utilidades.escribirLog(e.getLocalizedMessage());
+   
         }
 
         return datos;
@@ -230,7 +228,7 @@ public class VentasDAO {
             datos = s.executeQuery(sql);
        
         } catch (Exception e) {
-      Utilidades.escribirLog(e.getLocalizedMessage());
+   
         }
 
         return datos;
@@ -262,7 +260,7 @@ public class VentasDAO {
             return Double.parseDouble(d1) + Double.parseDouble(d2);
 
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             System.out.println(ex.getLocalizedMessage());
         } 
         return 0;
@@ -281,7 +279,7 @@ public class VentasDAO {
             datos = s.executeQuery(sql);
         
         } catch (Exception e) {
-      Utilidades.escribirLog(e.getLocalizedMessage());
+   
         }
 
         return datos;
@@ -302,7 +300,7 @@ public class VentasDAO {
             //   sql2="SELECT SUM(monto) as devoluciones, (ELT(WEEKDAY(fecha) + 1, 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes','Sabado', 'Domingo')) AS DIA_SEMANA FROM Movimientos_extras WHERE WEEKOFYEAR(fecha)=WEEKOFYEAR(NOW()) and tipo = 'devolución' group by fecha order by fecha";
 
         } catch (SQLException ex) {
-            Utilidades.escribirLog(ex.getLocalizedMessage());
+           
             Utilidades.confirma(confir, "Hubo un error la conexión a la base de datos");
         }
 

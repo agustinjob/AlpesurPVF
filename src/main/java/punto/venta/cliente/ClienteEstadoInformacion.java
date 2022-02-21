@@ -44,8 +44,6 @@ public class ClienteEstadoInformacion extends javax.swing.JPanel {
         initComponents();
         ImageIcon abo = new ImageIcon("iconos/oro.png");
         ImageIcon liq = new ImageIcon("iconos/ticket.png");
-        objCliente.setConn(Conexion.conexi.getLocal());
-        
         btnAbonar.setIcon(abo);
         btnLiquidar.setIcon(liq);
         comboLiquidadas.setVisible(false);
@@ -84,7 +82,7 @@ public class ClienteEstadoInformacion extends javax.swing.JPanel {
             }   
         
         } catch (SQLException ex) {
-                 Utilidades.escribirLog(ex.getLocalizedMessage());
+                
            Utilidades.mensajePorTiempo("Hubo un error con la conexión a la base de datos");
         }
     }
@@ -99,7 +97,7 @@ public class ClienteEstadoInformacion extends javax.swing.JPanel {
                 modelo.removeRow(0);
             }
         } catch (Exception e) {
-                  Utilidades.escribirLog(e.getLocalizedMessage());
+               
             Utilidades.mensajePorTiempo("Error al limpiar la tabla");
         }
     }
@@ -122,7 +120,7 @@ public class ClienteEstadoInformacion extends javax.swing.JPanel {
                 
            cre.setMonto(total);
             } catch (SQLException ex) {
-                      Utilidades.escribirLog(ex.getLocalizedMessage());
+                     
                 Utilidades.mensajePorTiempo("Hubo un error en la conexión a la base de datos");
             }
         }
@@ -430,7 +428,7 @@ public class ClienteEstadoInformacion extends javax.swing.JPanel {
                
            cre.setMonto(total);
             } catch (SQLException ex) {
-                      Utilidades.escribirLog(ex.getLocalizedMessage());
+                     
                 Utilidades.mensajePorTiempo("Hubo un error en la conexión a la base de datos");
             }
         }

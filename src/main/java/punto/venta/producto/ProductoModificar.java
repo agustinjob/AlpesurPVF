@@ -39,8 +39,6 @@ public class ProductoModificar extends javax.swing.JPanel {
     public ProductoModificar() {
         initComponents();
         formulario.setVisible(false);
-        obj.setConn(Conexion.conexi.getLocal());
-        objArea.setConn(Conexion.conexi.getLocal());
         llenarCombo();  
         AutoCompleteDecorator.decorate(comboProductos, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
     }
@@ -70,10 +68,10 @@ public class ProductoModificar extends javax.swing.JPanel {
             i++;
         }
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Logger.getLogger(ProductoModificar.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             mensaje("Hubo un problema con la base de datos");
            
            
@@ -446,7 +444,7 @@ guardar();
                 prod.setpDistribuidor(Double.parseDouble(a[8]));
                 banLimpiar=true;
             }catch(NumberFormatException e){
-                      Utilidades.escribirLog(e.getLocalizedMessage());
+                   
                   mensaje("Por favor ingresa el tipo de dato que se te solicita para dar de alta el producto");
                   Timer timer = new Timer(1000, new ActionListener(){
                 @Override
@@ -466,20 +464,8 @@ guardar();
             if(banLimpiar==true){
            
                     String x="";
-                    Conexion.getConexiones();
                     String estatus="Actualizada";
-                    if(Conexion.conexi.isInternet()){
-                        obj.setConn(Conexion.conexi.getHost());
                         x=obj.modificarDatosProducto(prod, prod,"Actualizada","Modificacion");
-                        if(!x.equalsIgnoreCase("Datos del producto modificados")){
-                            estatus="En proceso";
-                        }
-                        obj.setConn(Conexion.conexi.getLocal());
-                        x=obj.modificarDatosProducto(prod, prod,"Actualizada","Modificacion");
-                    }else{
-                        obj.setConn(Conexion.conexi.getLocal());
-                        x=obj.modificarDatosProducto(prod, prod,"En proceso","Modificacion");
-                    }
                     
                     
                     if(x.equalsIgnoreCase("Datos del producto modificados")){
@@ -575,7 +561,7 @@ guardar();
                 }
                 
        } catch (SQLException ex) {
-                 Utilidades.escribirLog(ex.getLocalizedMessage());
+                
             Logger.getLogger(ProductoModificar.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

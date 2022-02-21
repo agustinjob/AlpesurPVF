@@ -38,7 +38,6 @@ public class ClienteModificar extends javax.swing.JPanel {
     public ClienteModificar() {
         initComponents();
         formulario.setVisible(false);
-        obj.setConn(Conexion.conexi.getLocal());
         llenarCombo();
         ImageIcon check = new ImageIcon("iconos/check.png");
         btnModificar.setIcon(check);
@@ -69,10 +68,10 @@ public class ClienteModificar extends javax.swing.JPanel {
                 i++;
             }
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
            mensaje("Hubo un error en el sistema");
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             mensaje("Hubo un error con la conexion a la base de datos");
         }
 
@@ -442,20 +441,10 @@ public class ClienteModificar extends javax.swing.JPanel {
             Double.parseDouble(a[3]);
             
              
-                    Conexion.getConexiones();
-              
-            if(Conexion.conexi.isInternet()){
-              obj.setConn(Conexion.conexi.getHost());
+                 
               ban=obj.modificarDatosCliente(cliente,clienteTemporal,"Actualizada","Modificacion");
               String estatus=ban>=1?"Realizada":"En proceso";
-              obj.setConn(Conexion.conexi.getLocal());
-              ban=obj.modificarDatosCliente(cliente,clienteTemporal,estatus,"Modificacion");
-           
-            }else{
-                 obj.setConn(Conexion.conexi.getLocal());
-                 ban=obj.modificarDatosCliente(cliente,clienteTemporal,"En proceso","Modificacion");
-            
-            }
+                         
           
            if(ban>0){
             formulario.setVisible(false);
@@ -498,7 +487,7 @@ public class ClienteModificar extends javax.swing.JPanel {
            }
          
            }catch(NumberFormatException e){
-                     Utilidades.escribirLog(e.getLocalizedMessage());
+                  
            mensaje("Por favor revisa los datos ingresados");
             Timer timer = new Timer(1000, new ActionListener(){
                 @Override

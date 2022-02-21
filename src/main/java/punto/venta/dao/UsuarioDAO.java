@@ -38,17 +38,11 @@ public class UsuarioDAO {
      static String hora;
      static String fecha;
 
-     Connection conn;
+     Connection conn= Conexion.conectarMySQL();
   
      BitacoraDAO bita = new BitacoraDAO();
     Confirmacion confir;
-    
-   public UsuarioDAO(){
-     bita.setConn(Conexion.conexi.getLocal());
-     }
-     public void setConn(Connection conn){
-     this.conn=conn;
-     }
+
      
     public String almacena( String [] a, String estatus, String operacion)  {
     
@@ -69,11 +63,11 @@ public class UsuarioDAO {
             }
         } catch (SQLException ex) {
             Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             return "Error en la base de datos";
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
              return "Error en la base de datos";
         }
         
@@ -103,7 +97,7 @@ public class UsuarioDAO {
             }
            
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Utilidades.confirma(confir, "Hubo un error en la base de datos");
         }
         
@@ -165,10 +159,10 @@ public class UsuarioDAO {
            bita.registrarBitacora(mensajeBita);
            return "Datos del usuario modificados correctamente";
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
            return "Error en el sistema";
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             return "Error en la base de datos";
         }
        
@@ -185,7 +179,7 @@ public class UsuarioDAO {
             int rs = s.executeUpdate("UPDATE `usuario` SET fecha='"+formatoFecha.format(d)+"', hora = '"+formatoHora.format(d)+"' , enSesion = true WHERE idUsuario = "+ idUsuario);
         
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -200,10 +194,10 @@ public class UsuarioDAO {
             bita.registrarBitacora(mensajeBita);
             return "Datos del usuario eliminados correctamente";
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
           return "Hubo un error en el sistema";
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
            return "Hubo un error con la conexion a la base de datos";
         }
         

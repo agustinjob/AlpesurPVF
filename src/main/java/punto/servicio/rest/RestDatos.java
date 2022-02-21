@@ -24,8 +24,9 @@ import org.json.JSONObject;
  */
 public class RestDatos {
     
-    public static String[] sendPOST() throws UnsupportedEncodingException, IOException  {
+    public static String[] sendPOST()  {
 
+        try {
             String result = "";
             HttpPost post = new HttpPost("http://193.46.199.155/servicioweb/dataservice.php?tipo=datosfecha");
             
@@ -47,25 +48,30 @@ public class RestDatos {
             // post.setEntity(new StringEntity(json.toString()));
             post.setEntity(new StringEntity(json.toString()));
             
-           CloseableHttpClient httpClient = HttpClients.createDefault();
-                    CloseableHttpResponse response = httpClient.execute(post);
-                  String fechaHora[]= new String[2];
-                result = EntityUtils.toString(response.getEntity());
-                if(!result.contains("Not Found")){
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            CloseableHttpResponse response = httpClient.execute(post);
+            String fechaHora[]= new String[2];
+            result = EntityUtils.toString(response.getEntity());
+            if(!result.contains("Not Found")){
                 JSONObject jsonObject = new JSONObject(result);
-             
-               fechaHora[0]= (String) jsonObject.get("fecha");
-               fechaHora[1]= (String) jsonObject.get("hora");
-                }else{
-                      fechaHora[0]= "";
-               fechaHora[1]="";
-                }
-               
-               
-       
+                
+                fechaHora[0]= (String) jsonObject.get("fecha");
+                fechaHora[1]= (String) jsonObject.get("hora");
+            }else{
+                fechaHora[0]= "";
+                fechaHora[1]="";
+            }
+            
+            
+            
             
             return fechaHora;
-            
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(RestDatos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(RestDatos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            return new String[2];
     }
     
     

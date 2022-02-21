@@ -30,7 +30,6 @@ public class EfectivoInicial extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Efectivo inicial");
-        obj.setConn(Conexion.conexi.getLocal());
         ImageIcon bille = new ImageIcon("iconos/billetes.png");
         btnRegistrar.setIcon(bille);
         
@@ -163,14 +162,14 @@ public class EfectivoInicial extends javax.swing.JFrame {
             obj.setVisible(true);
             dispose();
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Utilidades.mensajePorTiempo("Hubo un error con el sistema");
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
            Utilidades.mensajePorTiempo("Hubo un error con la conexion a la base de datos");
             System.out.println(ex.getLocalizedMessage() + "Error en registroEfectivoInicial");
         } catch (NumberFormatException e) {
-                  Utilidades.escribirLog(e.getLocalizedMessage());
+               
          Utilidades.mensajePorTiempo("Debes ingresar un valor correcto");
         }
     }

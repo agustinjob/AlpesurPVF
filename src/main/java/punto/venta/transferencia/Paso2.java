@@ -132,39 +132,34 @@ public class Paso2 extends javax.swing.JPanel {
         tablaSeleccionados.setColumnSelectionAllowed(false);
     }
 
-    public void limpiarTabla(){
-    int filas = md.getRowCount();
-     for (int i = 0; filas > i; i++) {
-                md.removeRow(0);
-            }
-    }
-    public void llenarTabla() {
-limpiarTabla();
-        Conexion.getConexiones();
-        if (!Conexion.conexi.isInternet()) {
-            Utilidades.mensajePorTiempo("Por favor revisa tu conexión a internet, no es posible obtener los datos en este momento");
-        } else {
-            sucursales.setConn(Conexion.conexi.getLocal());
-
-            try {
-                ResultSet res = sucursales.obtenerProductosPorSucursal();
-                res.last();
-                if (res.getRow() != 0) {
-                    res.beforeFirst();
-                    String datos[] = new String[4];
-                    while (res.next()) {
-                        datos[0] = res.getString("codigo");
-                        datos[1] = res.getString("descripcion");
-                        datos[2] = res.getString("cantidad");
-                        datos[3] = res.getString("precioCosto");
-                        md.addRow(datos);
-                    }
-                }
-            } catch (SQLException ex) {
-                      Utilidades.escribirLog(ex.getLocalizedMessage());
-                Logger.getLogger(Paso1.class.getName()).log(Level.SEVERE, null, ex);
-            }
+    public void limpiarTabla() {
+        int filas = md.getRowCount();
+        for (int i = 0; filas > i; i++) {
+            md.removeRow(0);
         }
+    }
+
+    public void llenarTabla() {
+        limpiarTabla();
+        try {
+            ResultSet res = sucursales.obtenerProductosPorSucursal();
+            res.last();
+            if (res.getRow() != 0) {
+                res.beforeFirst();
+                String datos[] = new String[4];
+                while (res.next()) {
+                    datos[0] = res.getString("codigo");
+                    datos[1] = res.getString("descripcion");
+                    datos[2] = res.getString("cantidad");
+                    datos[3] = res.getString("precioCosto");
+                    md.addRow(datos);
+                }
+            }
+        } catch (SQLException ex) {
+           
+            Logger.getLogger(Paso1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     public void setTrans(TransferenciaProductos trans) {
@@ -361,69 +356,64 @@ limpiarTabla();
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //llenar datos en el modelo
         trans.setMd((DefaultTableModel) tablaSeleccionados.getModel());
-        
-        int total= tablaSeleccionados.getRowCount();
-        boolean permitirTermino=true;
-        if(total>0){
-            int i=0;
-            while(i<total){
-                 double inv=0.0d;
-                 double can=0.0d;
-                try{
-           inv=Double.parseDouble((String)tablaSeleccionados.getValueAt(i, 2));
-           can=Double.parseDouble((String)tablaSeleccionados.getValueAt(i, 3));
-                }catch(Exception e){
-                          Utilidades.escribirLog(e.getLocalizedMessage());
+
+        int total = tablaSeleccionados.getRowCount();
+        boolean permitirTermino = true;
+        if (total > 0) {
+            int i = 0;
+            while (i < total) {
+                double inv = 0.0d;
+                double can = 0.0d;
+                try {
+                    inv = Double.parseDouble((String) tablaSeleccionados.getValueAt(i, 2));
+                    can = Double.parseDouble((String) tablaSeleccionados.getValueAt(i, 3));
+                } catch (Exception e) {
+                 
                     System.out.println(e.getLocalizedMessage());
-                permitirTermino=false;
+                    permitirTermino = false;
                 }
-           
-           if(can>inv){
-           permitirTermino=false;
-           break;
-           }
-           
+
+                if (can > inv) {
+                    permitirTermino = false;
+                    break;
+                }
+
                 i++;
             }
-            if(permitirTermino==true){
-                 Conexion.getConexiones();
-        sucursales.setConn(Conexion.conexi.getHost());
-        String mensaje = sucursales.realizarTraspaso(trans);
-        Utilidades.mensajePorTiempo(mensaje);
-        limpiarSeleccionados();
-        if(mensaje.equalsIgnoreCase("La transferencia se realizado correctamente")){
-           ActualizacionDAO act= new ActualizacionDAO();
-           act.setConnHost(Conexion.conexi.getHost());
-           act.setConnLocal(Conexion.conexi.getLocal());
-           act.buscarNubeProductosModificacionesEliminaciones();
-           regresar(); 
-        }
-            }else{
-            Utilidades.mensajePorTiempo("Por favor revisa tu información ingresada, recuerde que la cantidad no debe superar lo que se tiene en inventario");
+            if (permitirTermino == true) {
+                String mensaje = sucursales.realizarTraspaso(trans);
+                Utilidades.mensajePorTiempo(mensaje);
+                limpiarSeleccionados();
+                if (mensaje.equalsIgnoreCase("La transferencia se realizado correctamente")) {
+                    ActualizacionDAO act = new ActualizacionDAO();
+                    act.buscarNubeProductosModificacionesEliminaciones();
+                    regresar();
+                }
+            } else {
+                Utilidades.mensajePorTiempo("Por favor revisa tu información ingresada, recuerde que la cantidad no debe superar lo que se tiene en inventario");
             }
-        }else{
-        Utilidades.mensajePorTiempo("Tienes que seleccionar por lo menos un producto");
+        } else {
+            Utilidades.mensajePorTiempo("Tienes que seleccionar por lo menos un producto");
         }
-        
-   
+
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
-public void limpiarSeleccionados(){
+    public void limpiarSeleccionados() {
 
-    for(int i=0;i<mdSeleccionados.getRowCount();i++){
-    mdSeleccionados.removeRow(i);
+        for (int i = 0; i < mdSeleccionados.getRowCount(); i++) {
+            mdSeleccionados.removeRow(i);
+        }
     }
-}
 
-public void regresar(){
+    public void regresar() {
         this.setVisible(false);
         TransferenciaEstructura.transferencia.getContenedor().add(TransferenciaEstructura.transferencia.getPaso1());
         TransferenciaEstructura.transferencia.getPaso1().setVisible(true);
-}
+    }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       
-regresar();
+
+        regresar();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -475,50 +465,44 @@ regresar();
     }
 
     public void agregarDesdeTablaExterna(String nombre) {
-        Conexion.getConexiones();
-        if (!Conexion.conexi.isInternet()) {
-            Utilidades.mensajePorTiempo("Por favor revisa tu conexión a internet, no es posible obtener los datos en este momento");
+        nombre = nombre.trim();
+        if (nombre.equalsIgnoreCase("")) {
+            Utilidades.mensajePorTiempo("Por favor ingresa el nombre del producto");
         } else {
-            sucursales.setConn(Conexion.conexi.getLocal());
-            nombre = nombre.trim();
-            if (nombre.equalsIgnoreCase("")) {
-                Utilidades.mensajePorTiempo("Por favor ingresa el nombre del producto");
-            } else {
-                try {
-                    ResultSet producto = sucursales.obtenerProductoPorNombre(nombre);
-                    producto.last();
-                    if (producto.getRow() != 0) {
-                        producto.beforeFirst();
-                        producto.next();
-                        double can = Double.parseDouble(producto.getString("cantidad"));
-                        if (can > 0) {
-                            String pro[] = new String[5];
-                            pro[0] = producto.getString("codigo");
-                            pro[1] = producto.getString("descripcion");
-                            pro[2] = "" + can;
-                            pro[3] = "";
-                            pro[4] = producto.getString("precioCosto");
-                            String res = buscarCodigoEnTabla(pro[0]);
+            try {
+                ResultSet producto = sucursales.obtenerProductoPorNombre(nombre);
+                producto.last();
+                if (producto.getRow() != 0) {
+                    producto.beforeFirst();
+                    producto.next();
+                    double can = Double.parseDouble(producto.getString("cantidad"));
+                    if (can > 0) {
+                        String pro[] = new String[5];
+                        pro[0] = producto.getString("codigo");
+                        pro[1] = producto.getString("descripcion");
+                        pro[2] = "" + can;
+                        pro[3] = "";
+                        pro[4] = producto.getString("precioCosto");
+                        String res = buscarCodigoEnTabla(pro[0]);
 
-                            if (res.equalsIgnoreCase("correcto")) {
-                                mdSeleccionados.addRow(pro);
-                                Utilidades.mensajePorTiempo("El producto ha sido agregado correctamente");
-                            } else {
-                                Utilidades.mensajePorTiempo(res);
-                            }
+                        if (res.equalsIgnoreCase("correcto")) {
+                            mdSeleccionados.addRow(pro);
+                            Utilidades.mensajePorTiempo("El producto ha sido agregado correctamente");
                         } else {
-                            Utilidades.mensajePorTiempo("No tienes inventario en ese producto");
+                            Utilidades.mensajePorTiempo(res);
                         }
                     } else {
-                        Utilidades.mensajePorTiempo("Producto no encontrado");
+                        Utilidades.mensajePorTiempo("No tienes inventario en ese producto");
                     }
-
-                } catch (SQLException ex) {
-                          Utilidades.escribirLog(ex.getLocalizedMessage());
-                    Logger.getLogger(Paso2.class.getName()).log(Level.SEVERE, null, ex);
+                } else {
+                    Utilidades.mensajePorTiempo("Producto no encontrado");
                 }
 
+            } catch (SQLException ex) {
+               
+                Logger.getLogger(Paso2.class.getName()).log(Level.SEVERE, null, ex);
             }
+
         }
 
     }

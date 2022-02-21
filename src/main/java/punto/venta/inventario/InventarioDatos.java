@@ -38,7 +38,6 @@ public class InventarioDatos extends javax.swing.JPanel {
         ImageIcon excel = new ImageIcon("iconos/excel.png");
         txtBilletes.setIcon(billetes);
         btnInventarioExcel.setIcon(excel);
-        p.setConn(Conexion.conexi.getLocal());
         llenarTabla();
     }
 
@@ -98,7 +97,7 @@ public class InventarioDatos extends javax.swing.JPanel {
                 }
             }
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             mensaje( "Hubo un error con la conexion a la base de datos");
         }
 

@@ -105,8 +105,7 @@ public class TicketDevolverTodo extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         TicketDAO ti = new TicketDAO();
-        Conexion.getConexiones();
-        ti.setConn(Conexion.conexi.getLocal());
+
         ti.eliminarVentasDeTicket(idTicket,fecha,hora);
         this.dispose();
              dev.dispose();

@@ -315,10 +315,7 @@ public class EstructuraActualizaciones extends javax.swing.JPanel {
       
         ActualizacionesNecesarias acNe = new ActualizacionesNecesarias();
         try {
-            Conexion.getConexiones();
-            actu.setConnHost(Conexion.conexi.getHost());
-            actu.setConnLocal(Conexion.conexi.getLocal());
-
+  
             acNe = actu.buscarActualizaciones();
             if (acNe != null) {
                 productosDes.setText(acNe.getProductosDes());
@@ -332,15 +329,12 @@ public class EstructuraActualizaciones extends javax.swing.JPanel {
                 ventasSub.setText(acNe.getVentasSub());
             }
         } catch (Exception e) {
-      Utilidades.escribirLog(e.getLocalizedMessage());
+   
         }
       
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Conexion.getConexiones();
-        actu.setConnHost(Conexion.conexi.getHost());
-        actu.setConnLocal(Conexion.conexi.getLocal());
 
         res = actu.buscarNubeProductosRegistro();
         res2 = actu.buscarNubeProductosModificacionesEliminaciones();
@@ -352,9 +346,7 @@ public class EstructuraActualizaciones extends javax.swing.JPanel {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
    
-        Conexion.getConexiones();
-        actu.setConnHost(Conexion.conexi.getLocal());
-        actu.setConnLocal(Conexion.conexi.getHost());
+  
 
         res = actu.buscarNubeProductosRegistro();
         res2 = actu.buscarNubeProductosModificacionesEliminaciones();
@@ -365,9 +357,6 @@ public class EstructuraActualizaciones extends javax.swing.JPanel {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-        Conexion.getConexiones();
-        actu.setConnHost(Conexion.conexi.getHost());
-        actu.setConnLocal(Conexion.conexi.getLocal());
 
         res=actu.buscarNubeUsuarioRegistro();
         res2=actu.buscarUsuarioModificacionesEliminaciones();
@@ -379,10 +368,7 @@ public class EstructuraActualizaciones extends javax.swing.JPanel {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
        
-        Conexion.getConexiones();
-        actu.setConnHost(Conexion.conexi.getLocal());
-        actu.setConnLocal(Conexion.conexi.getHost());
-
+  
        res= actu.buscarNubeUsuarioRegistro();
         res2= actu.buscarUsuarioModificacionesEliminaciones();
         
@@ -392,10 +378,7 @@ public class EstructuraActualizaciones extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-      
-        Conexion.getConexiones();
-        actu.setConnHost(Conexion.conexi.getHost());
-        actu.setConnLocal(Conexion.conexi.getLocal());
+     
 
        res= actu.buscarNubeClienteRegistro();
        res2=actu.buscarClienteModificacionesEliminaciones();
@@ -407,9 +390,7 @@ public class EstructuraActualizaciones extends javax.swing.JPanel {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
 
-        Conexion.getConexiones();
-        actu.setConnHost(Conexion.conexi.getLocal());
-        actu.setConnLocal(Conexion.conexi.getHost());
+  
 
        res= actu.buscarNubeClienteRegistro();
        res2=actu.buscarClienteModificacionesEliminaciones();
@@ -420,9 +401,7 @@ public class EstructuraActualizaciones extends javax.swing.JPanel {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
       
-        Conexion.getConexiones();
-        actu.setConnHost(Conexion.conexi.getHost());
-        actu.setConnLocal(Conexion.conexi.getLocal());
+   
 
        res= actu.buscarNubeAreaRegistro();
        res2=actu.buscarNubeAreaModificacionesEliminaciones();
@@ -433,10 +412,7 @@ public class EstructuraActualizaciones extends javax.swing.JPanel {
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
        
-        Conexion.getConexiones();
-        actu.setConnHost(Conexion.conexi.getLocal());
-        actu.setConnLocal(Conexion.conexi.getHost());
-
+ 
        res= actu.buscarNubeAreaRegistro();
         res2=actu.buscarNubeAreaModificacionesEliminaciones();
         
@@ -446,10 +422,6 @@ public class EstructuraActualizaciones extends javax.swing.JPanel {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
       
-        Conexion.getConexiones();
-        actu.setConnHost(Conexion.conexi.getHost());
-        actu.setConnLocal(Conexion.conexi.getLocal());
-
         res= actu.buscarNubeVentasRegistro();
     
         Utilidades.mensajePorTiempo(res);

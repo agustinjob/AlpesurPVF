@@ -150,7 +150,7 @@ public class ActualizacionDAO {
 
             return obj;
         } catch (SQLException ex) {
-                Utilidades.escribirLog(ex.getLocalizedMessage());
+               
           System.out.println(ex.getLocalizedMessage());
         }
         return null;
@@ -185,7 +185,7 @@ public class ActualizacionDAO {
             }
         } catch (SQLException ex) {
             System.out.println(ex.getLocalizedMessage());
-            Utilidades.escribirLog(ex.getLocalizedMessage());
+           
             try {
                 connLocal.rollback();
                 connHost.rollback();
@@ -222,7 +222,7 @@ public class ActualizacionDAO {
             }
 
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             try {
                 connLocal.rollback();
                 connHost.rollback();
@@ -258,7 +258,7 @@ public class ActualizacionDAO {
                     connHost.commit();
             }
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             System.out.println(ex.getLocalizedMessage());
             try {
                 connLocal.rollback();
@@ -296,7 +296,7 @@ public class ActualizacionDAO {
             }
 
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             try {
                 connLocal.rollback();
                 connHost.rollback();
@@ -334,7 +334,7 @@ public class ActualizacionDAO {
                     connHost.commit();
             }
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             System.out.println(ex.getLocalizedMessage());
             try {
                 connLocal.rollback();
@@ -372,7 +372,7 @@ public class ActualizacionDAO {
             }
 
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             try {
                 connLocal.rollback();
                 connHost.rollback();
@@ -413,7 +413,7 @@ public class ActualizacionDAO {
             }
 
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             System.out.println(ex.getLocalizedMessage());
             try {
                 connLocal.rollback();
@@ -452,7 +452,7 @@ public class ActualizacionDAO {
             }
 
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             System.out.println(ex.getLocalizedMessage());
             try {
                 connLocal.rollback();
@@ -492,7 +492,7 @@ public class ActualizacionDAO {
             }
 
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             try {
                 connLocal.rollback();
                 connHost.rollback();
@@ -535,7 +535,7 @@ public class ActualizacionDAO {
             }
 
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             System.out.println(ex.getLocalizedMessage());
             try {
                 connLocal.rollback();

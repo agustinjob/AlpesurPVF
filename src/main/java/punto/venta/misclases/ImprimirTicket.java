@@ -58,10 +58,7 @@ public class ImprimirTicket {
                  
          }
      }
- public ImprimirTicket(){
- ticket.setConn(Conexion.conectarMySQL());
- configuracion.setConn(Conexion.conectarMySQL());
- }
+
     public void imprimirTicket(String prueba)  {
         try {
             String[] d= recuperarDatos();
@@ -93,10 +90,10 @@ public class ImprimirTicket {
 //Envio a la impresora
             printJob.print(document, new HashPrintRequestAttributeSet());
         } catch (PrintException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
            JOptionPane.showMessageDialog(null, "Hubo un problema con tu impresora, el ticket no se imprimirá, pero la venta si será registrada");
         } catch(ArrayIndexOutOfBoundsException ex){
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
           JOptionPane.showMessageDialog(null, "Hubo un problema con tu impresora, el ticket no se imprimirá, pero la venta si será registrada");
         }
         
@@ -118,10 +115,10 @@ public class ImprimirTicket {
             System.out.println("ESTE ES EL RECUPERAR DATOOS " + a[0] + " " + a[2]);
          
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
         }
         
@@ -235,7 +232,7 @@ public class ImprimirTicket {
          System.out.println(titulo);
          return titulo;
      } catch (SQLException ex) {
-               Utilidades.escribirLog(ex.getLocalizedMessage());
+              
          Logger.getLogger(ImprimirTicket.class.getName()).log(Level.SEVERE, null, ex);
      }
      return "";

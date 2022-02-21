@@ -62,8 +62,7 @@ public class BusquedaProductos extends javax.swing.JFrame {
         ImageIcon eliminar = new ImageIcon("iconos/bote_basura.png");
            ImageIcon registrar = new ImageIcon("iconos/check.png");
         ImageIcon salir = new ImageIcon("iconos/cancelar.png");
-        producto.setConn(Conexion.conexi.getLocal());
-        usu.setConn(Conexion.conexi.getLocal());
+
         texto.requestFocus();
         jButton3.setIcon(registrar);
         jButton1.setIcon(modificar);
@@ -383,7 +382,7 @@ public void agregarEnTablaVentas(){
        }
        
        } catch (SQLException ex) {
-                 Utilidades.escribirLog(ex.getLocalizedMessage());
+                
            Logger.getLogger(BusquedaProductos.class.getName()).log(Level.SEVERE, null, ex);
        }
 }

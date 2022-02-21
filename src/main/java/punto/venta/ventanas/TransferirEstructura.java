@@ -42,7 +42,7 @@ public class TransferirEstructura extends javax.swing.JPanel {
         ImageIcon transformar = new ImageIcon("iconos/inter.png");
         ImageIcon exportarI = new ImageIcon("iconos/exportar.png");
         ImageIcon agregarI = new ImageIcon("iconos/agregar.png");
-         ImageIcon datos = new ImageIcon("iconos/datos.png");
+        ImageIcon datos = new ImageIcon("iconos/datos.png");
         btnBuscarT.setIcon(lupa);
         btnBuscarA.setIcon(lupa);
         btnTransformar.setIcon(transformar);
@@ -50,58 +50,58 @@ public class TransferirEstructura extends javax.swing.JPanel {
         agregar.setIcon(agregarI);
         imagen.setIcon(datos);
         l1.setIcon(a3);
-        obj.setConn(Conexion.conexi.getLocal());
         llenarCombo();
-         AutoCompleteDecorator.decorate(producT, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
-              AutoCompleteDecorator.decorate(producA, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
-    }
-    public void limpiarDatos(){
-     cantidadT.setText("");
-                        agregarT.setText("");
-                        cantidadA.setText("");
-                        agregarA.setText("");
+        AutoCompleteDecorator.decorate(producT, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
+        AutoCompleteDecorator.decorate(producA, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
     }
 
-      public void mensaje(String men){
-    confirma.setMensaje(men);
-    confirma.setVisible(true);
-     Timer timer = new Timer(1100, new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                 confirma.dispose();
-                 producT.requestFocus();
-                }
-                
-            });
-         timer.setRepeats(false);
-            timer.start();
+    public void limpiarDatos() {
+        cantidadT.setText("");
+        agregarT.setText("");
+        cantidadA.setText("");
+        agregarA.setText("");
     }
 
-    public void requerirFoco(){
-    producT.requestFocus();
+    public void mensaje(String men) {
+        confirma.setMensaje(men);
+        confirma.setVisible(true);
+        Timer timer = new Timer(1100, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                confirma.dispose();
+                producT.requestFocus();
+            }
+
+        });
+        timer.setRepeats(false);
+        timer.start();
     }
-    
+
+    public void requerirFoco() {
+        producT.requestFocus();
+    }
+
     public void llenarCombo() {
 
         try {
             p = obj.obtenerProductosSiHuboModificacion(p, true);
             int i = 0;
-             producA.removeAllItems();
-             producT.removeAllItems();
-             producA.addItem("");
-             producT.addItem("");
+            producA.removeAllItems();
+            producT.removeAllItems();
+            producA.addItem("");
+            producT.addItem("");
             while (i < p.size()) {
                 producA.addItem(p.get(i).getNombre());
                 producT.addItem(p.get(i).getNombre());
                 i++;
             }
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+           
             mensaje("Hubo un error en el sistema");
-          
+
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
-             mensaje("Hubo un error con la base de datos");
+           
+            mensaje("Hubo un error con la base de datos");
         }
 
     }
@@ -402,114 +402,102 @@ public class TransferirEstructura extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarAActionPerformed
-       buscarAgregar();
+        buscarAgregar();
     }//GEN-LAST:event_btnBuscarAActionPerformed
-   public void buscarAgregar(){
-     String p2 = (String) producA.getSelectedItem();
-           if(p2.equalsIgnoreCase("")){
-          mensaje("Por favor selecciona un producto y presiona el botón 'Buscar'");
-                    
-           }else{
-        pro2 = obj.getDatosProducto(p2, p);
-        cantidadA.setText(pro2.getCantidad() + "");}
+    public void buscarAgregar() {
+        String p2 = (String) producA.getSelectedItem();
+        if (p2.equalsIgnoreCase("")) {
+            mensaje("Por favor selecciona un producto y presiona el botón 'Buscar'");
+
+        } else {
+            pro2 = obj.getDatosProducto(p2, p);
+            cantidadA.setText(pro2.getCantidad() + "");
+        }
     }
     private void btnBuscarTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarTActionPerformed
-       buscarTransferir();
+        buscarTransferir();
     }//GEN-LAST:event_btnBuscarTActionPerformed
 
-    public void buscarTransferir(){
-     String p1 = (String) producT.getSelectedItem();
-         if(p1.equalsIgnoreCase("")){
-    
-        mensaje("Por favor selecciona un producto y presiona el botón 'Buscar'");
+    public void buscarTransferir() {
+        String p1 = (String) producT.getSelectedItem();
+        if (p1.equalsIgnoreCase("")) {
 
-        }else{
-        pro1 = obj.getDatosProducto(p1, p);
-        cantidadT.setText(pro1.getCantidad() + "");}
+            mensaje("Por favor selecciona un producto y presiona el botón 'Buscar'");
+
+        } else {
+            pro1 = obj.getDatosProducto(p1, p);
+            cantidadT.setText(pro1.getCantidad() + "");
+        }
     }
     private void btnTransformarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransformarActionPerformed
-       transferir();
+        transferir();
     }//GEN-LAST:event_btnTransformarActionPerformed
 
-    public void transferir(){
-     String a[] = new String[4];
+    public void transferir() {
+        String a[] = new String[4];
         a[0] = cantidadT.getText();
         a[1] = cantidadA.getText();
         a[2] = agregarT.getText();
         a[3] = agregarA.getText();
         String p1 = (String) producT.getSelectedItem();
         String p2 = (String) producA.getSelectedItem();
-        if(p1.equalsIgnoreCase("")|| p2.equalsIgnoreCase("")){
-    
-        mensaje("Por favor selecciona un producto y presiona el botón 'Buscar'");
-        }else{
-            if(p1.equalsIgnoreCase(p2)){
-        
-          mensaje( "No puedes transferir al mismo producto");
-            }else{
-        
-        boolean datosC = true;
-            boolean hay = Utilidades.hayVacios(a);
-        if(hay==true){
-          mensaje( "Por favor ingresa todos los datos solicitados");
-        }else{
-            double ct,ca,at,aa; ct = ca = aa = at = 0.0D;
-            try{
-                ct = Double.parseDouble(a[0]);
-                ca = Double.parseDouble(a[1]);
-                aa = Double.parseDouble(a[2]);
-                at = Double.parseDouble(a[3]);
-            }catch(NumberFormatException e){
-             mensaje( "Por favor revisa los datos ingresados");
-                datosC=false;
-            }
-            if(datosC==true){
-                if(ct>aa){
+        if (p1.equalsIgnoreCase("") || p2.equalsIgnoreCase("")) {
+
+            mensaje("Por favor selecciona un producto y presiona el botón 'Buscar'");
+        } else {
+            if (p1.equalsIgnoreCase(p2)) {
+
+                mensaje("No puedes transferir al mismo producto");
+            } else {
+
+                boolean datosC = true;
+                boolean hay = Utilidades.hayVacios(a);
+                if (hay == true) {
+                    mensaje("Por favor ingresa todos los datos solicitados");
+                } else {
+                    double ct, ca, at, aa;
+                    ct = ca = aa = at = 0.0D;
                     try {
-                      String mensa= "";
-                      String estatus="En proceso";
-                      Conexion.getConexiones();
-                      if(Conexion.conexi.isInternet()){
-                          
-                      obj.setConn(Conexion.conexi.getHost());
-                      mensa=obj.transferir(pro1, pro2,aa,at,"Actualizada","Modificacion");
-                      if(mensa.equalsIgnoreCase("Transacción realizada exitosamente")){
-                          estatus="Actualizada";
-                      }
-                      obj.setConn(Conexion.conexi.getLocal());
-                      mensa=obj.transferir(pro1, pro2,aa,at,estatus,"Modificacion");
-                      
-                      }else{
-                      obj.setConn(Conexion.conexi.getLocal());
-                      mensa=obj.transferir(pro1, pro2,aa,at,"En proceso","Modificacion");
-                      }
-                        
-                      mensaje(mensa);
-                        llenarCombo();
-                       limpiarDatos();
-                    } catch (ClassNotFoundException ex) {
-                     mensaje( "Hubo un error en el sistema");
-                    } catch (SQLException ex) {
-                       
+                        ct = Double.parseDouble(a[0]);
+                        ca = Double.parseDouble(a[1]);
+                        aa = Double.parseDouble(a[2]);
+                        at = Double.parseDouble(a[3]);
+                    } catch (NumberFormatException e) {
+                        mensaje("Por favor revisa los datos ingresados");
+                        datosC = false;
                     }
-                }else{
-                 mensaje( "El número de productos a agregar debe ser igual o menor a la cantidad de productos que hay en inventario");
-                }
-            }
+                    if (datosC == true) {
+                        if (ct > aa) {
+                            try {
+                                String mensa = "";
+                                String estatus = "En proceso";
+                                mensa = obj.transferir(pro1, pro2, aa, at, "Actualizada", "Modificacion");
+                                mensaje(mensa);
+                                llenarCombo();
+                                limpiarDatos();
+                            } catch (ClassNotFoundException ex) {
+                                mensaje("Hubo un error en el sistema");
+                            } catch (SQLException ex) {
+
+                            }
+                        } else {
+                            mensaje("El número de productos a agregar debe ser igual o menor a la cantidad de productos que hay en inventario");
+                        }
+                    }
                 }
             }
         }
     }
     private void btnBuscarTKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnBuscarTKeyPressed
-           if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-               buscarTransferir();
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            buscarTransferir();
         }
- 
+
     }//GEN-LAST:event_btnBuscarTKeyPressed
 
     private void btnBuscarAKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnBuscarAKeyPressed
-          if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-               buscarAgregar();
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            buscarAgregar();
         }
     }//GEN-LAST:event_btnBuscarAKeyPressed
 

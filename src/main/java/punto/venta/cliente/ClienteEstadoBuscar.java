@@ -33,7 +33,6 @@ public class ClienteEstadoBuscar extends javax.swing.JPanel {
 
     public ClienteEstadoBuscar(ClienteEstadoEstructura cEE) {
         initComponents();
-        obj.setConn(Conexion.conexi.getLocal());
         this.cEE = cEE;
         llenarCombo();
         AutoCompleteDecorator.decorate(comboClientes, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
@@ -56,10 +55,10 @@ comboClientes.requestFocus();
                 i++;
             }
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             mensaje( "Hubo un error en el sistema");
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
+                 
             mensaje( "Hubo un error con la conexion a la base de datos");
         }
 

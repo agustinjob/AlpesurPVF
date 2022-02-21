@@ -35,56 +35,52 @@ public class InicioSesion extends javax.swing.JFrame {
     Date d = new Date();
     DateFormat formatoFecha = new SimpleDateFormat("yyyy/MM/dd");
     DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
-    ArrayList<Usuario> p = new ArrayList();
-      Confirmacion confirma = new Confirmacion();
+    ArrayList<Usuario> p;
+    Confirmacion confirma = new Confirmacion();
 
     public InicioSesion() {
-      
-            initComponents();
-            setLocationRelativeTo(null);
-            setTitle("Inicio de sesión");
-            ImageIcon e = new ImageIcon("iconos/cajaSeguro.png");
-            ImageIcon iniciar = new ImageIcon("iconos/check.png");
-            ImageIcon salir = new ImageIcon("iconos/cancelar.png");
-            cajaSeguro.setIcon(e);
-            btnSalir.setIcon(salir);
-            btnIniciar.setIcon(iniciar);
-            comboUsuario.setRequestFocusEnabled(true);
-            Conexion.getConexiones();
-            asignarFolioTicket();
-            AutoCompleteDecorator.decorate(comboUsuario, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
-            llenarCombo();
-        
+
+        initComponents();
+        setLocationRelativeTo(null);
+        setTitle("Inicio de sesión");
+        ImageIcon e = new ImageIcon("iconos/cajaSeguro.png");
+        ImageIcon iniciar = new ImageIcon("iconos/check.png");
+        ImageIcon salir = new ImageIcon("iconos/cancelar.png");
+        cajaSeguro.setIcon(e);
+        btnSalir.setIcon(salir);
+        btnIniciar.setIcon(iniciar);
+        comboUsuario.setRequestFocusEnabled(true);
+        asignarFolioTicket();
+        AutoCompleteDecorator.decorate(comboUsuario, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
+        llenarCombo();
+
     }
-    
+
     public void llenarCombo() {
-        
-   usuDAO.setConn(Conexion.conexi.getLocal());
-   p=usuDAO.getDatosUsuarios();
-   int i = 0;
-   while(i<p.size()){
-       comboUsuario.addItem(p.get(i).getUsername());
-       i++;
-   }
+
+        p = usuDAO.getDatosUsuarios();
+        int i = 0;
+        while (i < p.size()) {
+            comboUsuario.addItem(p.get(i).getUsername());
+            i++;
+        }
     }
-    
-    public void asignarFolioTicket(){
+
+    public void asignarFolioTicket() {
         try {
             TicketDAO tick = new TicketDAO();
-            tick.setConn(Conexion.conexi.getLocal());
             tick.consultarNumeroTicket();
         } catch (ClassNotFoundException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
-           Utilidades.confirma(confir, "Hubo un error con el sistema");
+           
+            Utilidades.confirma(confir, "Hubo un error con el sistema");
         } catch (SQLException ex) {
-                  Utilidades.escribirLog(ex.getLocalizedMessage());
-            System.out.println("Error "+ex.getLocalizedMessage() + "Asinar folio");
+           
+            System.out.println("Error " + ex.getLocalizedMessage() + "Asinar folio");
         }
-   }
+    }
 
     public void efectivoInicial() throws ClassNotFoundException, SQLException {
         boolean ban = false;
-        obj.setConn(Conexion.conexi.getLocal());
         ResultSet rs;
         rs = obj.obteneEfectivoInicial(UsuarioDAO.getIdUsuario());
         if (rs == null) {
@@ -236,20 +232,19 @@ public class InicioSesion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
-       buscarUsuario();
+        buscarUsuario();
     }//GEN-LAST:event_passwordActionPerformed
 
-    public void buscarUsuario(){
+    public void buscarUsuario() {
         UsuarioDAO obj = new UsuarioDAO();
-        String usuario =(String)comboUsuario.getSelectedItem();
+        String usuario = (String) comboUsuario.getSelectedItem();
         String pass = new String(password.getPassword());
-        obj.setConn(Conexion.conexi.getLocal());
         ResultSet rs;
 
         try {
             rs = obj.obtenerUsuario(usuario, pass);
-           
-            if (rs != null) { 
+
+            if (rs != null) {
                 rs.next();
                 Usuario usu = new Usuario();
                 obj.modificarFechaYhoraSesionUsuario();
@@ -265,7 +260,7 @@ public class InicioSesion extends javax.swing.JFrame {
         }
     }
     private void btnIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarActionPerformed
-       buscarUsuario();
+        buscarUsuario();
     }//GEN-LAST:event_btnIniciarActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
@@ -273,34 +268,35 @@ public class InicioSesion extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
- if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-        buscarUsuario();
-        
-         }        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            buscarUsuario();
+
+        }        // TODO add your handling code here:
     }//GEN-LAST:event_formKeyPressed
 
     private void comboUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboUsuarioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboUsuarioActionPerformed
 
-    public void mensaje(String men){
-    confirma.setMensaje(men);
-    confirma.setVisible(true);
-    
-    Timer timer = new Timer(1000, new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                 confirma.dispose();
-         
-                 comboUsuario.requestFocus();
-                 
-                }
-                
-            });
+    public void mensaje(String men) {
+        confirma.setMensaje(men);
+        confirma.setVisible(true);
 
-    timer.setRepeats(false);
-            timer.start();
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                confirma.dispose();
+
+                comboUsuario.requestFocus();
+
+            }
+
+        });
+
+        timer.setRepeats(false);
+        timer.start();
     }
+
     /**
      * @param args the command line arguments
      */
@@ -331,7 +327,7 @@ public class InicioSesion extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            
+
             public void run() {
                 new InicioSesion().setVisible(true);
             }

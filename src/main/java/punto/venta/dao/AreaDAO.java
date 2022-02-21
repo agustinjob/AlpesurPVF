@@ -19,11 +19,9 @@ import punto.venta.utilidades.Utilidades;
  */
 public class AreaDAO {
     
-    Connection conn;
+    Connection conn=Conexion.conectarMySQL();
     
-      public void setConn(Connection conn){
-     this.conn=conn;
-     }
+  
     public int guardar(String nombre,String estatus, String operacion){
          try {
           
@@ -36,7 +34,7 @@ public class AreaDAO {
              
              return 1;
          } catch (SQLException ex) {
-                   Utilidades.escribirLog(ex.getLocalizedMessage());
+                  
              return 0;
          }
 
@@ -50,7 +48,7 @@ public class AreaDAO {
              int rs = s.executeUpdate(sql);
              return 1;
          } catch (SQLException ex) {
-                   Utilidades.escribirLog(ex.getLocalizedMessage());
+                  
             return 0;
          }
 
@@ -66,7 +64,7 @@ public class AreaDAO {
              
              return r;
          } catch (SQLException ex) {
-                   Utilidades.escribirLog(ex.getLocalizedMessage());
+                  
              Logger.getLogger(AreaDAO.class.getName()).log(Level.SEVERE, null, ex);
          }
          
@@ -88,7 +86,7 @@ public class AreaDAO {
              
              
          } catch (SQLException ex) {
-                   Utilidades.escribirLog(ex.getLocalizedMessage());
+                  
              Logger.getLogger(AreaDAO.class.getName()).log(Level.SEVERE, null, ex);
          }
          return false;
@@ -104,7 +102,7 @@ public class AreaDAO {
              
              return r;
          } catch (SQLException ex) {
-                   Utilidades.escribirLog(ex.getLocalizedMessage());
+                  
              Logger.getLogger(AreaDAO.class.getName()).log(Level.SEVERE, null, ex);
          }
          
