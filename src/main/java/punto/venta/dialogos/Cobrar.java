@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -22,14 +23,19 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.JTextComponent;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
+import punto.servicio.rest.ApiSend;
 import punto.servicio.rest.FechaYHora;
 import punto.servicio.rest.RestDatos;
 import punto.venta.dao.ClienteDAO;
 import punto.venta.dao.Conexion;
 import punto.venta.dao.TicketDAO;
 import punto.venta.dao.VentasDAO;
+import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.misclases.Cliente;
 import punto.venta.misclases.ImprimirTicket;
+import punto.venta.modelo.Ventas;
+import punto.venta.modelo.VentasModel;
+import punto.venta.modelo.response.ResponseGeneral;
 import punto.venta.utilidades.Utilidades;
 import punto.venta.ventanas.VentasEstructura;
 
@@ -49,7 +55,7 @@ public class Cobrar extends javax.swing.JFrame {
     Cliente cliente = new Cliente();
     int tipoVenta = 1; // Efectivo
     int indexTabbed = 0;
-       FechaYHora rest = new FechaYHora();
+    ApiSend api = new ApiSend();
 
     public Cobrar(VentasEstructura ven3, DefaultTableModel md, int indexTabbed) {
         initComponents();
@@ -122,10 +128,10 @@ public class Cobrar extends javax.swing.JFrame {
                 i++;
             }
         } catch (ClassNotFoundException ex) {
-                 
+
             mensaje("Hubo un error en el sistema", tipoVenta);
         } catch (SQLException ex) {
-                 
+
             mensaje("Hubo un error con la conexion a la base de datos", tipoVenta);
         }
 
@@ -568,6 +574,29 @@ public class Cobrar extends javax.swing.JFrame {
         timer.start();
     }
 
+    public VentasModel modeloAVentasModel(DefaultTableModel md, int idTicket, int idCliente) {
+        VentasModel res = new VentasModel();
+        List<Ventas> ven = new ArrayList<Ventas>();
+        int i = 0;
+        while (i < md.getRowCount()) {
+            Ventas v = new Ventas();
+            v.setCodigo((String) md.getValueAt(i, 0));
+            v.setNombre((String) md.getValueAt(i, 1));
+            v.setPrecioVenta(Float.parseFloat((String) md.getValueAt(i, 2)));
+            v.setCantidad(Float.parseFloat((String)md.getValueAt(i, 3)));
+            v.setImporte(Float.parseFloat((String) md.getValueAt(i, 4)));
+            v.setPrecioCosto(Float.parseFloat((String) md.getValueAt(i, 6)));
+            v.setIdTicket(idTicket);
+            v.setIdCliente(idCliente);
+            v.setIdVenta(0);
+
+            i++;
+            ven.add(v);
+        }
+        res.setVentas(ven);
+
+        return res;
+    }
 
     private void btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn1ActionPerformed
         imprimeTicket();
@@ -575,28 +604,25 @@ public class Cobrar extends javax.swing.JFrame {
     }//GEN-LAST:event_btn1ActionPerformed
     public void imprimeTicket() {
         ImprimirTicket obj = new ImprimirTicket();
+        String x = "";
         int numTic = tick.getNumero();
-         String x="";
-        try {
-            boolean ban = true;
-              String datos[]=rest.sendPOST2();
-            String idCliente = cliente.getId();
-            if (tipoVenta == 2) {
-                ban = buscarCliente();
-                idCliente = cliente.getId();
-            }
-            if (ban == true) {
-                
-                    x= ventas.registrarVenta(md, tipoVenta, idCliente, "Local", "Actualizada", "Registro", numTic);
-                
-            
-                   
-               
-                
+
+        boolean ban = true;
+
+         String idCliente = cliente.getId()==null?"0":cliente.getId();
+        if (tipoVenta == 2) {
+            ban = buscarCliente();
+            idCliente = cliente.getId();
+        }
+        if (ban == true) {
+
+            try {
+              //    x= ventas.registrarVenta(md, tipoVenta, idCliente, "Local", "Actualizada", "Registro", numTic);
+
+                ResponseGeneral resul = api.usarAPI(EnviromentLocal.urlG + "ventas", modeloAVentasModel(md, numTic, Integer.parseInt(idCliente)), "POST");
+                x = resul.getMensaje();
                 tick.sumarTicket();
-                   obj.asignarFechaYHora(datos[0], datos[1]);
                 String res = obj.convertirModeloAString(md, txtn2.getText());
-             
                 obj.imprimirTicket(res);
                 ven3.eliminaCelda(2);
                 ven3.tablas[indexTabbed].setNumArticulos(0);
@@ -604,20 +630,14 @@ public class Cobrar extends javax.swing.JFrame {
                 ven3.llenarCombo();
                 ven3.actualizaTicket(tick.getNumero() + "");
                 ven3.requerirFoco();
-              
-                this.dispose();
-            }
-              mensaje(x, tipoVenta);
 
-        } catch (ClassNotFoundException ex) {
-                 
-            mensaje("Ocurrio un error con el sistema", tipoVenta);
-        } catch (SQLException ex) {
-                 
-            Logger.getLogger(Cobrar.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Cobrar.class.getName()).log(Level.SEVERE, null, ex);
+                this.dispose();
+                mensaje(x, tipoVenta);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Cobrar.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+
     }
     private void btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2ActionPerformed
         soloRegistraVenta();
@@ -626,7 +646,7 @@ public class Cobrar extends javax.swing.JFrame {
         try {
 
             boolean ban = true;
-            String idCliente = cliente.getId();
+            String idCliente = cliente.getId()==null?"0":cliente.getId();
             if (tipoVenta == 2) {
                 ban = buscarCliente();
                 if (ban == true) {
@@ -642,18 +662,14 @@ public class Cobrar extends javax.swing.JFrame {
             }
             if (ban == true) {
                 String x = "";
-               
-                   String datos[]=rest.sendPOST2();
+
                 int numTic = tick.getNumero();
-               
-                
-                    x = ventas.registrarVenta(md, tipoVenta, idCliente, "Local", "Actualizada", "Registro", numTic);
-                   
-                
-               
-              
+
+              //  x = ventas.registrarVenta(md, tipoVenta, idCliente, "Local", "Actualizada", "Registro", numTic);
+                  ResponseGeneral resul = api.usarAPI(EnviromentLocal.urlG + "ventas", modeloAVentasModel(md, numTic, Integer.parseInt(idCliente)), "POST");
+                x = resul.getMensaje();
                 tick.sumarTicket();
-                if (x.equalsIgnoreCase("Venta registrada con exito")) {
+                if (resul.isRealizado()) {
                     ven3.eliminaCelda(2);
                     ven3.tablas[indexTabbed].setNumArticulos(0);
                     ven3.tablas[indexTabbed].setTotal(0); // mod aqui
@@ -669,14 +685,9 @@ public class Cobrar extends javax.swing.JFrame {
             }
 
         } catch (ClassNotFoundException ex) {
-                 
+
             System.out.println(ex.getLocalizedMessage());
-        } catch (SQLException ex) {
-                 
-            Logger.getLogger(Cobrar.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Cobrar.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
     }
     private void btn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn3ActionPerformed
         this.dispose();

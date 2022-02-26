@@ -16,7 +16,7 @@ import punto.venta.ventanas.Estructura;
  */
 public class ProductoEstructura extends javax.swing.JPanel implements ActionListener {
 
-    ProductoAgregar pAgregar = new ProductoAgregar();
+ public ProductoAgregar pAgregar = new ProductoAgregar();
     ProductoEliminar pEliminar = new ProductoEliminar();
     ProductoModificar pModificar = new ProductoModificar();
     ProductoVentas pVentas = new ProductoVentas();
@@ -231,6 +231,7 @@ public class ProductoEstructura extends javax.swing.JPanel implements ActionList
       pVentas.requerirFoco();
      
      }else if(evt.equals(btnAreas)){
+         pArea.llenarCombo();
       pAgregar.setVisible(false);
       pModificar.setVisible(false);
       pArea.setVisible(true); 

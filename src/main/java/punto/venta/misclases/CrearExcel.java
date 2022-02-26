@@ -32,6 +32,7 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import punto.venta.dao.Conexion;
 import punto.venta.dao.ProductoDAO;
 import punto.venta.dialogos.Confirmacion;
+import punto.venta.modelo.*;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -50,16 +51,9 @@ public class CrearExcel {
     
      
     public  void consultarInventario(){
-        try {
-            producto=objP.obtenerProductosBusquedaParametrizada();
+       //     producto=objP.obtenerProductosBusquedaParametrizada();
             
-        } catch (ClassNotFoundException ex) {
-                 
-          Utilidades.confirma( confir ," Ocurrio un error en el sistema");
-        } catch (SQLException ex) {
-                 
-          Utilidades.confirma( confir ," Ocurrio un error con el acceso a la base de datos");
-        }
+    
     }
 
 
@@ -107,11 +101,11 @@ public class CrearExcel {
           //  String link = (String) d[2];
 
             dataRow.createCell(0).setCellValue(p.getCodigo());
-            dataRow.createCell(1).setCellValue(p.getNombre());
+         /*   dataRow.createCell(1).setCellValue(p.getNombre());
             dataRow.createCell(2).setCellValue(p.getpCosto());
             dataRow.createCell(3).setCellValue(p.getpVenta());
             dataRow.createCell(4).setCellValue(p.getpMayoreo());
-            dataRow.createCell(5).setCellValue(p.getCantidad());
+            dataRow.createCell(5).setCellValue(p.getCantidad());*/
         }
 
         // Esto es para crear una nueva fila con la suma de toda una columna
@@ -134,7 +128,7 @@ public class CrearExcel {
         file.close();
     }
     
-    public  void writeExcelVentas(ResultSet ventas, Date fechaI, Date fechaF) throws Exception {
+    public  void writeExcelVentas(List<Ventas> listaVentas, Date fechaI, Date fechaF) throws Exception {
         consultarInventario();
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet();
@@ -176,29 +170,29 @@ public class CrearExcel {
         int i=0;
          HSSFRow dataRow = null;
          
-        while(ventas.next()){
+        for(Ventas v: listaVentas){
             if(i==0){
             i=i+1;
             }
             dataRow = sheet.createRow(i + 1);
             Cell c1= dataRow.createCell(0);
             c1.setCellStyle(style);
-            c1.setCellValue(ventas.getString("codigo"));
+            c1.setCellValue(v.getCodigo());
             Cell c2= dataRow.createCell(1);
             c2.setCellStyle(style);
-            c2.setCellValue(ventas.getString("nombre"));
+            c2.setCellValue(v.getNombre());
              Cell c3= dataRow.createCell(2);
            c3.setCellStyle(style);
-            c3.setCellValue(ventas.getDouble("cantidad"));
+            c3.setCellValue(v.getCantidad());
              Cell c4= dataRow.createCell(3);
           c4.setCellStyle(style);
-            c4.setCellValue(ventas.getDouble("precioVenta"));
+            c4.setCellValue(v.getPrecioVenta());
              Cell c5= dataRow.createCell(4);
             c5.setCellStyle(style);
-            c5.setCellValue(ventas.getString("fecha"));
+            c5.setCellValue(formatoFecha.format(v.getFecha()));
              Cell c6= dataRow.createCell(5);
             c6.setCellStyle(style);
-            c6.setCellValue(ventas.getString("hora"));
+            c6.setCellValue(formatoHora.format(v.getFecha()));
             
            /* dataRow.createCell(0).setCellValue();
        

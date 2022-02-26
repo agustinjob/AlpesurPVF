@@ -10,16 +10,23 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dao.ProductoDAO;
 import punto.venta.dao.UsuarioDAO;
 import punto.venta.dialogos.Confirmacion;
+import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.misclases.CrearExcel;
+import punto.venta.modelo.Producto;
+import punto.venta.modelo.response.ProductoResponse;
+import punto.venta.modelo.response.ProductoUtilidadResponse;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -31,6 +38,7 @@ public class InventarioDatos extends javax.swing.JPanel {
     ProductoDAO p = new ProductoDAO();
     Confirmacion confirma = new Confirmacion();
     NumberFormat formatoImporte = NumberFormat.getCurrencyInstance();
+    ApiSend api = new ApiSend();
 
     public InventarioDatos() {
         initComponents();
@@ -38,7 +46,7 @@ public class InventarioDatos extends javax.swing.JPanel {
         ImageIcon excel = new ImageIcon("iconos/excel.png");
         txtBilletes.setIcon(billetes);
         btnInventarioExcel.setIcon(excel);
-        llenarTabla();
+   
     }
 
     public void limpiarTabla() {
@@ -48,40 +56,41 @@ public class InventarioDatos extends javax.swing.JPanel {
             tm.removeRow(r);
         }
     }
-    
-    public void requerirFoco(){
-    btnInventarioExcel.requestFocus();
+
+    public void requerirFoco() {
+        btnInventarioExcel.requestFocus();
     }
 
     public void llenarTabla() {
         limpiarTabla();
-        double preCos, preVen, utilidad;
-        preCos = preVen = utilidad = 0.0D;
+        float preCos, preVen, utilidad;
+        preCos = preVen = utilidad = 0.0F;
 
-        try {
+    
             DefaultTableModel model = (DefaultTableModel) tablaPro.getModel();
-            ResultSet res = p.productosUtilidad();
-            res.last();
-            if (res.getRow() == 0) {
+            ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos/" + Datos.idSucursal);
+            System.out.println(EnviromentLocal.urlG + "productos/" + Datos.idSucursal);
+            List<Producto> prou = res.getProductos();
+            if (prou.isEmpty()) {
             } else {
                 String x[] = new String[10];
-                res.beforeFirst();
-                int i = 1;
-                while (res.next()) {
-                    x[0] = i + "";
-                    x[1] = res.getString(1);
-                    x[2] = res.getString(2);
-                    x[3] = res.getString(3);
-                    x[4] = res.getString(4);
-                    x[5] = res.getString(5);
-                    x[6] = res.getString(6);
 
-                    x[7] = res.getString(7);
-                    preCos = preCos + Double.parseDouble(res.getString(7));
-                    x[8] = res.getString(8);
-                    preVen = preVen + Double.parseDouble(res.getString(8));
-                    x[9] = res.getString(9);
-                    utilidad = utilidad + Double.parseDouble(res.getString(9));
+                int i = 1;
+                for (Producto pu : prou) {
+                    x[0] = i + "";
+                    x[1] = pu.getCodigo();
+                    x[2] = pu.getDescripcion();
+                    x[3] = pu.getCantidad()+"";
+                    x[4] = pu.getPrecioCosto()+"";
+                    x[5] = pu.getPrecioVenta()+"";
+                    x[6] = (pu.getPrecioVenta()- pu.getPrecioCosto())+"";
+
+                    x[7] = (pu.getPrecioCosto()* pu.getCantidad())+"";
+                    preCos = preCos + (pu.getPrecioCosto()* pu.getCantidad());
+                    x[8] = (pu.getPrecioVenta()*pu.getCantidad())+"";
+                    preVen = preVen + (pu.getPrecioVenta()*pu.getCantidad());
+                    x[9] = ((pu.getPrecioVenta()*pu.getCantidad())-(pu.getPrecioCosto()* pu.getCantidad()))+"";
+                    utilidad = utilidad + ((pu.getPrecioVenta()*pu.getCantidad())-(pu.getPrecioCosto()* pu.getCantidad()));
                     model.addRow(x);
                     i++;
 
@@ -96,10 +105,7 @@ public class InventarioDatos extends javax.swing.JPanel {
                     txtUtilidad.setText(formatoImporte.format(utilidad));
                 }
             }
-        } catch (SQLException ex) {
-                 
-            mensaje( "Hubo un error con la conexion a la base de datos");
-        }
+    
 
     }
 
@@ -140,7 +146,7 @@ public class InventarioDatos extends javax.swing.JPanel {
 
         jLabel3.setFont(new java.awt.Font("Cambria", 0, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 0, 255));
-        jLabel3.setText("Total precio costo:");
+        jLabel3.setText("Total precio compra:");
 
         txtPreCos.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
         txtPreCos.setText("jLabel5");
@@ -195,7 +201,7 @@ public class InventarioDatos extends javax.swing.JPanel {
                             .addComponent(jLabel4)
                             .addComponent(jLabel3)
                             .addComponent(btnInventarioExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 41, Short.MAX_VALUE))))
+                        .addGap(0, 25, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,38 +230,38 @@ public class InventarioDatos extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnInventarioExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInventarioExcelActionPerformed
-generaExcel();
+        generaExcel();
     }//GEN-LAST:event_btnInventarioExcelActionPerformed
 
     private void btnInventarioExcelKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnInventarioExcelKeyPressed
-      generaExcel();
+        generaExcel();
     }//GEN-LAST:event_btnInventarioExcelKeyPressed
 
-    public void generaExcel(){
-     try {
+    public void generaExcel() {
+        try {
             CrearExcel objE = new CrearExcel();
             objE.writeExcel();
-            mensaje( "Se genero el documento, buscalo en C:/inventario_punto_venta/inventario.xls");
+            mensaje("Se genero el documento, buscalo en C:/inventario_punto_venta/inventario.xls");
         } catch (Exception ex) {
             Logger.getLogger(InventarioDatos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-      public void mensaje(String men){
-    confirma.setMensaje(men);
-    confirma.setVisible(true);
-    Timer timer = new Timer(1000, new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                 confirma.dispose();
-                 btnInventarioExcel.requestFocus();
-                }
-                
-            });
 
-    timer.setRepeats(false);
-            timer.start();
-    
+    public void mensaje(String men) {
+        confirma.setMensaje(men);
+        confirma.setVisible(true);
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                confirma.dispose();
+                btnInventarioExcel.requestFocus();
+            }
+
+        });
+
+        timer.setRepeats(false);
+        timer.start();
+
     }
 
 

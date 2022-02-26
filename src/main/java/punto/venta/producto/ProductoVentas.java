@@ -9,17 +9,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dao.VentasDAO;
 import punto.venta.dialogos.Confirmacion;
+import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.misclases.CrearExcel;
+import punto.venta.modelo.Ventas;
+import punto.venta.modelo.ModeloFechas;
+import punto.venta.modelo.response.VentasResponse;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -30,6 +39,9 @@ public class ProductoVentas extends javax.swing.JPanel {
 
    VentasDAO objVen = new VentasDAO();
    Confirmacion confirma = new Confirmacion();
+   ApiSend api = new ApiSend();
+    DateFormat formatoFecha=new SimpleDateFormat("yyyy-MM-dd");
+    DateFormat formatoHora=new SimpleDateFormat("HH:mm:ss");
    
     public ProductoVentas() {
         initComponents();
@@ -71,31 +83,25 @@ public void llenaTabla() throws SQLException {
         modelo.addColumn("Precio venta");
         modelo.addColumn("fecha");
         modelo.addColumn("hora");
-
-        ResultSet res = objVen.consultarVentasPorFecha(tipoBusqueda);
-        res.last();
-        int i = 0;
+        
+        VentasResponse resp=api.getVentas(EnviromentLocal.urlG+"ventas-lapso/"+tipoBusqueda+"/"+Datos.idSucursal);
+        List<Ventas> listaV=resp.getVentas();
+        
         double total = 0.0d;
         String x[] = new String[6];
-        if (res.getRow() == 0) {
+        if (listaV.isEmpty()) {
            mensaje("No hay ventas en la fecha seleccionada");
-           
-          
-
         } else {
-            res.beforeFirst();
-
-            while (res.next()) {
-                x[0] = res.getString(1);
-                x[1] = res.getString(2);
-                x[2] = res.getString(3);
-                x[3] = res.getString(4);
-                x[4] = res.getString(5);
-                x[5] = res.getString(6);
+           for(Ventas v: listaV){
+                x[0] = v.getCodigo();
+                x[1] = v.getNombre();
+                x[2] = v.getCantidad()+"";
+                x[3] = v.getPrecioVenta()+"";
+                x[4] = formatoFecha.format(v.getFecha());
+                x[5] = formatoHora.format(v.getFecha());
                 modelo.addRow(x);
-                total = total + res.getDouble(3);
-                i++;
-            }
+                total = total + v.getImporte();
+           }
 
             tabla_ventas.setModel(modelo);
             txttotalvendido.setText(total + "");
@@ -152,9 +158,11 @@ public void llenaTabla() throws SQLException {
         });
 
         fechaInicio.setMaximumSize(new java.awt.Dimension(160, 35));
+        fechaInicio.setDateFormatString("yyyy-MM-dd");
 
         fechaFin.setMaximumSize(new java.awt.Dimension(160, 35));
         fechaFin.setMinimumSize(new java.awt.Dimension(100, 35));
+        fechaFin.setDateFormatString("yyyy-MM-dd");
 
         btnBuscarLapso.setBackground(new java.awt.Color(255, 102, 0));
         btnBuscarLapso.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
@@ -223,16 +231,17 @@ public void llenaTabla() throws SQLException {
                         .addComponent(btnGenerarExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1291, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(20, Short.MAX_VALUE))
+                        .addComponent(jLabel2)))
+                .addContainerGap(133, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txttotalvendido, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(162, 162, 162))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -245,17 +254,14 @@ public void llenaTabla() throws SQLException {
                     .addComponent(jLabel5)
                     .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(combo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(fechaFin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-                            .addComponent(fechaInicio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnBuscarLapso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnGenerarExcel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 10, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(fechaFin, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                    .addComponent(fechaInicio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnBuscarLapso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnGenerarExcel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(combo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 30, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -297,15 +303,20 @@ public void llenaTabla() throws SQLException {
 
     private void btnBuscarLapsoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarLapsoActionPerformed
 
-        try {
+   
             Date inicio = fechaInicio.getDate();
             Date fin = fechaFin.getDate();
-            System.out.println("Esto tiene inicio" + inicio);
+            
            if(inicio == null || fin == null){
-               mensaje( "Por favor ingresa la fecha de inicio y la fecha final");
+               Utilidades.mensajePorTiempo("Por favor ingresa la fecha de inicio y la fecha final");
            }else{
-
-            ResultSet res = objVen.consultarVentasPorFechaPorLapsosDeTiempo(inicio, fin);
+              ModeloFechas fechs= new ModeloFechas();
+              fechs.setFechaI(formatoFecha.format(inicio));
+              fechs.setFechaF(formatoFecha.format(fin));
+              
+              VentasResponse ven=api.getVentas(EnviromentLocal.urlG+"ventas-fiff", fechs);
+              Utilidades.im(EnviromentLocal.urlG+"ventas-fiff");
+              List<Ventas>listaV= ven.getVentas();
             DefaultTableModel modelo = new DefaultTableModel();
             modelo.addColumn("Código de Barras");
             modelo.addColumn("Descripción del producto");
@@ -313,26 +324,24 @@ public void llenaTabla() throws SQLException {
             modelo.addColumn("Precio venta");
             modelo.addColumn("fecha");
             modelo.addColumn("hora");
-            res.last();
-            int i = 0;
+            
             double total = 0.0d;
             String x[] = new String[6];
-            if (res.getRow() == 0) {
-                
-                mensaje( "No hay datos de ventas en esa fecha especifica");
+            if (listaV.isEmpty()) {
+                Utilidades.mensajePorTiempo("No hay datos de ventas en esa fecha especifica");
             } else {
-                res.beforeFirst();
+               
 
-                while (res.next()) {
-                    x[0] = res.getString(1);
-                    x[1] = res.getString(2);
-                    x[2] = res.getString(3);
-                    x[3] = res.getString(4);
-                    x[4] = res.getString(5);
-                    x[5] = res.getString(6);
+                for (Ventas v: listaV) {
+                    x[0] = v.getCodigo();
+                x[1] = v.getNombre();
+                x[2] = v.getCantidad()+"";
+                x[3] = v.getPrecioVenta()+"";
+                x[4] = formatoFecha.format(v.getFecha());
+                x[5] = formatoHora.format(v.getFecha());
                     modelo.addRow(x);
-                    total = total + res.getDouble(3);
-                    i++;
+                    total = total + v.getImporte();
+                    
                 }
 
                 tabla_ventas.setModel(modelo);
@@ -340,12 +349,8 @@ public void llenaTabla() throws SQLException {
 
             }
            }
-        } catch (SQLException ex) {
-                 
-          mensaje("Hubo error con la conexion a la base de datos");
-          
-         
-        }
+ 
+       
         
     }//GEN-LAST:event_btnBuscarLapsoActionPerformed
 
@@ -365,22 +370,28 @@ public void llenaTabla() throws SQLException {
     }
 
     private void btnGenerarExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarExcelActionPerformed
-        Date inicio = fechaInicio.getDate();
+            Date inicio = fechaInicio.getDate();
             Date fin = fechaFin.getDate();
-            System.out.println("Esto tiene inicio" + inicio);
+        
            if(inicio == null || fin == null){
                mensaje( "Por favor ingresa la fecha de inicio y la fecha final");
            }else{
             try {
-                ResultSet res = objVen.consultarVentasPorFechaPorLapsosDeTiempo(inicio, fin);
+                 ModeloFechas fechs= new ModeloFechas();
+              fechs.setFechaI(formatoFecha.format(inicio));
+              fechs.setFechaF(formatoFecha.format(fin));
+              
+              VentasResponse ven=api.getVentas(EnviromentLocal.urlG+"ventas-fiff", fechs);
+              Utilidades.im(EnviromentLocal.urlG+"ventas-fiff");
+              List<Ventas>listaV= ven.getVentas();;
                 CrearExcel objE = new CrearExcel();
                 
-                res.last();
-                if (res.getRow() == 0) {
+                
+                if (listaV.isEmpty()) {
                     mensaje( "No hay datos de ventas en esa fecha especifica");
                 }else{
-                    res.beforeFirst();
-                    objE.writeExcelVentas(res, inicio,  fin);
+                   
+                    objE.writeExcelVentas(listaV, inicio,  fin);
                 }
                 
               

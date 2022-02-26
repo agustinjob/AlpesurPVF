@@ -22,7 +22,7 @@ import punto.venta.dao.TicketDAO;
 import punto.venta.dao.UsuarioDAO;
 import static punto.venta.dialogos.Cobrar.txtn1;
 import punto.venta.dialogos.Confirmacion;
-import punto.venta.misclases.Usuario;
+import punto.venta.modelo.Usuario;
 import punto.venta.utilidades.Imagen;
 import punto.venta.utilidades.Utilidades;
 

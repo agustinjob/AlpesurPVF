@@ -5,8 +5,7 @@
  */
 package punto.venta.dao;
 
-import punto.venta.misclases.Producto;
-import punto.venta.misclases.Usuario;
+import punto.venta.modelo.Usuario;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -86,7 +85,7 @@ public class UsuarioDAO {
                 Usuario u = new Usuario();
                 u.setIdUsuario(res.getInt(1));
                 u.setNombre(res.getString(2));
-                u.setTipo(res.getString(6));
+                u.setTipoUsuario(res.getString(6));
                 u.setDireccion(res.getString(3));
                 u.setTelefono(res.getString(7));
                 u.setUsername(res.getString(4));
@@ -153,7 +152,7 @@ public class UsuarioDAO {
           
             Statement s = conn.createStatement();
             int rs = s.executeUpdate("UPDATE `usuario` SET `nombre`='"+u.getNombre()+"',`direccion`='"+u.getDireccion()+"',`username`='"+u.getUsername()+"',`password`='"+u.getPassword()+"',"
-                + "`tipoUsuario`= '"+u.getTipo()+"' ,`telefono`='"+u.getTelefono()+"', `estatus`='"+estatus+"', operacion='"+operacion+"' WHERE nombre='"+temporal.getNombre()+"' and username='"+temporal.getUsername()+"' and password= '"+temporal.getPassword()+"' and idSucursal ="+Datos.idSucursal);
+                + "`tipoUsuario`= '"+u.getTipoUsuario()+"' ,`telefono`='"+u.getTelefono()+"', `estatus`='"+estatus+"', operacion='"+operacion+"' WHERE nombre='"+temporal.getNombre()+"' and username='"+temporal.getUsername()+"' and password= '"+temporal.getPassword()+"' and idSucursal ="+Datos.idSucursal);
            
            String mensajeBita ="Modifico los datos del usuario " + u.getNombre();
            bita.registrarBitacora(mensajeBita);

@@ -83,13 +83,10 @@
                       </Group>
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jScrollPane1" alignment="0" min="-2" pref="1291" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="20" max="32767" attributes="0"/>
+                  <EmptySpace pref="133" max="32767" attributes="0"/>
               </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -97,6 +94,10 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="txttotalvendido" min="-2" pref="171" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="162" max="-2" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <Component id="jScrollPane1" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -112,20 +113,15 @@
                       <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="combo" alignment="1" max="32767" attributes="0"/>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="fechaFin" alignment="0" max="32767" attributes="0"/>
-                              <Component id="btnBuscar" alignment="0" pref="35" max="32767" attributes="0"/>
-                              <Component id="fechaInicio" alignment="0" max="32767" attributes="0"/>
-                              <Component id="btnBuscarLapso" alignment="1" max="32767" attributes="0"/>
-                              <Component id="btnGenerarExcel" alignment="0" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="0" pref="10" max="32767" attributes="0"/>
-                      </Group>
+                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                      <Component id="fechaFin" alignment="0" max="32767" attributes="0"/>
+                      <Component id="btnBuscar" alignment="0" pref="35" max="32767" attributes="0"/>
+                      <Component id="fechaInicio" alignment="0" max="32767" attributes="0"/>
+                      <Component id="btnBuscarLapso" alignment="1" max="32767" attributes="0"/>
+                      <Component id="btnGenerarExcel" alignment="0" max="32767" attributes="0"/>
+                      <Component id="combo" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" pref="30" max="32767" attributes="0"/>
                   <Component id="jScrollPane1" min="-2" pref="301" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -209,6 +205,9 @@
               <Dimension value="[160, 35]"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="fechaInicio.setDateFormatString(&quot;yyyy-MM-dd&quot;);"/>
+          </AuxValues>
         </Component>
         <Component class="com.toedter.calendar.JDateChooser" name="fechaFin">
           <Properties>
@@ -219,6 +218,9 @@
               <Dimension value="[100, 35]"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="fechaFin.setDateFormatString(&quot;yyyy-MM-dd&quot;);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JButton" name="btnBuscarLapso">
           <Properties>

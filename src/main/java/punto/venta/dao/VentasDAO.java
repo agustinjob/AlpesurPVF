@@ -168,7 +168,7 @@ public class VentasDAO {
             Statement s = conn.createStatement();
             String sql = "";
 
-            sql = "select codigo,nombre,cantidad,precioVenta,fecha,hora from ventas where fecha >= '" + formatoFecha.format(inicio) + "' && fecha <= '" + formatoFecha.format(fin) + "'";
+            sql = "select * from ventas where fecha >= '" + formatoFecha.format(inicio) + "' && fecha <= '" + formatoFecha.format(fin) + "'";
             datos = s.executeQuery(sql);
         
         } catch (SQLException ex) {

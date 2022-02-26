@@ -16,10 +16,15 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dao.UsuarioDAO;
 import punto.venta.dialogos.Confirmacion;
-import punto.venta.misclases.Usuario;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.Usuario;
+import punto.venta.modelo.response.ResponseGeneral;
+import punto.venta.modelo.response.UsuarioResponse;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -31,11 +36,12 @@ public class UsuarioEliminar extends javax.swing.JPanel {
     ArrayList<Usuario> lista = new ArrayList<Usuario>();
     UsuarioDAO obj = new UsuarioDAO();
     Usuario usu = new Usuario();
+    ApiSend api = new ApiSend();
     Confirmacion confirma = new Confirmacion();
 
     public UsuarioEliminar() {
         initComponents();
-        llenarCombo();
+  
         AutoCompleteDecorator.decorate(comboUsuario, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
     }
 
@@ -46,13 +52,14 @@ public class UsuarioEliminar extends javax.swing.JPanel {
 
     public void llenarCombo() {
 
-        lista = obj.getDatosUsuarios();
-        comboUsuario.removeAllItems();
-        comboUsuario.addItem("");
-        int i = 0;
-        while (i < lista.size()) {
-            comboUsuario.addItem(lista.get(i).getNombre());
-            i++;
+      comboUsuario.removeAllItems();
+        Usuario vacio= new Usuario();
+        vacio.setIdUsuario(0);
+        comboUsuario.addItem(vacio);
+
+        UsuarioResponse res = api.getUsuarios(EnviromentLocal.urlG + "usuarios/" + Datos.idSucursal);
+        for (Usuario usua : res.getUsuarios()) {
+            comboUsuario.addItem(usua);
         }
 
     }
@@ -63,7 +70,7 @@ public class UsuarioEliminar extends javax.swing.JPanel {
 
         jLabel2 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        comboUsuario = new javax.swing.JComboBox<>();
+        comboUsuario = new javax.swing.JComboBox<Usuario>();
         btn4 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -74,7 +81,7 @@ public class UsuarioEliminar extends javax.swing.JPanel {
         jLabel9.setFont(new java.awt.Font("Cambria", 0, 14)); // NOI18N
         jLabel9.setText("Teclee el  nombre del usuario");
 
-        comboUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        comboUsuario.setModel(new javax.swing.DefaultComboBoxModel<Usuario>());
 
         btn4.setBackground(new java.awt.Color(153, 153, 0));
         btn4.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
@@ -153,38 +160,26 @@ public class UsuarioEliminar extends javax.swing.JPanel {
     }
 
     public void eliminar() {
-        String nombreU = (String) comboUsuario.getSelectedItem();
-        int i = 0;
-        if (nombreU.equalsIgnoreCase("")) {
+        Usuario user = (Usuario) comboUsuario.getSelectedItem();
+        if (user.getIdUsuario() == 0) {
+            Utilidades.mensajePorTiempo("Por favor selecciona o ingresa un usuario");
+       
             mensaje("Por favor ingresa los datos");
         } else {
+            user.setEliminado(true);
+            ResponseGeneral res=api.usarAPI(EnviromentLocal.urlG + "usuarios", user, "PUT");
+            mensaje(res.getMensaje());
+            if (res.isRealizado()==true) {
 
-            while (i < lista.size()) {
-                if (lista.get(i).getNombre().equalsIgnoreCase(nombreU)) {
-                    usu = lista.get(i);
-                    break;
-                }
-                i++;
-            }
-            String x = "";
-            String estatus = "En proceso";
-            x = obj.eliminarDatosUsuario(usu, "Actualizada", "Eliminacion");
-
-            if (x.equalsIgnoreCase("Datos del usuario eliminados correctamente")) {
-
-                mensaje(x);
                 llenarCombo();
-            } else {
-                mensaje(x);
-
-            }
+            } 
 
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn4;
-    private javax.swing.JComboBox<String> comboUsuario;
+    private javax.swing.JComboBox<Usuario> comboUsuario;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel9;
     // End of variables declaration//GEN-END:variables

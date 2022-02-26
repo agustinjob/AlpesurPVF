@@ -16,6 +16,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -28,7 +29,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dao.ProductoDAO;
 import punto.venta.dao.TicketDAO;
 import punto.venta.dialogos.BusquedaProductos;
@@ -38,152 +41,146 @@ import punto.venta.dialogos.Devoluciones;
 import punto.venta.dialogos.EntradaEfectivo;
 import punto.venta.dialogos.InsVarios;
 import punto.venta.dialogos.SalidaEfectivo;
-import punto.venta.misclases.Producto;
-import punto.venta.misclases.Usuario;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.Producto;
+import punto.venta.modelo.Usuario;
+import punto.venta.modelo.response.ProductoResponse;
 import punto.venta.utilidades.Utilidades;
 
 /**
  *
  * @author job
  */
-public class VentasEstructura extends javax.swing.JPanel implements ActionListener,KeyListener {
+public class VentasEstructura extends javax.swing.JPanel implements ActionListener, KeyListener {
 
     DefaultTableModel md;
     String data[][] = {};
     String cabeza[] = {"Código de barras", "Descripcion de producto", "Precio venta", "Cant", "importe", "Existencia", "Precio Costo"};
     int filas;
     ProductoDAO obj = new ProductoDAO();
-    ArrayList<Producto> p = new ArrayList();
+    List<Producto> listaPro = new ArrayList();
     DefaultTableCellRenderer dt = new DefaultTableCellRenderer();
     public static int tipoPrecio;
     private Usuario usu;
-   // public double total[] = new double[5];
+    // public double total[] = new double[5];
     //public int numeroArticulos[] = new int [5];
     TicketDAO tick = new TicketDAO();
     Confirmacion confirma = new Confirmacion();
     private Dimension dim;
     Estructura e;
     public PanelTabla tablas[] = new PanelTabla[5];
-    int ultimaPestanaSeleccionada=0;
-     
-    
+    int ultimaPestanaSeleccionada = 0;
+    ApiSend api = new ApiSend();
+
     public VentasEstructura() {
-    
-            initComponents();
-            btn1.setVisible(false);
-            btn1.setEnabled(false);
-            tipoPrecio = 1;
-            md = new DefaultTableModel();
-            //   this.txtTabla.setModel(md);
-            txtCodigo.requestFocus();
-            md = new DefaultTableModel(data, cabeza) {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    return column == 3 || column == 4 || column == 2 ? true : false;
-                }
-            };
-            inicializarIconos();
-     
-            txtTicket.setText("Folio del ticket: " + tick.getNumero());
-            addKeyListener(this);
-            Utilidades.im("Entro a ventas");
-            Utilidades.im(""+this.hasFocus());
-            inicializaTabbed();
-     
-   
-        
-    }
-    
-      public void mensaje(String men, int tipo){
-    confirma.setMensaje(men);
-    confirma.setVisible(true);
-    Timer timer = new Timer(1000, new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                 confirma.dispose();
-                 if(tipo==1){
-                 txtCodigo.requestFocus();
-                 }
-                 
-                 if(tipo==2){
-                 comboProductos.requestFocus();
-                 }
-                }
-                
-            });
 
-    timer.setRepeats(false);
-            timer.start();
+        initComponents();
+        btn1.setVisible(false);
+        btn1.setEnabled(false);
+        tipoPrecio = 1;
+        md = new DefaultTableModel();
+        //   this.txtTabla.setModel(md);
+        txtCodigo.requestFocus();
+        md = new DefaultTableModel(data, cabeza) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 3 || column == 4 || column == 2 ? true : false;
+            }
+        };
+        inicializarIconos();
+
+        txtTicket.setText("Folio del ticket: " + tick.getNumero());
+        addKeyListener(this);
+        Utilidades.im("Entro a ventas");
+        Utilidades.im("" + this.hasFocus());
+        inicializaTabbed();
+
     }
 
-    
-    public void inicializaTabbed(){
-    tablas[0]= new PanelTabla(txtTotal,this);
-    tablas[1]= new PanelTabla(txtTotal,this);
-    tablas[2]= new PanelTabla(txtTotal,this);
-    tablas[3]= new PanelTabla(txtTotal,this);
-    tablas[4]= new PanelTabla(txtTotal,this);
-    tablas[0].setObjVentas(this);
-    tablas[1].setObjVentas(this);
-    tablas[2].setObjVentas(this);
-    tablas[3].setObjVentas(this);
-    tablas[4].setObjVentas(this);
-   // total[0]=0.0d;
-   // total[1]=0.0d;
-   // total[2]=0.0d;
-   // total[3]=0.0d;
-   /* total[4]=0.0d;
+    public void mensaje(String men, int tipo) {
+        confirma.setMensaje(men);
+        confirma.setVisible(true);
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                confirma.dispose();
+                if (tipo == 1) {
+                    txtCodigo.requestFocus();
+                }
+
+                if (tipo == 2) {
+                    comboProductos.requestFocus();
+                }
+            }
+
+        });
+
+        timer.setRepeats(false);
+        timer.start();
+    }
+
+    public void inicializaTabbed() {
+        tablas[0] = new PanelTabla(txtTotal, this);
+        tablas[1] = new PanelTabla(txtTotal, this);
+        tablas[2] = new PanelTabla(txtTotal, this);
+        tablas[3] = new PanelTabla(txtTotal, this);
+        tablas[4] = new PanelTabla(txtTotal, this);
+        tablas[0].setObjVentas(this);
+        tablas[1].setObjVentas(this);
+        tablas[2].setObjVentas(this);
+        tablas[3].setObjVentas(this);
+        tablas[4].setObjVentas(this);
+        // total[0]=0.0d;
+        // total[1]=0.0d;
+        // total[2]=0.0d;
+        // total[3]=0.0d;
+        /* total[4]=0.0d;
     numeroArticulos[0]=0;
     numeroArticulos[1]=0;
     numeroArticulos[2]=0;
     numeroArticulos[3]=0;
     numeroArticulos[4]=0;*/
-    jTabbedPane1.addTab("Ticket A", tablas[0]);
-    jTabbedPane1.addTab("Ticket B", tablas[1]);
-    jTabbedPane1.addTab("Ticket C", tablas[2]);
-    jTabbedPane1.addTab("Ticket D", tablas[3]);
-    jTabbedPane1.addTab("Ticket E", tablas[4]);
+        jTabbedPane1.addTab("Ticket A", tablas[0]);
+        jTabbedPane1.addTab("Ticket B", tablas[1]);
+        jTabbedPane1.addTab("Ticket C", tablas[2]);
+        jTabbedPane1.addTab("Ticket D", tablas[3]);
+        jTabbedPane1.addTab("Ticket E", tablas[4]);
     }
-    
-    public void setEstructura(Estructura e){
-    this.e=e;
-                                            }
-    
-    public Estructura getEstructura(){
-    return e;
+
+    public void setEstructura(Estructura e) {
+        this.e = e;
     }
+
+    public Estructura getEstructura() {
+        return e;
+    }
+
     public void actualizaTicket(String tik) {
         txtTicket.setText("Folio del ticket: " + tik);
         txtTotal.setText("");
     }
-    
-    public void requerirFoco(){
-       txtCodigo.setFocusable(true);
-       txtCodigo.requestFocus();  
+
+    public void requerirFoco() {
+        txtCodigo.setFocusable(true);
+        txtCodigo.requestFocus();
     }
 
     public void llenarCombo() {
 
-        try {
-            p = obj.obtenerProductosSiHuboModificacion(p, true);
-            int i = 0;
-            comboProductos.removeAllItems();
-            comboProductos.addItem("");
-            while (i < p.size()) {
-                comboProductos.addItem(p.get(i).getNombre());
-                i++;
-            }
-        } catch (ClassNotFoundException ex) {
-                 
-            Logger.getLogger(VentasEstructura.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-                 
-            Logger.getLogger(VentasEstructura.class.getName()).log(Level.SEVERE, null, ex);
+        comboProductos.removeAllItems();
+        Producto vacio = new Producto();
+        vacio.setIdProducto(0);
+        comboProductos.addItem(vacio);
+
+        ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos/" + Datos.idSucursal);
+        
+        for (Producto p : res.getProductos()) {
+            comboProductos.addItem(p);
         }
 
     }
 
-   /* public void centrarValoresTabla() {
+    /* public void centrarValoresTabla() {
         JTableHeader tablaCabe = txtTabla.getTableHeader();
         DefaultTableCellRenderer render = (DefaultTableCellRenderer) txtTabla.getTableHeader().getDefaultRenderer();
         render.setHorizontalAlignment(SwingConstants.CENTER);
@@ -203,9 +200,8 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
         txtTabla.getColumnModel().getColumn(6).setMaxWidth(0);
         txtTabla.setRowHeight(30);
     }*/
-
     public boolean revisarRepetidos(String codigo) {
-      
+
         DefaultTableModel modelo = (DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel();
         int i = 0;
 
@@ -230,31 +226,28 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
     }
 
     public void eliminaCelda(int tipoEliminacion) {
-        System.out.println("antes del model");
+
         DefaultTableModel tm = (DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel();
-        System.out.println("despues del modelo en tipo eliminacion");
-         int tamano = tm.getRowCount();
+        int tamano = tm.getRowCount();
         if (tipoEliminacion == 1) {
             if (tablas[jTabbedPane1.getSelectedIndex()].getTabla().getSelectedRow() >= 0) {
                 if (tablas[jTabbedPane1.getSelectedIndex()].getTabla().getValueAt(tablas[jTabbedPane1.getSelectedIndex()].getTabla().getSelectedRow(), 0) == null) {
-                    JOptionPane.showMessageDialog(this, "La fila que selecciono ,no cuenta con ningún producto", "Alexito", JOptionPane.WARNING_MESSAGE);
+                    Utilidades.mensajePorTiempo("La fila que selecciono ,no cuenta con ningún producto");
                 } else {
-                   
+
                     double resta = Double.parseDouble((String) tm.getValueAt(tablas[jTabbedPane1.getSelectedIndex()].getTabla().getSelectedRow(), 4));
-                     tablas[jTabbedPane1.getSelectedIndex()].setTotal(tablas[jTabbedPane1.getSelectedIndex()].getTotal()-resta); 
+                    tablas[jTabbedPane1.getSelectedIndex()].setTotal(tablas[jTabbedPane1.getSelectedIndex()].getTotal() - resta);
                     tm.removeRow(tablas[jTabbedPane1.getSelectedIndex()].getTabla().getSelectedRow());
                     txtTotal.setText(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + "");
-                 
-                    if(tamano>0){
-                        Utilidades.im("TAMAño " + tamano);
-                      tamano=tamano-2;
-                    Utilidades.im("TAMAño " + tamano);
-                    tablas[jTabbedPane1.getSelectedIndex()].getTabla().changeSelection(tamano, 0, false , false);
+
+                    if (tamano > 0) {
+                        tamano = tamano - 2;
+                        tablas[jTabbedPane1.getSelectedIndex()].getTabla().changeSelection(tamano, 0, false, false);
                     }
                 }
             } else {
-               mensaje("No haz seleccionado ninguna fila",1);
-                
+                mensaje("No haz seleccionado ninguna fila", 1);
+
             }
 
         } else {
@@ -267,8 +260,7 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
         }
     }
 
-    
- /*  
+    /*
     public void actualizarImporteTabla() {
         DefaultTableModel tm = (DefaultTableModel) txtTabla.getModel();
         numeroArticulos = 0;
@@ -291,7 +283,7 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
 
         txtTotal.setText(total + "");
     }
-*/
+     */
     public boolean masCantidadQueInventario() {
 
         DefaultTableModel model = (DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel();
@@ -323,7 +315,7 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        comboProductos = new javax.swing.JComboBox<>();
+        comboProductos = new javax.swing.JComboBox<Producto>();
         jLabel5 = new javax.swing.JLabel();
         txtCodigo = new javax.swing.JTextField();
         txtagregar = new javax.swing.JButton();
@@ -392,7 +384,7 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
 
         comboProductos.setEditable(true);
         comboProductos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        comboProductos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        comboProductos.setModel(new javax.swing.DefaultComboBoxModel<Producto>());
 
         jLabel5.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 102));
@@ -716,40 +708,58 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
 
     private void txtagregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtagregarActionPerformed
 
-       buscarDesdeCombo();
+        buscarDesdeCombo();
 
     }//GEN-LAST:event_txtagregarActionPerformed
-public void buscarDesdeCombo(){
-        String nombre = (String) comboProductos.getSelectedItem();
-        nombre = nombre.trim();
-        if (nombre.equalsIgnoreCase("")) {
-            mensaje("Por favor ingresa el nombre del producto",2);
+    public String[] asignarPrecio(Producto pro) {
+      if(pro==null) return null;
+        String res[] = new String[7];
+        res[0] = pro.getCodigo();
+        res[1] = pro.getDescripcion();
+        res[3] = "1";
+        res[5] = pro.getCantidad() + "";
+        res[6] = pro.getPrecioCosto() + "";
+        if (tipoPrecio == 1) {
+            res[2] = pro.getPrecioVenta() + "";
+            res[4] = pro.getPrecioVenta() + "";
+        }
+        if (tipoPrecio == 2) {
+            res[2] = pro.getPrecioMayoreo() + "";
+            res[4] = pro.getPrecioMayoreo() + "";
+        }
+        if (tipoPrecio == 3) {
+            res[2] = pro.getPrecioDistribuidor() + "";
+            res[4] = pro.getPrecioDistribuidor() + "";
+        }
+        return res;
+    }
+
+    public void buscarDesdeCombo() {
+        Producto pro = (Producto) comboProductos.getSelectedItem();
+        if (pro.getIdProducto() == 0) {
+            mensaje("Por favor ingresa el nombre del producto", 2);
         } else {
-           md=(DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel();
-           boolean bandera = revisarRepetidos(nombre);
+            md = (DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel();
+            boolean bandera = revisarRepetidos(pro.getDescripcion());
             if (bandera == false) {
                 String[] info = new String[7];
-                info = obj.getProductoPorNombre(nombre, p, 1, tipoPrecio);
+                info = asignarPrecio(pro);// obj.getProductoPorNombre(nombre, p, 1, tipoPrecio);
 
-                if (info[0] == null) {
-
-                    mensaje("Producto no encontrado",1);
+                if (info==null) {
+                    mensaje("Producto no encontrado", 1);
                 } else {
                     double can = Double.parseDouble(info[5]);
                     if (can > 0) {
                         md.addRow(info);
-                        int tamano=md.getRowCount();
-                        Utilidades.im("Este es el tamano " + tamano);
-                        Utilidades.im("TOTAL AL MOMENTO " + tablas[jTabbedPane1.getSelectedIndex()].getTotal());
-                        Utilidades.im("Datos de suma: " + (tablas[jTabbedPane1.getSelectedIndex()].getTotal() + (Double.parseDouble(info[2]) * Double.parseDouble(info[3]))));
-                       tablas[jTabbedPane1.getSelectedIndex()].setTotal(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + (Double.parseDouble(info[2]) * Double.parseDouble(info[3])));
-                       
-                      //  tablas[jTabbedPane1.getSelectedIndex()].setTotal(total[jTabbedPane1.getSelectedIndex()]);
-                        txtTotal.setText( tablas[jTabbedPane1.getSelectedIndex()].getTotal() + "");
-                       tablas[jTabbedPane1.getSelectedIndex()].setNumArticulos(tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() + 1);
-                       tablas[jTabbedPane1.getSelectedIndex()].getTabla().changeSelection(tamano-1, 0, false , false);
+                        int tamano = md.getRowCount();
+                        tablas[jTabbedPane1.getSelectedIndex()].setTotal(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + (Double.parseDouble(info[2]) * Double.parseDouble(info[3])));
+
+                        //  tablas[jTabbedPane1.getSelectedIndex()].setTotal(total[jTabbedPane1.getSelectedIndex()]);
+                        txtTotal.setText(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + "");
+                        tablas[jTabbedPane1.getSelectedIndex()].setNumArticulos(tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() + 1);
+                        tablas[jTabbedPane1.getSelectedIndex()].getTabla().changeSelection(tamano - 1, 0, false, false);
                     } else {
-                        mensaje("El producto esta registrado pero su invenario esta en 0, por favor agregar más producto en la sección correspondiente",1);
+                        mensaje("El producto esta registrado pero su invenario esta en 0, por favor agregar más producto en la sección correspondiente", 1);
                     }
 
                 }
@@ -757,72 +767,71 @@ public void buscarDesdeCombo(){
             comboProductos.setSelectedIndex(0);
             txtCodigo.requestFocus();
         }
-}
-    public void agregarDesdeTablaExterna(String nombre){
-    
-        nombre = nombre.trim();
-        if (nombre.equalsIgnoreCase("")) {
-            mensaje("Por favor ingresa el nombre del producto",1);
+    }
+
+    public void agregarDesdeTablaExterna(String idProducto) {
+ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos-id/" + idProducto);
+List<Producto> lis= res.getProductos();
+
+        if (lis.isEmpty()) {
+            mensaje("Por favor ingresa el nombre del producto", 1);
         } else {
-           md=(DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel();
-           boolean bandera = revisarRepetidos(nombre);
+            Producto pro1= lis.get(0);
+            md = (DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel();
+            boolean bandera = revisarRepetidos(pro1.getDescripcion());
             if (bandera == false) {
                 String[] info = new String[7];
-                info = obj.getProductoPorNombre(nombre, p, 1, tipoPrecio);
-
-                if (info[0] == null) {
-
-                    mensaje("Producto no encontrado",1);
+                info = asignarPrecio(pro1);// obj.getProductoPorNombre(nombre, p, 1, tipoPrecio);
+                if (info == null) {
+                    mensaje("Producto no encontrado", 1);
                 } else {
                     double can = Double.parseDouble(info[5]);
                     if (can > 0) {
                         md.addRow(info);
-                        int tamano=md.getRowCount();
-                        Utilidades.im("TOTAL AL MOMENTO " + tablas[jTabbedPane1.getSelectedIndex()].getTotal());
-                        Utilidades.im("Datos de suma: " + (tablas[jTabbedPane1.getSelectedIndex()].getTotal() + (Double.parseDouble(info[2]) * Double.parseDouble(info[3]))));
-                       tablas[jTabbedPane1.getSelectedIndex()].setTotal(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + (Double.parseDouble(info[2]) * Double.parseDouble(info[3])));
-                       
-                      //  tablas[jTabbedPane1.getSelectedIndex()].setTotal(total[jTabbedPane1.getSelectedIndex()]);
-                        txtTotal.setText( tablas[jTabbedPane1.getSelectedIndex()].getTotal() + "");
-                       tablas[jTabbedPane1.getSelectedIndex()].setNumArticulos(tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() + 1);
-                       tablas[jTabbedPane1.getSelectedIndex()].getTabla().changeSelection(tamano-1, 0, false , false);
+                        int tamano = md.getRowCount();
+                        tablas[jTabbedPane1.getSelectedIndex()].setTotal(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + (Double.parseDouble(info[2]) * Double.parseDouble(info[3])));
+                      txtTotal.setText(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + "");
+                        tablas[jTabbedPane1.getSelectedIndex()].setNumArticulos(tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() + 1);
+                        tablas[jTabbedPane1.getSelectedIndex()].getTabla().changeSelection(tamano - 1, 0, false, false);
                     } else {
-                        mensaje("El producto esta registrado pero su invenario esta en 0, por favor agregar más producto en la sección correspondiente",1);
+                        mensaje("El producto esta registrado pero su invenario esta en 0, por favor agregar más producto en la sección correspondiente", 1);
                     }
 
                 }
             }
             comboProductos.setSelectedIndex(0);
         }
-      
+
     }
-    
+
     private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
 //requerirFoco();
         String nombre = txtCodigo.getText();
-        
+ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos/" + Datos.idSucursal+"/"+nombre);
+List<Producto> lis= res.getProductos();
+Producto pro1= lis.get(0);
         if (nombre.equalsIgnoreCase("")) {
 
-            mensaje("Por favor ingresa un código",1);
+            mensaje("Por favor ingresa un código", 1);
         } else {
-            md=(DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel();
-           boolean bandera = revisarRepetidos(nombre);
+            md = (DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel();
+            boolean bandera = revisarRepetidos(nombre);
             if (bandera == false) {
                 String[] info = new String[7];
-                info = obj.getProductoPorNombre(nombre, p, 1, tipoPrecio);
-                if (info[0] == null) {
-                    mensaje("Producto no encontrado",1);
+                info = asignarPrecio(pro1);//obj.getProductoPorNombre(nombre, p, 1, tipoPrecio);
+                if (info==null) {
+                    mensaje("Producto no encontrado", 1);
                 } else {
                     double can = Double.parseDouble(info[5]);
                     if (can > 0) {
                         md.addRow(info);
 
                         tablas[jTabbedPane1.getSelectedIndex()].setTotal(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + (Double.parseDouble(info[2]) * Double.parseDouble(info[3])));
-                      //  tablas[jTabbedPane1.getSelectedIndex()].setTotal(total[jTabbedPane1.getSelectedIndex()]);
-                        txtTotal.setText( tablas[jTabbedPane1.getSelectedIndex()].getTotal() + "");
-                       tablas[jTabbedPane1.getSelectedIndex()].setNumArticulos(tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() + 1);
+                        //  tablas[jTabbedPane1.getSelectedIndex()].setTotal(total[jTabbedPane1.getSelectedIndex()]);
+                        txtTotal.setText(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + "");
+                        tablas[jTabbedPane1.getSelectedIndex()].setNumArticulos(tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() + 1);
                     } else {
-                        mensaje("El producto esta registrado pero su inventario esta en 0, por favor agregar más producto en la sección correspondiente",1);
+                        mensaje("El producto esta registrado pero su inventario esta en 0, por favor agregar más producto en la sección correspondiente", 1);
 
                     }
                 }
@@ -839,8 +848,8 @@ public void buscarDesdeCombo(){
     }//GEN-LAST:event_btn1ActionPerformed
 
     private void btn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn3ActionPerformed
-       mensaje("Se ha activado el precio de mayoreo",1);
-       tipoPrecio = 2;
+        mensaje("Se ha activado el precio de mayoreo", 1);
+        tipoPrecio = 2;
     }//GEN-LAST:event_btn3ActionPerformed
 
     private void btn4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn4ActionPerformed
@@ -854,26 +863,25 @@ public void buscarDesdeCombo(){
     }//GEN-LAST:event_btn5ActionPerformed
 
     private void btn6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn6ActionPerformed
-         eliminaCelda(1);
+        eliminaCelda(1);
 
-        if (tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() > 0)
- tablas[jTabbedPane1.getSelectedIndex()].setNumArticulos(tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() - 1);
-        
+        if (tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() > 0) {
+            tablas[jTabbedPane1.getSelectedIndex()].setNumArticulos(tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() - 1);
+        }
+
 
     }//GEN-LAST:event_btn6ActionPerformed
 
-    
-  
-     
+
     private void btnReiniciarFolioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReiniciarFolioActionPerformed
         try {
             tick.modificarEstatus();
             txtTicket.setText("Folio ticket: " + tick.getNumero());// TODO add your handling code here:
         } catch (ClassNotFoundException ex) {
-                 
-            mensaje("Ocurrio un error con el sistema",1);
+
+            mensaje("Ocurrio un error con el sistema", 1);
         } catch (SQLException ex) {
-                 
+
             Logger.getLogger(VentasEstructura.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnReiniciarFolioActionPerformed
@@ -886,34 +894,33 @@ public void buscarDesdeCombo(){
     private void btn7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn7ActionPerformed
         eliminaCelda(2);
         tablas[jTabbedPane1.getSelectedIndex()].setNumArticulos(0);
-      tablas[jTabbedPane1.getSelectedIndex()].setTotal(0);
+        tablas[jTabbedPane1.getSelectedIndex()].setTotal(0);
         txtTotal.setText("");
     }//GEN-LAST:event_btn7ActionPerformed
 
     private void btn8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn8ActionPerformed
-       realizaCobro();
-      
+        realizaCobro();
+
     }//GEN-LAST:event_btn8ActionPerformed
 
-    
-    public void realizaCobro(){
-           DefaultTableModel tm = (DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel();
+    public void realizaCobro() {
+        DefaultTableModel tm = (DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel();
 
         if (tm.getRowCount() <= 0) {
-            mensaje("Por favor ingresa productos para realizar el cobro",1);
+            mensaje("Por favor ingresa productos para realizar el cobro", 1);
         } else {
-            try{
-            if (!masCantidadQueInventario()) {
-                Cobrar obj = new Cobrar(this,(DefaultTableModel)tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel(),jTabbedPane1.getSelectedIndex());
-                obj.setVisible(true);
-                String info = txtTotal.getText();
-                Cobrar.txtn2.setText(info);
-                obj.numArticulos.setText(tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() + "");
-                obj.requerirFoco();
-            }
-            }catch(NumberFormatException e){
-                   
-                mensaje("Ingresaste una letra u otro caracter en lugar de un número. Por favor revisa la información ingresada",1);
+            try {
+                if (!masCantidadQueInventario()) {
+                    Cobrar obj = new Cobrar(this, (DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel(), jTabbedPane1.getSelectedIndex());
+                    obj.setVisible(true);
+                    String info = txtTotal.getText();
+                    Cobrar.txtn2.setText(info);
+                    obj.numArticulos.setText(tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() + "");
+                    obj.requerirFoco();
+                }
+            } catch (NumberFormatException e) {
+
+                mensaje("Ingresaste una letra u otro caracter en lugar de un número. Por favor revisa la información ingresada", 1);
             }
         }
 
@@ -929,53 +936,53 @@ public void buscarDesdeCombo(){
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
         System.out.println("Dio Click");
-     //   txtTabla.clearSelection();
-      
+        //   txtTabla.clearSelection();
+
     }//GEN-LAST:event_formMouseClicked
 
     private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
-     Utilidades.im(jTabbedPane1.getSelectedIndex() + "");
-     if(ultimaPestanaSeleccionada != jTabbedPane1.getSelectedIndex()){
-         txtTotal.setText(""+tablas[jTabbedPane1.getSelectedIndex()].getTotal());
-         ultimaPestanaSeleccionada=jTabbedPane1.getSelectedIndex();
-     }
+        Utilidades.im(jTabbedPane1.getSelectedIndex() + "");
+        if (ultimaPestanaSeleccionada != jTabbedPane1.getSelectedIndex()) {
+            txtTotal.setText("" + tablas[jTabbedPane1.getSelectedIndex()].getTotal());
+            ultimaPestanaSeleccionada = jTabbedPane1.getSelectedIndex();
+        }
     }//GEN-LAST:event_jTabbedPane1MouseClicked
 
     private void btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2ActionPerformed
-       BusquedaProductos bus = new BusquedaProductos(this,1);
+        BusquedaProductos bus = new BusquedaProductos(this, 1);
         bus.setVisible(true);
     }//GEN-LAST:event_btn2ActionPerformed
 
     private void txtCodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyPressed
-      Utilidades.im("Ests es el numero " + evt.getKeyCode());
+        Utilidades.im("Ests es el numero " + evt.getKeyCode());
         ejecutaOnKey(evt.getKeyCode());
     }//GEN-LAST:event_txtCodigoKeyPressed
 
     private void txtagregarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtagregarKeyPressed
-       if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-       buscarDesdeCombo();
-       }
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            buscarDesdeCombo();
+        }
     }//GEN-LAST:event_txtagregarKeyPressed
 
     private void txtCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyTyped
         char car = evt.getKeyChar();
-if(Character.isLetter(car) || Character.isDigit(car)){
+        if (Character.isLetter(car) || Character.isDigit(car)) {
 
-}else{
-evt.consume();
-getToolkit().beep();
-}
-        
+        } else {
+            evt.consume();
+            getToolkit().beep();
+        }
+
     }//GEN-LAST:event_txtCodigoKeyTyped
 
     private void btn9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn9ActionPerformed
-        mensaje("Se ha activado el precio de distribuidor",1);
-       tipoPrecio = 3;
+        mensaje("Se ha activado el precio de distribuidor", 1);
+        tipoPrecio = 3;
     }//GEN-LAST:event_btn9ActionPerformed
 
     private void btn10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn10ActionPerformed
-        mensaje("Se ha activado el precio de venta regular",1);
-       tipoPrecio = 1;
+        mensaje("Se ha activado el precio de venta regular", 1);
+        tipoPrecio = 1;
     }//GEN-LAST:event_btn10ActionPerformed
     public void inicializarIconos() {
         System.out.println("Si entro aca");
@@ -1010,19 +1017,19 @@ getToolkit().beep();
         try {
             llenarCombo();
         } catch (Exception ClassNotFoundException) {
-                  
+
         }
         AutoCompleteDecorator.decorate(comboProductos, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
     }
-    
-    public void ejecutaOnKey(int num){
-    if (num == 122) {
+
+    public void ejecutaOnKey(int num) {
+        if (num == 122) {
 
             if (tipoPrecio == 1) {
-                mensaje("Se ha activado el precio de mayoreo",1);
+                mensaje("Se ha activado el precio de mayoreo", 1);
                 tipoPrecio = 2;
             } else {
-                mensaje("Se ha desactivado el precio de mayoreo",1);
+                mensaje("Se ha desactivado el precio de mayoreo", 1);
                 tipoPrecio = 1;
             }
         }
@@ -1035,28 +1042,29 @@ getToolkit().beep();
             SalidaEfectivo objeto = new SalidaEfectivo(this);
             objeto.setVisible(true);
         }
-        if(num == 113){
-          
-          BusquedaProductos bus = new BusquedaProductos(this,1);
-          
-        bus.setVisible(true);
-      
-      
+        if (num == 113) {
+
+            BusquedaProductos bus = new BusquedaProductos(this, 1);
+
+            bus.setVisible(true);
+
         }
-         int totalRows=tablas[jTabbedPane1.getSelectedIndex()].getTabla().getRowCount();
-           if (num == 107) {
-               if(totalRows>0)
+        int totalRows = tablas[jTabbedPane1.getSelectedIndex()].getTabla().getRowCount();
+        if (num == 107) {
+            if (totalRows > 0) {
                 tablas[jTabbedPane1.getSelectedIndex()].sumarDeUno();
             }
+        }
 
-            if (num == 109) {
-                if(totalRows>0)
+        if (num == 109) {
+            if (totalRows > 0) {
                 tablas[jTabbedPane1.getSelectedIndex()].restarDeUno();
             }
+        }
         if (num == 123) {
             realizaCobro();
         }
-        if(num == 127){
+        if (num == 127) {
             Utilidades.im("Entro a eliminar");
             eliminaCelda(1);
         }
@@ -1075,7 +1083,7 @@ getToolkit().beep();
     private javax.swing.JButton btn9;
     private javax.swing.JButton btnReiniciarFolio;
     private javax.swing.JButton btndevoluciones;
-    private javax.swing.JComboBox<String> comboProductos;
+    private javax.swing.JComboBox<Producto> comboProductos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
@@ -1094,21 +1102,21 @@ getToolkit().beep();
 
     @Override
     public void actionPerformed(ActionEvent e) {
-       Utilidades.im("1");
+        Utilidades.im("1");
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-         Utilidades.im("2");
+        Utilidades.im("2");
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-       Utilidades.im("Tecla presionada " + e.getKeyCode());
+        Utilidades.im("Tecla presionada " + e.getKeyCode());
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-      Utilidades.im("1");
+        Utilidades.im("1");
     }
 }

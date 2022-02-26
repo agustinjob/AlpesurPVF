@@ -22,7 +22,6 @@ import punto.venta.dao.UsuarioDAO;
 import punto.venta.dialogos.Confirmacion;
 import punto.venta.dialogos.EntradaEfectivo;
 import punto.venta.dialogos.SalidaEfectivo;
-import punto.venta.reportes.ReporteEstructura;
 import punto.venta.transferencia.TransferenciaEstructura;
 import punto.venta.utilidades.Utilidades;
 import static punto.venta.ventanas.VentasEstructura.tipoPrecio;
@@ -42,7 +41,7 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
     CorteAmbosEstructura corte = new CorteAmbosEstructura();
     NubeEstructura nube = new NubeEstructura();
     Configuracion confi = new Configuracion();
-    ReporteEstructura reporte = new ReporteEstructura();
+
     EstructuraActualizaciones actualizaciones = new EstructuraActualizaciones();
     TransferenciaEstructura transferencia = new TransferenciaEstructura();
     Confirmacion confir;
@@ -353,7 +352,7 @@ if (evt.equals(btnActualizaciones)) {
             nube.setVisible(false);
             corte.setVisible(false);
             confi.setVisible(false);
-             reporte.setVisible(false);
+            
             transferencia.setVisible(false);
             contenedor.add(actualizaciones);
             //objVentas.requerirFoco();
@@ -373,7 +372,7 @@ if (evt.equals(btnActualizaciones)) {
             nube.setVisible(false);
             corte.setVisible(false);
             confi.setVisible(false);
-             reporte.setVisible(false);
+            
             transferencia.setVisible(false);
             contenedor.add(objVentas);
             objVentas.requerirFoco();
@@ -393,7 +392,7 @@ if (evt.equals(btnActualizaciones)) {
             nube.setVisible(false);
             corte.setVisible(false);
             confi.setVisible(false);
-            reporte.setVisible(false);
+           
         
             contenedor.add(transferencia);
             transferencia.requerirFoco();
@@ -410,7 +409,7 @@ actualizaciones.setVisible(false);
             usuarios.setVisible(false);
             productos.setVisible(false);
             transferir.setVisible(false);
-             reporte.setVisible(false);
+            
              transferencia.setVisible(false);
             corte.setVisible(false);
             confi.setVisible(false);
@@ -433,7 +432,7 @@ actualizaciones.setVisible(false);
             transferir.setVisible(false);
             corte.setVisible(false);
             confi.setVisible(false);
-             reporte.setVisible(false);
+            
              transferencia.setVisible(false);
             clientes.ocultarEstadoInformacion();
             contenedor.add(clientes);
@@ -451,7 +450,7 @@ actualizaciones.setVisible(false);
             transferir.setVisible(false);
             corte.setVisible(false);
             confi.setVisible(false);
-             reporte.setVisible(false);
+            
              transferencia.setVisible(false);
             contenedor.add(usuarios);
             usuarios.requerirFoco();
@@ -465,10 +464,11 @@ actualizaciones.setVisible(false);
             clientes.setVisible(false);
             usuarios.setVisible(false);
             productos.setVisible(true);
+            productos.pAgregar.llenarCombo();
             transferir.setVisible(false);
             corte.setVisible(false);
             confi.setVisible(false);
-             reporte.setVisible(false);
+            
              transferencia.setVisible(false);
             contenedor.add(productos);
             productos.requerirFoco();
@@ -484,7 +484,7 @@ actualizaciones.setVisible(false);
             productos.setVisible(false);
             transferir.setVisible(true);
             confi.setVisible(false);
-             reporte.setVisible(false);
+            
              transferencia.setVisible(false);
             transferir.limpiarDatos();
             transferir.llenarCombo();
@@ -505,7 +505,7 @@ actualizaciones.setVisible(false);
             transferir.setVisible(false);
             confi.setVisible(false);
             corte.setVisible(true);
-            reporte.setVisible(false);
+           
             contenedor.add(corte);
             transferencia.setVisible(false);
             contenedor.validate();
@@ -521,7 +521,7 @@ actualizaciones.setVisible(false);
             transferir.setVisible(false);
             corte.setVisible(false);
             confi.setVisible(false);
-             reporte.setVisible(false);
+            
              transferencia.setVisible(false);
             contenedor.add(nube);
             contenedor.validate();
@@ -539,7 +539,7 @@ actualizaciones.setVisible(false);
             transferir.setVisible(false);
             corte.setVisible(false);
             transferencia.setVisible(false);
-            reporte.setVisible(false);
+           
             contenedor.add(confi);
             confi.requerirFoco();
             contenedor.validate();

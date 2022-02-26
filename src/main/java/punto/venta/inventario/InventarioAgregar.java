@@ -15,6 +15,7 @@ import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -23,12 +24,19 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.AreaDAO;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dao.ProductoDAO;
 import punto.venta.dialogos.Confirmacion;
+import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.misclases.ImprimirTicket;
-import punto.venta.misclases.Producto;
+import punto.venta.modelo.Area;
+import punto.venta.modelo.Producto;
+import punto.venta.modelo.response.AreaResponse;
+import punto.venta.modelo.response.ProductoResponse;
+import punto.venta.modelo.response.ResponseGeneral;
 import punto.venta.producto.ProductoArea;
 import punto.venta.utilidades.Utilidades;
 
@@ -39,10 +47,11 @@ import punto.venta.utilidades.Utilidades;
 public class InventarioAgregar extends javax.swing.JPanel {
 
     ProductoDAO obj = new ProductoDAO();
-    ArrayList<Producto> p = new ArrayList();
+    List<Producto> plist = new ArrayList();
     Confirmacion confir = new Confirmacion();
     AreaDAO objArea = new AreaDAO();
     ImprimirTicket objImprimir = new ImprimirTicket();
+    ApiSend api = new ApiSend();
 
     public InventarioAgregar() {
         initComponents();
@@ -50,50 +59,32 @@ public class InventarioAgregar extends javax.swing.JPanel {
         ImageIcon agregar = new ImageIcon("iconos/check.png");
         btnBuscar.setIcon(lupa);
         btnAgregar.setIcon(agregar);
-        llenarCombo();
-        llenarComboArea();
         AutoCompleteDecorator.decorate(comboProductos, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
         AutoCompleteDecorator.decorate(comboAreas, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
     }
 
     public void llenarCombo() {
+        comboProductos.removeAllItems();
+        Producto vacio = new Producto();
+        vacio.setIdProducto(0);
+        comboProductos.addItem(vacio);
+        ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos/" + Datos.idSucursal);
+        plist = res.getProductos();
+        for (Producto p : res.getProductos()) {
+            comboProductos.addItem(p);
 
-        try {
-            p = obj.obtenerProductosSiHuboModificacion(p, true);
-            comboProductos.removeAllItems();
-            comboProductos.addItem("");
-            int i = 0;
-            while (i < p.size()) {
-                comboProductos.addItem(p.get(i).getNombre());
-                i++;
-            }
-        } catch (ClassNotFoundException ex) {
-                 
-            mensaje("Hubo un error en el sistema");
-        } catch (SQLException ex) {
-                 
-            mensaje("Hubo un error en la conexion a la base de datos");
         }
-
     }
 
     public void llenarComboArea() {
 
-        ResultSet areas = objArea.obtenerAreas();
-        if (areas != null) {
-            try {
-                comboAreas.removeAllItems();
-                comboAreas.addItem("");
-                int i = 0;
-                while (areas.next()) {
-                    comboAreas.addItem(areas.getString(2));
-                    i++;
-                }
-            } catch (SQLException ex) {
-                     
-                Logger.getLogger(ProductoArea.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+        comboAreas.removeAllItems();
+        Area vacio = new Area();
+        vacio.setIdArea(0);
+        comboAreas.addItem(vacio);
+        AreaResponse res = api.getAreas(EnviromentLocal.urlG + "areas/" + Datos.idSucursal);
+        for (Area a : res.getAreas()) {
+            comboAreas.addItem(a);
         }
     }
 
@@ -119,7 +110,7 @@ public class InventarioAgregar extends javax.swing.JPanel {
 
         titu = new javax.swing.JLabel();
         codi = new javax.swing.JLabel();
-        comboProductos = new javax.swing.JComboBox<>();
+        comboProductos = new javax.swing.JComboBox<Producto>();
         btnBuscar = new javax.swing.JButton();
         txtCodigo = new javax.swing.JTextField();
         codiso = new javax.swing.JLabel();
@@ -136,7 +127,7 @@ public class InventarioAgregar extends javax.swing.JPanel {
         txtAgregar = new javax.swing.JTextField();
         agrega = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
-        comboAreas = new javax.swing.JComboBox<>();
+        comboAreas = new javax.swing.JComboBox<Area>();
         btnAgregar1 = new javax.swing.JButton();
         codi1 = new javax.swing.JLabel();
         txtPrecioDistribuidor = new javax.swing.JTextField();
@@ -152,7 +143,7 @@ public class InventarioAgregar extends javax.swing.JPanel {
         codi.setText("Nombre:");
 
         comboProductos.setEditable(true);
-        comboProductos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        comboProductos.setModel(new javax.swing.DefaultComboBoxModel<Producto>());
 
         btnBuscar.setBackground(new java.awt.Color(168, 168, 255));
         btnBuscar.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
@@ -235,7 +226,7 @@ public class InventarioAgregar extends javax.swing.JPanel {
         });
 
         comboAreas.setEditable(true);
-        comboAreas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        comboAreas.setModel(new javax.swing.DefaultComboBoxModel<Area>());
         comboAreas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboAreasActionPerformed(evt);
@@ -389,28 +380,38 @@ public class InventarioAgregar extends javax.swing.JPanel {
 
     public void buscar(int opcion) {
         String nombre = "";
+        Producto objP = new Producto();
+
         if (opcion == 1) {
-            nombre = (String) comboProductos.getSelectedItem();
+            objP = (Producto) comboProductos.getSelectedItem();
+            nombre = objP.getDescripcion();
         } else {
             nombre = txtCodigo.getText();
+
+            for (Producto p : plist) {
+                if (p.getCodigo().equals(nombre)) {
+                    objP = p;
+                    break;
+                }
+            }
         }
 
         if (nombre.equalsIgnoreCase("")) {
             mensaje("Por favor ingresa los datos solicitados");
         } else {
 
-            Producto pro = obj.getDatosProducto(nombre, p);
+           
 
-            if (pro == null) {
+            if (objP == null) {
                 mensaje("Código no encontrado, por favor vuelve a intentarlo");
             } else {
-                txtCodigo.setText(pro.getCodigo());
-                txtNombre.setText(pro.getNombre());
-                txtPrecioCosto.setText(pro.getpCosto() + "");
-                txtPrecioVenta.setText(pro.getpVenta() + "");
-                txtPrecioMayoreo.setText(pro.getpMayoreo() + "");
-                txtExistencia.setText(pro.getCantidad() + "");
-                txtPrecioDistribuidor.setText(pro.getpDistribuidor() + "");
+                txtCodigo.setText(objP.getCodigo());
+                txtNombre.setText(objP.getDescripcion());
+                txtPrecioCosto.setText(objP.getPrecioCosto()+"");
+                txtPrecioVenta.setText(objP.getPrecioVenta()+"");
+                txtPrecioMayoreo.setText(objP.getPrecioMayoreo()+"");
+                txtExistencia.setText(objP.getCantidad()+"");
+                txtPrecioDistribuidor.setText(objP.getPrecioDistribuidor()+"");
             }
         }
     }
@@ -431,7 +432,7 @@ public class InventarioAgregar extends javax.swing.JPanel {
                 }
 
             } catch (SQLException ex) {
-                     
+
                 Logger.getLogger(InventarioAgregar.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -462,22 +463,24 @@ public class InventarioAgregar extends javax.swing.JPanel {
         boolean ban = Utilidades.hayVacios(a);
         if (ban == false) {
             try {
-                double total = Double.parseDouble(a[0]) + Double.parseDouble(a[1]);
+                float total = Float.parseFloat(a[0]) + Float.parseFloat(a[1]);
                 String x = "";
-                    x = obj.agregarInventarioProducto(total, a[2], a[1], "Actualizada", "Modificacion");
-                    
-                
-                if (x.equalsIgnoreCase("Inventario agregado exitosamente")) {
+                Producto pinv=(Producto)comboProductos.getSelectedItem();
+                pinv.setCantidad(total);
+                ResponseGeneral res = api.usarAPI(EnviromentLocal.urlG + "productos", pinv, "PUT");
+                mensaje(res.getMensaje());
+               
+                if (res.isRealizado()==true) {
                     llenarCombo();
                     limpiar();
 
                 }
-                mensaje(x);
+            
             } catch (NumberFormatException e) {
-                   
+
                 mensaje("Por favor revisa los datos agregados");
 
-            } 
+            }
 
         } else {
             mensaje("Por favor ingresa la cantidad a agregar");
@@ -518,8 +521,8 @@ public class InventarioAgregar extends javax.swing.JPanel {
     private javax.swing.JLabel codi;
     private javax.swing.JLabel codi1;
     private javax.swing.JLabel codiso;
-    private javax.swing.JComboBox<String> comboAreas;
-    private javax.swing.JComboBox<String> comboProductos;
+    private javax.swing.JComboBox<Area> comboAreas;
+    private javax.swing.JComboBox<Producto> comboProductos;
     private javax.swing.JLabel des;
     private javax.swing.JLabel exis;
     private javax.swing.JLabel preco;

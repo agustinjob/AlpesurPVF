@@ -13,7 +13,7 @@ import javax.swing.ImageIcon;
 import punto.venta.dao.Conexion;
 import punto.venta.dao.Movimientos;
 import punto.venta.dialogos.Confirmacion;
-import punto.venta.misclases.Usuario;
+import punto.venta.modelo.Usuario;
 import punto.venta.utilidades.Utilidades;
 
 /**

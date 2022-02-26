@@ -6,7 +6,7 @@
 package punto.venta.dao;
 
 import punto.venta.misclases.Cliente;
-import punto.venta.misclases.Producto;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

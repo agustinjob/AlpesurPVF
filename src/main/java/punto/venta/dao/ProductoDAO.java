@@ -5,7 +5,6 @@
  */
 package punto.venta.dao;
 
-import punto.venta.misclases.Producto;
 import static java.awt.image.ImageObserver.HEIGHT;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import punto.venta.dialogos.Confirmacion;
+import punto.venta.modelo.Producto;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -83,17 +83,17 @@ public class ProductoDAO {
                 Producto pro = new Producto();
                 pro.setIdProducto(res.getInt(1));
                 pro.setCodigo(res.getString(2));
-                pro.setNombre(res.getString(3));
-                pro.setpCosto(res.getDouble(4));
-                pro.setpVenta(res.getDouble(5));
-                pro.setpMayoreo(res.getDouble(6));
-                pro.setInvMinimo(res.getInt(9));
-                pro.setCantidad(res.getDouble(8));
+                pro.setDescripcion(res.getString(3));
+                pro.setPrecioCosto(res.getFloat(4));
+                pro.setPrecioVenta(res.getFloat(5));
+                pro.setPrecioMayoreo(res.getFloat(6));
+                pro.setInventarioMinimo(res.getInt(9));
+                pro.setCantidad(res.getFloat(8));
                 pro.setArea(res.getString(11));
-                pro.setpDistribuidor(res.getDouble(7));
-                pro.setIdSucursal(res.getString("idSucursal"));
+                pro.setPrecioDistribuidor(res.getFloat(7));
+                pro.setIdSucursal(res.getInt("idSucursal"));
 
-                //    System.out.println("Codigo: " + pro.getCodigo() + " Nombre: " +pro.getNombre());
+                //    System.out.println("Codigo: " + pro.getCodigo() + " Nombre: " +pro.getDescripcion());
                 listado.add(pro);
 
             }
@@ -114,16 +114,15 @@ public class ProductoDAO {
         while (res.next()) {
 
             Producto pro = new Producto();
-            pro.setIdProducto(res.getInt(1));
+           pro.setIdProducto(res.getInt(1));
             pro.setCodigo(res.getString(2));
-            pro.setNombre(res.getString(3));
-            pro.setpCosto(res.getDouble(4));
-            pro.setpVenta(res.getDouble(5));
-            pro.setpMayoreo(res.getDouble(6));
-            pro.setInvMinimo(res.getInt(8));
-            pro.setCantidad(res.getDouble(7));
-            //    System.out.println("Codigo: " + pro.getCodigo() + " Nombre: " +pro.getNombre());
-
+            pro.setDescripcion(res.getString(3));
+            pro.setPrecioCosto(res.getFloat(4));
+            pro.setPrecioVenta(res.getFloat(5));
+            pro.setPrecioMayoreo(res.getFloat(6));
+            pro.setInventarioMinimo(res.getInt(8));
+            pro.setCantidad(res.getFloat(7));
+        
             listado.add(pro);
 
         }
@@ -145,10 +144,10 @@ public class ProductoDAO {
                 p = lista.get(i);
                 if (tipo == 1) {
 
-                    produ = p.getpVenta() + "";
+                    produ = p.getPrecioVenta() + "";
                 } else {
 
-                    produ = p.getpMayoreo() + "";
+                    produ = p.getPrecioMayoreo() + "";
                 }
                 break;
             }
@@ -161,7 +160,7 @@ public class ProductoDAO {
     public Producto getDatosProducto(String nombre, ArrayList<Producto> lista) {
         int i = 0;
         Producto p = new Producto();
-        p.setNombre("");
+        p.setDescripcion("");
 
         try {
             Statement s = conn.createStatement();
@@ -173,13 +172,13 @@ public class ProductoDAO {
             p.setArea(pro.getString("area"));
             p.setCantidad(pro.getInt("cantidad"));
             p.setCodigo(pro.getString("codigo"));
-            p.setIdSucursal(pro.getString("idSucursal"));
-            p.setInvMinimo(pro.getInt("inventarioMinimo"));
-            p.setNombre(pro.getString("descripcion"));
-            p.setpCosto(pro.getDouble("precioCosto"));
-            p.setpDistribuidor(pro.getDouble("precioDistribuidor"));
-            p.setpMayoreo(pro.getDouble("precioMayoreo"));
-            p.setpVenta(pro.getDouble("precioVenta"));
+            p.setIdSucursal(pro.getInt("idSucursal"));
+            p.setInventarioMinimo(pro.getInt("inventarioMinimo"));
+            p.setDescripcion(pro.getString("descripcion"));
+            p.setPrecioCosto(pro.getFloat("precioCosto"));
+            p.setPrecioDistribuidor(pro.getFloat("precioDistribuidor"));
+            p.setPrecioMayoreo(pro.getFloat("precioMayoreo"));
+            p.setPrecioVenta(pro.getFloat("precioVenta"));
             return p;
         } catch (SQLException ex) {
                  
@@ -197,8 +196,8 @@ public class ProductoDAO {
         //tipo = 2 por codigo
         if (tipo == 1) {
             while (lista.size() > i) {
-                //System.out.println(lista.get(i).getNombre());
-                if (lista.get(i).getNombre().trim().equalsIgnoreCase(nombre) || lista.get(i).getCodigo().trim().equalsIgnoreCase(nombre)) {
+                //System.out.println(lista.get(i).getDescripcion());
+                if (lista.get(i).getDescripcion().trim().equalsIgnoreCase(nombre) || lista.get(i).getCodigo().trim().equalsIgnoreCase(nombre)) {
                     p = lista.get(i);
                     produ = buscarProductoPorCodigo(p.getCodigo(), tipoPrecio);
 
@@ -253,11 +252,11 @@ public class ProductoDAO {
         try {
 
             Statement s = conn.createStatement();
-            int modificar = s.executeUpdate("UPDATE producto SET `codigo`='" + p.getCodigo() + "' , `descripcion`='" + p.getNombre() + "', `precioDistribuidor`=" + p.getpDistribuidor()
-                    + ",`precioCosto`=" + p.getpCosto() + ",`precioVenta`=" + p.getpVenta() + ",`precioMayoreo`=" + p.getpMayoreo() + ",`cantidad`=" + p.getCantidad() + ",`inventarioMinimo`=" + p.getInvMinimo() + ", `area`='" + p.getArea() + "', `estatus`='" + estatus + "', `operacion`='" + operacion + "'   WHERE codigo ='" + temporal.getCodigo() + "' and idSucursal = " + Datos.idSucursal + " and eliminado = false ");
-        //    System.out.println("UPDATE producto SET `codigo`='" + p.getCodigo() + "' , `descripcion`='" + p.getNombre() + "', `precioDistribuidor`=" + p.getpDistribuidor()
-          //          + ",`precioCosto`=" + p.getpCosto() + ",`precioVenta`=" + p.getpVenta() + ",`precioMayoreo`=" + p.getpMayoreo() + ",`cantidad`=" + p.getCantidad() + ",`inventarioMinimo`=" + p.getInvMinimo() + ", `area`='" + p.getArea() + "', `estatus`='" + estatus + "', `operacion`='" + operacion + "'   WHERE codigo ='" + temporal.getCodigo() + "' and idSucursal = " + Datos.idSucursal + " and eliminado = false ");
-            String mensajeBita = "Modificó los datos del producto " + p.getNombre();
+            int modificar = s.executeUpdate("UPDATE producto SET `codigo`='" + p.getCodigo() + "' , `descripcion`='" + p.getDescripcion() + "', `precioDistribuidor`=" + p.getPrecioDistribuidor()
+                    + ",`precioCosto`=" + p.getPrecioCosto() + ",`precioVenta`=" + p.getPrecioVenta() + ",`precioMayoreo`=" + p.getPrecioMayoreo() + ",`cantidad`=" + p.getCantidad() + ",`inventarioMinimo`=" + p.getInventarioMinimo() + ", `area`='" + p.getArea() + "', `estatus`='" + estatus + "', `operacion`='" + operacion + "'   WHERE codigo ='" + temporal.getCodigo() + "' and idSucursal = " + Datos.idSucursal + " and eliminado = false ");
+        //    System.out.println("UPDATE producto SET `codigo`='" + p.getCodigo() + "' , `descripcion`='" + p.getDescripcion() + "', `precioDistribuidor`=" + p.getPrecioDistribuidor()
+          //          + ",`precioCosto`=" + p.getPrecioCosto() + ",`precioVenta`=" + p.getPrecioVenta() + ",`precioMayoreo`=" + p.getPrecioMayoreo() + ",`cantidad`=" + p.getCantidad() + ",`inventarioMinimo`=" + p.getInventarioMinimo() + ", `area`='" + p.getArea() + "', `estatus`='" + estatus + "', `operacion`='" + operacion + "'   WHERE codigo ='" + temporal.getCodigo() + "' and idSucursal = " + Datos.idSucursal + " and eliminado = false ");
+            String mensajeBita = "Modificó los datos del producto " + p.getDescripcion();
             bita.registrarBitacora(mensajeBita);
             return "Datos del producto modificados";
         } catch (SQLException ex) {
@@ -276,7 +275,7 @@ public class ProductoDAO {
         try {
             Statement s = conn.createStatement();
             boolean modificar = s.execute("UPDATE producto SET `eliminado`= true, estatus='" + estatus + "', operacion='" + operacion + "' WHERE codigo ='" + p.getCodigo() + "' and idSucursal= " + Datos.idSucursal);
-            String mensajeBita = "Eliminó los datos del producto " + p.getNombre();
+            String mensajeBita = "Eliminó los datos del producto " + p.getDescripcion();
             bita.registrarBitacora(mensajeBita);
             return "Datos del producto eliminados";
         } catch (SQLException e) {
@@ -303,7 +302,7 @@ public class ProductoDAO {
             s.executeUpdate(disminuir);
             conn.commit();
 
-            String mensajeBita = "Se realizó una transferencia del producto " + transformar.getNombre() + "en varios del producto " + agregar.getNombre();
+            String mensajeBita = "Se realizó una transferencia del producto " + transformar.getDescripcion() + "en varios del producto " + agregar.getDescripcion();
             bita.registrarBitacora(mensajeBita);
             return "Transacción realizada exitosamente";
         } catch (SQLException ex) {

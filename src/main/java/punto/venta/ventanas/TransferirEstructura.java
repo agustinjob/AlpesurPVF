@@ -10,16 +10,22 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dao.ProductoDAO;
 import punto.venta.dialogos.Confirmacion;
-import punto.venta.misclases.Producto;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.Producto;
+import punto.venta.modelo.response.*;
+
 import punto.venta.utilidades.Utilidades;
 import static punto.venta.utilidades.Utilidades.confirma;
 
@@ -29,12 +35,10 @@ import static punto.venta.utilidades.Utilidades.confirma;
  */
 public class TransferirEstructura extends javax.swing.JPanel {
 
-    ProductoDAO obj = new ProductoDAO();
-    Producto pro1 = new Producto();
-    Producto pro2 = new Producto();
-    ArrayList<Producto> p = new ArrayList();
-    Confirmacion confirma = new Confirmacion();
-
+    
+    
+    ApiSend api = new ApiSend();
+    
     public TransferirEstructura() {
         initComponents();
         ImageIcon a3 = new ImageIcon("iconos/proximo.png");
@@ -62,46 +66,23 @@ public class TransferirEstructura extends javax.swing.JPanel {
         agregarA.setText("");
     }
 
-    public void mensaje(String men) {
-        confirma.setMensaje(men);
-        confirma.setVisible(true);
-        Timer timer = new Timer(1100, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                confirma.dispose();
-                producT.requestFocus();
-            }
 
-        });
-        timer.setRepeats(false);
-        timer.start();
-    }
 
     public void requerirFoco() {
         producT.requestFocus();
     }
 
     public void llenarCombo() {
-
-        try {
-            p = obj.obtenerProductosSiHuboModificacion(p, true);
-            int i = 0;
-            producA.removeAllItems();
-            producT.removeAllItems();
-            producA.addItem("");
-            producT.addItem("");
-            while (i < p.size()) {
-                producA.addItem(p.get(i).getNombre());
-                producT.addItem(p.get(i).getNombre());
-                i++;
-            }
-        } catch (ClassNotFoundException ex) {
-           
-            mensaje("Hubo un error en el sistema");
-
-        } catch (SQLException ex) {
-           
-            mensaje("Hubo un error con la base de datos");
+        producA.removeAllItems();
+        producT.removeAllItems();
+        Producto vacio = new Producto();
+        vacio.setIdProducto(0);
+        producA.addItem(vacio);
+        producT.addItem(vacio);
+        ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos/" + Datos.idSucursal);
+        for (Producto p : res.getProductos()) {
+            producA.addItem(p);
+            producT.addItem(p);
         }
 
     }
@@ -120,7 +101,7 @@ public class TransferirEstructura extends javax.swing.JPanel {
         cantidadA = new javax.swing.JTextField();
         agregarA = new javax.swing.JTextField();
         btnBuscarA = new javax.swing.JButton();
-        producA = new javax.swing.JComboBox<>();
+        producA = new javax.swing.JComboBox<Producto>();
         jPanel7 = new javax.swing.JPanel();
         exportar = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
@@ -129,7 +110,7 @@ public class TransferirEstructura extends javax.swing.JPanel {
         cantidadT = new javax.swing.JTextField();
         agregarT = new javax.swing.JTextField();
         btnBuscarT = new javax.swing.JButton();
-        producT = new javax.swing.JComboBox<>();
+        producT = new javax.swing.JComboBox<Producto>();
         btnTransformar = new javax.swing.JButton();
         panelTicket3 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
@@ -178,7 +159,7 @@ public class TransferirEstructura extends javax.swing.JPanel {
         });
 
         producA.setEditable(true);
-        producA.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        producA.setModel(new javax.swing.DefaultComboBoxModel<Producto>());
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -203,7 +184,7 @@ public class TransferirEstructura extends javax.swing.JPanel {
                                 .addComponent(producA, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnBuscarA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 101, Short.MAX_VALUE))
+                .addGap(0, 95, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -264,7 +245,7 @@ public class TransferirEstructura extends javax.swing.JPanel {
         });
 
         producT.setEditable(true);
-        producT.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        producT.setModel(new javax.swing.DefaultComboBoxModel<Producto>());
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -285,7 +266,7 @@ public class TransferirEstructura extends javax.swing.JPanel {
                         .addComponent(btnBuscarT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(exportar)
                     .addComponent(agregarT, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -405,13 +386,11 @@ public class TransferirEstructura extends javax.swing.JPanel {
         buscarAgregar();
     }//GEN-LAST:event_btnBuscarAActionPerformed
     public void buscarAgregar() {
-        String p2 = (String) producA.getSelectedItem();
-        if (p2.equalsIgnoreCase("")) {
-            mensaje("Por favor selecciona un producto y presiona el botón 'Buscar'");
-
+        Producto p2 = (Producto) producA.getSelectedItem();
+        if (p2.getIdProducto()==0) {
+            Utilidades.mensajePorTiempo("Por favor selecciona un producto y presiona el botón 'Buscar'");
         } else {
-            pro2 = obj.getDatosProducto(p2, p);
-            cantidadA.setText(pro2.getCantidad() + "");
+            cantidadA.setText(p2.getCantidad() + "");
         }
     }
     private void btnBuscarTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarTActionPerformed
@@ -419,14 +398,13 @@ public class TransferirEstructura extends javax.swing.JPanel {
     }//GEN-LAST:event_btnBuscarTActionPerformed
 
     public void buscarTransferir() {
-        String p1 = (String) producT.getSelectedItem();
-        if (p1.equalsIgnoreCase("")) {
+        Producto p1 = (Producto) producT.getSelectedItem();
+        if (p1.getIdProducto()==0) {
 
-            mensaje("Por favor selecciona un producto y presiona el botón 'Buscar'");
+            Utilidades.mensajePorTiempo("Por favor selecciona un producto y presiona el botón 'Buscar'");
 
         } else {
-            pro1 = obj.getDatosProducto(p1, p);
-            cantidadT.setText(pro1.getCantidad() + "");
+            cantidadT.setText(p1.getCantidad() + "");
         }
     }
     private void btnTransformarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransformarActionPerformed
@@ -439,49 +417,55 @@ public class TransferirEstructura extends javax.swing.JPanel {
         a[1] = cantidadA.getText();
         a[2] = agregarT.getText();
         a[3] = agregarA.getText();
-        String p1 = (String) producT.getSelectedItem();
-        String p2 = (String) producA.getSelectedItem();
-        if (p1.equalsIgnoreCase("") || p2.equalsIgnoreCase("")) {
+        Producto p1 = (Producto) producT.getSelectedItem();
+        Producto p2 = (Producto) producA.getSelectedItem();
+        if (p1.getIdProducto() == 0 || p2.getIdProducto() == 0) {
 
-            mensaje("Por favor selecciona un producto y presiona el botón 'Buscar'");
+            Utilidades.mensajePorTiempo("Por favor selecciona un producto y presiona el botón 'Buscar'");
         } else {
-            if (p1.equalsIgnoreCase(p2)) {
+            if (p1.getIdProducto() == p2.getIdProducto()) {
 
-                mensaje("No puedes transferir al mismo producto");
+                Utilidades.mensajePorTiempo("No puedes transferir al mismo producto");
             } else {
 
                 boolean datosC = true;
                 boolean hay = Utilidades.hayVacios(a);
                 if (hay == true) {
-                    mensaje("Por favor ingresa todos los datos solicitados");
+                    Utilidades.mensajePorTiempo("Por favor ingresa todos los datos solicitados");
                 } else {
-                    double ct, ca, at, aa;
-                    ct = ca = aa = at = 0.0D;
+                    float ct, ca, at, aa;
+                    ct = ca = aa = at = 0.0F;
                     try {
-                        ct = Double.parseDouble(a[0]);
-                        ca = Double.parseDouble(a[1]);
-                        aa = Double.parseDouble(a[2]);
-                        at = Double.parseDouble(a[3]);
+                        ct = Float.parseFloat(a[0]);
+                        ca = Float.parseFloat(a[1]);
+                        aa = Float.parseFloat(a[2]);
+                        at = Float.parseFloat(a[3]);
                     } catch (NumberFormatException e) {
-                        mensaje("Por favor revisa los datos ingresados");
+                        Utilidades.mensajePorTiempo("Por favor revisa los datos ingresados");
                         datosC = false;
                     }
                     if (datosC == true) {
                         if (ct > aa) {
-                            try {
-                                String mensa = "";
-                                String estatus = "En proceso";
-                                mensa = obj.transferir(pro1, pro2, aa, at, "Actualizada", "Modificacion");
-                                mensaje(mensa);
-                                llenarCombo();
-                                limpiarDatos();
-                            } catch (ClassNotFoundException ex) {
-                                mensaje("Hubo un error en el sistema");
-                            } catch (SQLException ex) {
+                            List<Producto> lista = new ArrayList<Producto>();
+                            float totalDisminuir =  p1.getCantidad()-aa;
+                            float totalAgregar = p2.getCantidad() + at;
+                            p1.setCantidad(totalDisminuir);
+                            p2.setCantidad(totalAgregar);
+                            lista.add(p1);
+                            lista.add(p2);
 
-                            }
+                            ProductoResponse pr = new ProductoResponse();
+                            pr.setProductos(lista);
+                            pr.setMensaje("");
+                            pr.setRealizado(true);
+
+                           ResponseGeneral r= api.usarAPI(EnviromentLocal.urlG + "productos-transferir", pr, "POST");
+                           Utilidades.mensajePorTiempo(r.getMensaje());
+                            llenarCombo();
+                            limpiarDatos();
+
                         } else {
-                            mensaje("El número de productos a agregar debe ser igual o menor a la cantidad de productos que hay en inventario");
+                            Utilidades.mensajePorTiempo("El número de productos a agregar debe ser igual o menor a la cantidad de productos que hay en inventario");
                         }
                     }
                 }
@@ -529,7 +513,7 @@ public class TransferirEstructura extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JLabel l1;
     private javax.swing.JPanel panelTicket3;
-    private javax.swing.JComboBox<String> producA;
-    private javax.swing.JComboBox<String> producT;
+    private javax.swing.JComboBox<Producto> producA;
+    private javax.swing.JComboBox<Producto> producT;
     // End of variables declaration//GEN-END:variables
 }

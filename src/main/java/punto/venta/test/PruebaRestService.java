@@ -10,9 +10,13 @@ import java.sql.SQLException;
 import java.util.Timer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import punto.servicio.rest.ApiSend;
 import punto.servicio.rest.RestDatos;
 import punto.venta.dao.Conexion;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.response.VentasResponse;
 import punto.venta.utilidades.Utilidades;
+import punto.venta.modelo.ModeloFechas;
 
 
 /**
@@ -22,19 +26,13 @@ import punto.venta.utilidades.Utilidades;
 public class PruebaRestService {
     
     public static void main(String[]Job){
-        
-        while(true){
-        
-            try {
-                Thread.sleep(5000);
-                
-               
+       ModeloFechas fechs= new ModeloFechas();
+       ApiSend api = new ApiSend();
+       
+         fechs.setFechaI("2022-02-01");
+         fechs.setFechaF("2022-02-22");
               
-            } catch (InterruptedException ex) {
-                      
-            }
-            
-        }
+              VentasResponse ven=api.getVentas(EnviromentLocal.urlG+"ventas-fiff", fechs);
     
      
        

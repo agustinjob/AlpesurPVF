@@ -1,4 +1,4 @@
-    /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -10,15 +10,22 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dao.TicketDAO;
 import punto.venta.dao.VentasDAO;
+import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.misclases.ImprimirTicket;
+import punto.venta.modelo.Ventas;
+import punto.venta.modelo.response.ProductoResponse;
+import punto.venta.modelo.response.VentasResponse;
 import punto.venta.utilidades.Utilidades;
 import punto.venta.ventanas.VentasEstructura;
 
@@ -30,22 +37,24 @@ public class Devoluciones extends javax.swing.JFrame {
 
     Date d = new Date();
     DateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+    DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
     TicketDAO t = new TicketDAO();
     VentasDAO v = new VentasDAO();
     Confirmacion confir;
     String idTicket = "";
-    String fecha,hora ="";
+    String fecha, hora = "";
     VentasEstructura ventas;
+    ApiSend api = new ApiSend();
 
     public Devoluciones(VentasEstructura ventas) {
         initComponents();
         setTitle("Devoluciones");
         setLocationRelativeTo(null);
-        this.ventas=ventas;
- 
+        this.ventas = ventas;
+
         seleccionaFecha.setDate(d);
-            //ancho,largo
-        setSize(350,500);
+        //ancho,largo
+        setSize(350, 500);
 
     }
 
@@ -57,7 +66,7 @@ public class Devoluciones extends javax.swing.JFrame {
                 modelo.removeRow(0);
             }
         } catch (Exception e) {
-               
+
             Utilidades.confirma(confir, "Error al limpiar la tabla");
         }
     }
@@ -68,28 +77,23 @@ public class Devoluciones extends javax.swing.JFrame {
         limpiarTabla(tablaTickets);
         String x[] = new String[3];
 
-        try {
-            //llenar la tabla de tickets
-            Date fecha = seleccionaFecha.getDate();
-            ResultSet res = t.getTickets(fecha);
-            res.last();
-            if (res.getRow() == 0) {
-                  Utilidades.mensajePorTiempo("No hay datos en esa fecha");
-            } else {
-                res.beforeFirst();
-                while (res.next()) {
+        Date fechas = seleccionaFecha.getDate();
+        VentasResponse res = api.getVentas(EnviromentLocal.urlG + "ventas/" + formatoFecha.format(fechas));
+        List<Ventas> lista = res.getVentas();
 
-                    x[0] = res.getString("idTicket");
-                    x[1] = res.getString("fecha");
-                    x[2] = res.getString("hora");
-                    m.addRow(x);
-                }
+        if (lista.isEmpty()) {
+            Utilidades.mensajePorTiempo("No hay datos en esa fecha");
+        } else {
+            for (Ventas v : lista) {
 
+                x[0] = v.getIdTicket() + "";
+                x[1] = formatoFecha.format(v.getFecha());
+                x[2] = formatoHora.format(v.getFecha());
+                m.addRow(x);
             }
-        } catch (SQLException ex) {
-                 
-           Utilidades.confirma(confir, "Error con la conexión a la base de datos");
+
         }
+
     }
 
     @SuppressWarnings("unchecked")
@@ -286,10 +290,9 @@ public class Devoluciones extends javax.swing.JFrame {
         } else {
             String id = (String) tablaTickets.getValueAt(row, 0);
 
-            TicketDevolverTodo obj = new TicketDevolverTodo(id, this,fecha,hora);
+            TicketDevolverTodo obj = new TicketDevolverTodo(id, this, fecha, hora);
             obj.setVisible(true);
             ventas.llenarCombo();
-            
 
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -308,41 +311,36 @@ public class Devoluciones extends javax.swing.JFrame {
     }//GEN-LAST:event_tablaVentasdevolverCantidadDeArticulos
 
     private void tablaTicketseventoClickTablaTickets(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaTicketseventoClickTablaTickets
-          setSize(840,500);
+        setSize(840, 500);
         int row = tablaTickets.getSelectedRow();
         DefaultTableModel m = (DefaultTableModel) tablaTickets.getModel();
-        
+
         idTicket = (String) m.getValueAt(row, 0);
         fecha = (String) m.getValueAt(row, 1);
         hora = (String) m.getValueAt(row, 2);
-        
+
         DefaultTableModel m2 = (DefaultTableModel) tablaVentas.getModel();
         limpiarTabla(tablaVentas);
         String x[] = new String[5];
 
-        try {
-            //llenar la tabla de tickets
+        VentasResponse res = api.getVentas(EnviromentLocal.urlG + "ventas-ticket/" + idTicket + "/" + fecha + "%20" + hora);
+        System.out.println(EnviromentLocal.urlG + "ventas-ticket/" + idTicket + "/" + fecha +" "+ hora);
+        List<Ventas> lista = res.getVentas();
 
-            ResultSet res = v.getVentasPorTicket(idTicket,fecha,hora);
-            res.last();
-            if (res.getRow() == 0) {
+        if (lista==null) {
+            
+        } else {
 
-            } else {
-                res.beforeFirst();
-                while (res.next()) {
-
-                    x[0] = res.getString("codigo");
-                    x[1] = res.getString("nombre");
-                    x[2] = res.getString("cantidad");
-                    x[3] = res.getString("importe");
-                    m2.addRow(x);
-                }
-
+            for (Ventas v : lista) {
+                x[0] = v.getCodigo();
+                x[1] = v.getNombre();
+                x[2] = v.getCantidad() + "";
+                x[3] = v.getImporte() + "";
+                m2.addRow(x);
             }
-        } catch (SQLException ex) {
-                 
-            Logger.getLogger(Devoluciones.class.getName()).log(Level.SEVERE, null, ex);
+
         }
+
     }//GEN-LAST:event_tablaTicketseventoClickTablaTickets
 
     private void btnbuscar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscar1ActionPerformed
@@ -350,25 +348,25 @@ public class Devoluciones extends javax.swing.JFrame {
     }//GEN-LAST:event_btnbuscar1ActionPerformed
 
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
-    int row=tablaTickets.getSelectedRow();
-    if(row<0){
-        Utilidades.mensajePorTiempo("Tienes que seleccionar un ticket");
-    }else{
-    String idTick=(String)tablaTickets.getModel().getValueAt(row, 0);
-    String fecha=(String)tablaTickets.getModel().getValueAt(row, 1);
-    String hora=(String)tablaTickets.getModel().getValueAt(row, 2);
-    DefaultTableModel model=(DefaultTableModel) tablaVentas.getModel();
-    int i=0;
-    double total=0.0;
-    while(i<model.getRowCount()){
-        
-    total=total+Double.parseDouble((String)model.getValueAt(i, 3));
-    i++;
-    }
-ImprimirTicket imp= new ImprimirTicket();   
-String ticketRes=imp.convertirModeloAStringReimprimirTicket(model, total+"", fecha, hora, idTick);
-imp.imprimirTicket(ticketRes);
-    }
+        int row = tablaTickets.getSelectedRow();
+        if (row < 0) {
+            Utilidades.mensajePorTiempo("Tienes que seleccionar un ticket");
+        } else {
+            String idTick = (String) tablaTickets.getModel().getValueAt(row, 0);
+            String fecha = (String) tablaTickets.getModel().getValueAt(row, 1);
+            String hora = (String) tablaTickets.getModel().getValueAt(row, 2);
+            DefaultTableModel model = (DefaultTableModel) tablaVentas.getModel();
+            int i = 0;
+            double total = 0.0;
+            while (i < model.getRowCount()) {
+
+                total = total + Double.parseDouble((String) model.getValueAt(i, 3));
+                i++;
+            }
+            ImprimirTicket imp = new ImprimirTicket();
+            String ticketRes = imp.convertirModeloAStringReimprimirTicket(model, total + "", fecha, hora, idTick);
+            imp.imprimirTicket(ticketRes);
+        }
 
     }//GEN-LAST:event_btnImprimirActionPerformed
 

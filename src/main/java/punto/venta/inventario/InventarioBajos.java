@@ -7,13 +7,19 @@ package punto.venta.inventario;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dao.ProductoDAO;
 import punto.venta.dialogos.Confirmacion;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.response.*;
+import punto.venta.modelo.Producto;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -24,6 +30,7 @@ public class InventarioBajos extends javax.swing.JPanel {
 
     ProductoDAO obj = new ProductoDAO();
     Confirmacion confir;
+    ApiSend api = new ApiSend();
     public InventarioBajos() {
         initComponents();
        
@@ -37,36 +44,33 @@ public class InventarioBajos extends javax.swing.JPanel {
         modelo.addColumn("Precio venta");
         modelo.addColumn("Existencia");
         modelo.addColumn("Inventario minimo");
-        ResultSet res = obj.productosBajoInventario();
+    
+         ProductoResponse data = api.getProductos(EnviromentLocal.urlG + "productos-inv-bajo/" + Datos.idSucursal);
+         System.out.println(EnviromentLocal.urlG + "productos-inv-bajo/" + Datos.idSucursal);
+         List<Producto> prods= data.getProductos();
+
         
-        int i = 0;
-        String x[] = new String[5];
-        try {
-            if(res!=null){
-             res.last();
-            if (res.getRow() == 0) {
-              Utilidades.confirma(confir, "No tienes productos con inventario bajo");
+               String x[] = new String[5];
+ 
+            if (prods.isEmpty()) {
+              Utilidades.mensajePorTiempo("No tienes productos con inventario bajo");
             } else {
-                res.beforeFirst();
+             
                 
-                while (res.next()) {
-                    x[0]=res.getString(2);
-                    x[1]=res.getString(3);
-                    x[2]=res.getString(5);
-                    x[3]=res.getString(7);
-                    x[4]=res.getString(8);
+                for (Producto p: prods) {
+                    x[0]=p.getCodigo();
+                    x[1]=p.getDescripcion();
+                    x[2]=p.getPrecioVenta()+"";
+                    x[3]=p.getCantidad()+"";
+                    x[4]=p.getInventarioMinimo()+"";
                     modelo.addRow(x);
-                    
-                    i++;
+          
                 }
                 
                 tablaInventario.setModel(modelo);
             }
-            }
-        } catch (SQLException ex) {
-                 
-           Utilidades.confirma(confir, "Hubo un error con la conexion a la base de datos");
-        }
+            
+   
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

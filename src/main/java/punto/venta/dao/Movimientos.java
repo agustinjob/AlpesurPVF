@@ -57,7 +57,7 @@ public class Movimientos {
       
       public ResultSet getEntradasDelDia(String tipo) throws ClassNotFoundException, SQLException{
         Statement s = conn.createStatement();
-        ResultSet rs = s.executeQuery("SELECT * FROM `movimientos_extras` where tipo= '"+ tipo +"' and fecha= '" + formatoFecha.format(d)+"' and idUsuario = "+idUsuario);
+        ResultSet rs = s.executeQuery("SELECT * FROM `movimientos_extras` where tipo= '"+ tipo +"' and fecha= '" + formatoFecha.format(d)+"' and idUsuario = "+idUsuario +" and idSucursal= "+ Datos.idSucursal);
         System.out.println("SELECT * FROM `movimientos_extras` where tipo= '"+ tipo +"' and fecha= '" + formatoFecha.format(d)+"' and idUsuario = "+idUsuario);
         rs.last();
         if (rs.getRow() == 0) {

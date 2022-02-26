@@ -31,7 +31,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import punto.venta.dao.UsuarioDAO;
 import punto.venta.dialogos.Confirmacion;
-import punto.venta.misclases.Usuario;
+import punto.venta.modelo.Usuario;
 
 /**
  *

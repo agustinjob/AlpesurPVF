@@ -15,10 +15,15 @@ import java.util.logging.Logger;
 import javax.swing.Timer;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dao.ProductoDAO;
 import punto.venta.dialogos.Confirmacion;
-import punto.venta.misclases.Producto;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.Producto;
+import punto.venta.modelo.response.ProductoResponse;
+import punto.venta.modelo.response.ResponseGeneral;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -30,10 +35,10 @@ public class ProductoEliminar extends javax.swing.JPanel {
     ProductoDAO obj = new ProductoDAO();
     ArrayList<Producto> lista = new ArrayList();
     Confirmacion confirma = new Confirmacion();
+    ApiSend api = new ApiSend();
 
     public ProductoEliminar() {
         initComponents();
-        llenarCombo();
         AutoCompleteDecorator.decorate(comboProductos, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
     }
 
@@ -47,23 +52,15 @@ public class ProductoEliminar extends javax.swing.JPanel {
     }
 
     public void llenarCombo() {
-        try {
-            lista = obj.obtenerProductosSiHuboModificacion(lista, true);
-            comboProductos.removeAllItems();
-            int i = 0;
-            comboProductos.addItem("");
-            while (i < lista.size()) {
-                comboProductos.addItem(lista.get(i).getNombre());
-                i++;
-            }
-        } catch (ClassNotFoundException ex) {
-           
-            Logger.getLogger(ProductoEliminar.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-           
-            Logger.getLogger(ProductoEliminar.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        comboProductos.removeAllItems();
+        Producto vacio = new Producto();
+        vacio.setIdProducto(0);
+        comboProductos.addItem(vacio);
 
+        ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos/" + Datos.idSucursal);
+        for (Producto p : res.getProductos()) {
+            comboProductos.addItem(p);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -73,7 +70,7 @@ public class ProductoEliminar extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        comboProductos = new javax.swing.JComboBox<>();
+        comboProductos = new javax.swing.JComboBox<Producto>();
         btn5 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -88,7 +85,7 @@ public class ProductoEliminar extends javax.swing.JPanel {
         jLabel11.setText("Teclee el número o nombre del producto:");
 
         comboProductos.setEditable(true);
-        comboProductos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        comboProductos.setModel(new javax.swing.DefaultComboBoxModel<Producto>());
 
         btn5.setBackground(new java.awt.Color(255, 102, 0));
         btn5.setFont(new java.awt.Font("Cambria", 0, 14)); // NOI18N
@@ -136,7 +133,7 @@ public class ProductoEliminar extends javax.swing.JPanel {
                 .addComponent(comboProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btn5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(284, Short.MAX_VALUE))
+                .addContainerGap(285, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -171,8 +168,8 @@ public class ProductoEliminar extends javax.swing.JPanel {
     }
 
     public void guardar() {
-        Utilidades.im(comboProductos.getSelectedItem().toString());
-        if (comboProductos.getSelectedItem().toString().equalsIgnoreCase("")) {
+       Producto selecc=(Producto) comboProductos.getSelectedItem();
+        if (selecc.getCantidad()==0) {
             mensaje("Por favor ingresa el nombre o código de un producto");
             Timer timer = new Timer(1000, new ActionListener() {
                 @Override
@@ -185,22 +182,10 @@ public class ProductoEliminar extends javax.swing.JPanel {
             timer.start();
 
         } else {
-            String nombre = (String) comboProductos.getSelectedItem();
 
-            Producto info = new Producto();
-            info = obj.getDatosProducto(nombre, lista);
-
-            if (info.getNombre().equalsIgnoreCase("")) {
-                mensaje("Producto no encontrado en la base de datos");
-            } else {
-                String estatus = "En proceso";
-
-                String x = "";
-
-                x = obj.eliminarProducto(info, "Actualizada", "Eliminacion");
-
-                mensaje(x);
-                if (x.equalsIgnoreCase("Datos del producto eliminados")) {
+                ResponseGeneral res = api.usarAPI(EnviromentLocal.urlG + "productos/"+selecc.getIdProducto(), selecc, "DELETE");
+                Utilidades.mensajePorTiempo(res.getMensaje());
+                if (res.isRealizado() == true) {
                     Timer timer = new Timer(1000, new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -215,7 +200,7 @@ public class ProductoEliminar extends javax.swing.JPanel {
                     llenarCombo();
                 }
 
-            }
+   
         }
     }
     private void btn5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn5KeyPressed
@@ -228,7 +213,7 @@ public class ProductoEliminar extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn5;
-    private javax.swing.JComboBox<String> comboProductos;
+    private javax.swing.JComboBox<Producto> comboProductos;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;

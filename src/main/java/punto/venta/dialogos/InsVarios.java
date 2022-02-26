@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import punto.venta.dao.ProductoDAO;
-import punto.venta.misclases.Producto;
+import punto.venta.modelo.Producto;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -28,7 +28,7 @@ public class InsVarios extends javax.swing.JFrame {
     Confirmacion confir;
     
     public InsVarios(DefaultTableModel datos, int tipoPrecio) {
-        try {
+        
             initComponents();
             setLocationRelativeTo(null);
             this.tipoPrecio = tipoPrecio;
@@ -39,15 +39,9 @@ public class InsVarios extends javax.swing.JFrame {
             btnb2.setIcon(b);
             l1.setIcon(c);
             this.datos = datos;
-            p = obj.obtenerProductosSiHuboModificacion(p, true);
+            p = null;//obj.obtenerProductosSiHuboModificacion(p, true);
             setIconImage(new ImageIcon("iconos/punto-de-venta.png").getImage());
-        } catch (ClassNotFoundException ex) {
-                 
-            Utilidades.confirma(confir, "Hubo un error en el sistema");
-        } catch (SQLException ex) {
-                 
-           Utilidades.confirma(confir, "Hubo un error de conexión a la base de datos");
-        }
+   
     }
 
     
@@ -236,7 +230,7 @@ public class InsVarios extends javax.swing.JFrame {
         String[] info = new String[6];
         String codigo = txtCodigo2.getText();
         String cantidad = (String) txtCantidad.getSelectedItem();
-        info = obj.getProductoPorNombre(codigo, p,2,tipoPrecio);
+        info = null;//obj.getProductoPorNombre(codigo, p,2,tipoPrecio);
 
         if(info[0]==null){
             Utilidades.confirma(confir, "No se ha encontrado ningún producto con ese código");

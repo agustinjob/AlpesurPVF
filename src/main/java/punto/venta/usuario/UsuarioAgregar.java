@@ -11,9 +11,15 @@ import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dao.UsuarioDAO;
 import punto.venta.dialogos.Confirmacion;
+import punto.venta.enviroment.Enviroment;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.Usuario;
+import punto.venta.modelo.response.ResponseGeneral;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -22,7 +28,7 @@ import punto.venta.utilidades.Utilidades;
  */
 public class UsuarioAgregar extends javax.swing.JPanel {
 
-    Confirmacion confirma = new Confirmacion();
+    ApiSend api= new ApiSend();
 
     public UsuarioAgregar() {
         initComponents();
@@ -171,22 +177,7 @@ public class UsuarioAgregar extends javax.swing.JPanel {
         guardar();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    public void mensaje(String men) {
-        confirma.setMensaje(men);
-        confirma.setVisible(true);
 
-        Timer timer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                confirma.dispose();
-                nombre.requestFocus();
-            }
-
-        });
-
-        timer.setRepeats(false);
-        timer.start();
-    }
 
     public void guardar() {
         String a[] = new String[6];
@@ -202,14 +193,20 @@ public class UsuarioAgregar extends javax.swing.JPanel {
 
         boolean bandera = Utilidades.hayVacios(a);
         if (bandera == true) {
-            mensaje("Por favor ingresa todos los datos solicitados");
+            Utilidades.mensajePorTiempo("Por favor ingresa todos los datos solicitados");
         } else {
-            String estatus = "En proceso";
-            String res = "";
-            res = obj.almacena(a, "Actualizada", "Registro");
-            obj.almacena(a, estatus, "Registro");
-
-            mensaje(res);
+            Usuario usu = new Usuario();
+            usu.setDireccion(a[1]);
+            usu.setUsername(a[2]);
+            usu.setPassword(a[3]);
+            usu.setIdSucursal(Datos.idSucursal);
+            usu.setFoto("");
+            usu.setNombre(a[0]);
+            usu.setTelefono(a[5]);
+            usu.setTipoUsuario(a[4]);
+            usu.setPropietario(Datos.propietario);
+            ResponseGeneral res=  api.usarAPI(EnviromentLocal.urlG+"usuarios" , usu, "POST");
+            Utilidades.mensajePorTiempo(res.getMensaje());
             nombre.setText("");
             direccion.setText("");
             email.setText("");

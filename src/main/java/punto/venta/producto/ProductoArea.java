@@ -7,10 +7,18 @@ package punto.venta.producto;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.AreaDAO;
-import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.Area;
+import punto.venta.modelo.response.AreaResponse;
+import punto.venta.modelo.response.ResponseGeneral;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -20,30 +28,23 @@ import punto.venta.utilidades.Utilidades;
 public class ProductoArea extends javax.swing.JPanel {
 
     AreaDAO objArea = new AreaDAO();
+    ApiSend api = new ApiSend();
 
     public ProductoArea() {
         initComponents();
-        llenarCombo();
+
     }
 
     public void llenarCombo() {
 
-        ResultSet areas = objArea.obtenerAreas();
-        if (areas != null) {
-            try {
-                comboAreas.removeAllItems();
-                comboAreas.addItem("");
-                int i = 0;
-                while (areas.next()) {
-                    comboAreas.addItem(areas.getString(2));
-                    i++;
-                }
-            } catch (SQLException ex) {
-               
-                Logger.getLogger(ProductoArea.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        }
+        comboAreas.removeAllItems();
+        Area vacio = new Area();
+        vacio.setIdArea(0);
+        comboAreas.addItem(vacio);
+        AreaResponse res = api.getAreas(EnviromentLocal.urlG + "areas/" + Datos.idSucursal);
+       for(Area a: res.getAreas()){
+       comboAreas.addItem(a);
+       }
     }
 
     @SuppressWarnings("unchecked")
@@ -55,7 +56,7 @@ public class ProductoArea extends javax.swing.JPanel {
         codi = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
         titu1 = new javax.swing.JLabel();
-        comboAreas = new javax.swing.JComboBox<>();
+        comboAreas = new javax.swing.JComboBox<Area>();
         btnBuscar = new javax.swing.JButton();
         codi1 = new javax.swing.JLabel();
 
@@ -84,7 +85,7 @@ public class ProductoArea extends javax.swing.JPanel {
         titu1.setText("ELIMINAR ÁREA");
 
         comboAreas.setEditable(true);
-        comboAreas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        comboAreas.setModel(new javax.swing.DefaultComboBoxModel<Area>());
         comboAreas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboAreasActionPerformed(evt);
@@ -159,14 +160,19 @@ public class ProductoArea extends javax.swing.JPanel {
         if (nombre.trim().equalsIgnoreCase("")) {
             Utilidades.mensajePorTiempo("Por favor ingresa la información solicitada");
         } else {
-            boolean ban = objArea.encontrarAreasPorNombre(nombre);
-            if (ban == true) {
+            Area a=new Area();
+                a.setIdArea(0);
+                a.setIdSucursal(Datos.idSucursal);
+                a.setNombre(nombre);
+                a.setEstatusArea("vigente");
+                a.setPropietario(Datos.propietario);
+            ResponseGeneral res = api.usarAPI(EnviromentLocal.urlG + "areas-nombre",a,"POST");
+            if (res.getMensaje().equalsIgnoreCase("Si")) {
                 Utilidades.mensajePorTiempo("Ya existe un área con ese nombre, por favor ingresa uno nuevo");
             } else {
-
-                int res = objArea.guardar(nombre, "Actualizada", "Registro");
-
-                Utilidades.mensajePorTiempo("Área registrada con exito");
+              
+              ResponseGeneral resul= api.usarAPI(EnviromentLocal.urlG+"areas",a , "POST");
+                Utilidades.mensajePorTiempo(resul.getMensaje());
                 llenarCombo();
                 txtArea.setText("");
 
@@ -198,7 +204,7 @@ public class ProductoArea extends javax.swing.JPanel {
     private javax.swing.JButton btnBuscar;
     private javax.swing.JLabel codi;
     private javax.swing.JLabel codi1;
-    private javax.swing.JComboBox<String> comboAreas;
+    private javax.swing.JComboBox<Area> comboAreas;
     private javax.swing.JLabel titu;
     private javax.swing.JLabel titu1;
     private javax.swing.JTextField txtArea;

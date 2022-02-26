@@ -11,17 +11,25 @@ import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.AreaDAO;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dao.ProductoDAO;
 import punto.venta.dialogos.Confirmacion;
-import punto.venta.misclases.Producto;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.Area;
+import punto.venta.modelo.Producto;
+import punto.venta.modelo.response.AreaResponse;
+import punto.venta.modelo.response.ProductoResponse;
+import punto.venta.modelo.response.ResponseGeneral;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -33,6 +41,7 @@ public class ProductoAgregar extends javax.swing.JPanel {
     Confirmacion confirma = new Confirmacion();
     ProductoDAO obj = new ProductoDAO();
     AreaDAO objArea = new AreaDAO();
+    ApiSend api = new ApiSend();
 
     public ProductoAgregar() {
         initComponents();
@@ -43,7 +52,6 @@ public class ProductoAgregar extends javax.swing.JPanel {
         btnMostrarTodos.setIcon(catalogo);
         txtCodigo.requestFocus();
 
-        llenarCombo();
     }
 
     public void requerirFoco() {
@@ -58,21 +66,14 @@ public class ProductoAgregar extends javax.swing.JPanel {
 
     public void llenarCombo() {
 
-        ResultSet areas = objArea.obtenerAreas();
-        if (areas != null) {
-            try {
-                comboArea.removeAllItems();
+         comboArea.removeAllItems();
+        Area vacio= new Area();
+        vacio.setIdArea(0);
+        comboArea.addItem(vacio);
 
-                int i = 0;
-                while (areas.next()) {
-                    comboArea.addItem(areas.getString(2));
-                    i++;
-                }
-            } catch (SQLException ex) {
-               
-                Logger.getLogger(ProductoArea.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+        AreaResponse res = api.getAreas(EnviromentLocal.urlG + "areas/" + Datos.idSucursal);
+        for (Area area : res.getAreas()) {
+            comboArea.addItem(area);
         }
     }
 
@@ -100,7 +101,7 @@ public class ProductoAgregar extends javax.swing.JPanel {
         txtPrecioVenta = new javax.swing.JTextField();
         txtPrecioMayoreo = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
-        comboArea = new javax.swing.JComboBox<>();
+        comboArea = new javax.swing.JComboBox<Area>();
         jLabel18 = new javax.swing.JLabel();
         txtPrecioDistribuidor = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
@@ -357,9 +358,8 @@ public class ProductoAgregar extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(85, Short.MAX_VALUE))
+                .addGap(0, 95, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -383,9 +383,12 @@ public class ProductoAgregar extends javax.swing.JPanel {
         a[2] = txtPrecioCosto.getText();
         a[5] = cantidad.getText();
         a[6] = inventarioMinimo.getText();
-        a[7] = (String) comboArea.getSelectedItem() == null ? "- Sin Departamento -" : (String) comboArea.getSelectedItem();
+       Area areaSelecc= (Area)comboArea.getSelectedItem();
+        a[7] = areaSelecc.getIdArea()==0?"-- Sin Departamento --":areaSelecc.getNombre();
         a[8] = txtPrecioDistribuidor.getText();
-
+        Producto pro=new Producto();
+     
+        
         boolean bandera = Utilidades.hayVacios(a);
         boolean banLimpiar = false;
         if (bandera == true) {
@@ -405,13 +408,22 @@ public class ProductoAgregar extends javax.swing.JPanel {
         } else {
             try {
 
-                double n1 = Double.parseDouble(a[4]);// Mayoreo
-                double n2 = Double.parseDouble(a[3]);// Venta
-                double n3 = Double.parseDouble(a[2]);// Costo
-                double n4 = Double.parseDouble(a[5]);// Cantidad
-                double n5 = Double.parseDouble(a[6]);// Inventario
-                double n6 = Double.parseDouble(a[8]);// Distribuidor
-
+                float n1 = Float.parseFloat(a[4]);// Mayoreo
+                float n2 = Float.parseFloat(a[3]);// Venta
+                float n3 = Float.parseFloat(a[2]);// Costo
+                float n4 = Float.parseFloat(a[5]);// Cantidad
+                int n5 = Integer.parseInt(a[6]);// Inventario
+                float n6 = Float.parseFloat(a[8]);// Distribuidor
+   pro.setCodigo(a[0]);
+        pro.setDescripcion(a[1]);
+        pro.setPrecioMayoreo(n1);
+        pro.setPrecioVenta(n2);
+        pro.setPrecioDistribuidor(n6);
+        pro.setPrecioCosto(n3);
+        pro.setCantidad(n4);
+        pro.setInventarioMinimo(n5);
+        pro.setArea(a[7]);
+        
                 if (n3 >= n2) {
                     mensaje("El precio costo no puede ser mayor o igual que el precio de venta");
                     Timer timer = new Timer(1000, new ActionListener() {
@@ -428,9 +440,8 @@ public class ProductoAgregar extends javax.swing.JPanel {
                 } else {
                     String men = "";
 
-                    men = obj.almacena(a, "Actualizada", "Registro");
-
-                    mensaje(men);
+                    ResponseGeneral res=api.usarAPI(EnviromentLocal.urlG+"productos", pro, "POST");
+                    mensaje(res.getMensaje());
                     Timer timer = new Timer(1000, new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -449,10 +460,6 @@ public class ProductoAgregar extends javax.swing.JPanel {
                     }
 
                 }
-
-            } catch (ClassNotFoundException ex) {
-               
-                Logger.getLogger(ProductoAgregar.class.getName()).log(Level.SEVERE, null, ex);
             } catch (NumberFormatException e) {
              
                 mensaje("Por favor ingresa el tipo de dato que se te solicita para dar de alta el producto");
@@ -468,9 +475,6 @@ public class ProductoAgregar extends javax.swing.JPanel {
                 timer.setRepeats(false);
                 timer.start();
 
-            } catch (SQLException ex) {
-               
-                Logger.getLogger(ProductoAgregar.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
@@ -503,20 +507,18 @@ public class ProductoAgregar extends javax.swing.JPanel {
         modelo.addColumn("Cantidad");
 
         Object datos[] = new Object[7];
-        Producto pro;
-        ArrayList<Producto> lista = new ArrayList<Producto>();
-        lista = obj.obtenerProductosSiHuboModificacion(lista, true);
+        ProductoResponse res=api.getProductos(EnviromentLocal.urlG+"productos/"+Datos.idSucursal);
+        List<Producto> lista = res.getProductos();
+       
 
-        for (int i = 0; i < lista.size(); i++) {
-            pro = lista.get(i);
-
+        for (Producto pro: lista) {
+           
             datos[0] = pro.getCodigo();
-            datos[1] = pro.getNombre();
-            datos[2] = pro.getpCosto();
-            datos[3] = pro.getpVenta();
-            datos[4] = pro.getpMayoreo();
+            datos[1] = pro.getDescripcion();
+            datos[2] = pro.getPrecioCosto();
+            datos[3] = pro.getPrecioVenta();
+            datos[4] = pro.getPrecioMayoreo();
             datos[5] = pro.getCantidad();
-
             modelo.addRow(datos);
         }
 
@@ -547,7 +549,7 @@ public class ProductoAgregar extends javax.swing.JPanel {
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnMostrarTodos;
     private javax.swing.JTextField cantidad;
-    private javax.swing.JComboBox<String> comboArea;
+    private javax.swing.JComboBox<Area> comboArea;
     private javax.swing.JTextField inventarioMinimo;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

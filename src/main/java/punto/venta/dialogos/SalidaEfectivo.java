@@ -9,13 +9,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
 import punto.venta.dao.Movimientos;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.MovimientosExtras;
+import punto.venta.modelo.response.MovimientosExtrasResponse;
+import punto.venta.modelo.response.ResponseGeneral;
 import punto.venta.utilidades.Utilidades;
 import punto.venta.ventanas.VentasEstructura;
 
@@ -25,6 +33,8 @@ public class SalidaEfectivo extends javax.swing.JFrame {
     VentasEstructura ventas;
     Movimientos obj = new Movimientos();
     int ocultar = 0;
+    ApiSend api = new ApiSend();
+      DateFormat formatoFecha = new SimpleDateFormat("yyyy/MM/dd");
 
     public SalidaEfectivo(VentasEstructura ventas) {
         initComponents();
@@ -38,7 +48,7 @@ public class SalidaEfectivo extends javax.swing.JFrame {
         btnguardar.setIcon(a);
         btncancelar.setIcon(b);
         btnversalidas.setIcon(c);
-        jTextField1.requestFocus();
+        txtCantidad.requestFocus();
         setSize(550, 250);
     }
 
@@ -52,34 +62,26 @@ public class SalidaEfectivo extends javax.swing.JFrame {
 
     public void actualizaTabla() {
 
-        try {
+       
             DefaultTableModel modelo = (DefaultTableModel) tablaSalidas.getModel();
-            
-            
-            ResultSet rs = obj.getEntradasDelDia("salida_efectivo");
-            String[] x = new String[3];
-            if (rs == null) {
+             MovimientosExtras obj = new MovimientosExtras();
+        obj.setTipo("salida_efectivo");
+        MovimientosExtrasResponse res = api.getMovimientosExtras(EnviromentLocal.urlG + "movimientos-fecha", obj);
+        List<MovimientosExtras> lista = res.getMovimientos();
+        String[] x = new String[3];
+        if (lista.isEmpty()) {
 
-            } else {
-                while (rs.next()) {
-
-                    x[0] = rs.getString(3);
-                    x[1] = rs.getString(4);
-                    x[2] = rs.getString(5);
-                    System.out.println("Datos resultados = " + rs.getString(2));
-                    System.out.println("Datos resultados = " + x[0]);
-                    modelo.addRow(x);
-
-                }
-                tablaSalidas.setModel(modelo);
+        } else {
+            for (MovimientosExtras m : lista) {
+                x[0] = m.getDescripcion();
+                x[1] = m.getMonto() + "";
+                x[2] = formatoFecha.format(m.getFecha()) + "";
+                modelo.addRow(x);
             }
-        } catch (ClassNotFoundException ex) {
-                 
-            mensaje( "Hubo un error en el sistema",1);
-        } catch (SQLException ex) {
-                 
-            mensaje( "Hubo un error con la conexión a la base de datos",1);
+            tablaSalidas.setModel(modelo);
         }
+            
+           
         
 
     }
@@ -90,9 +92,9 @@ public class SalidaEfectivo extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtCantidad = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtRazon = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         btnguardar = new javax.swing.JButton();
         btncancelar = new javax.swing.JButton();
@@ -110,20 +112,20 @@ public class SalidaEfectivo extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
         jLabel2.setText("Cantidad:");
 
-        jTextField1.setPreferredSize(new java.awt.Dimension(200, 35));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtCantidad.setPreferredSize(new java.awt.Dimension(200, 35));
+        txtCantidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtCantidadActionPerformed(evt);
             }
         });
 
         jLabel3.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
         jLabel3.setText("Razón o Proveedor");
 
-        jTextField2.setPreferredSize(new java.awt.Dimension(200, 35));
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        txtRazon.setPreferredSize(new java.awt.Dimension(200, 35));
+        txtRazon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                txtRazonActionPerformed(evt);
             }
         });
 
@@ -250,8 +252,8 @@ public class SalidaEfectivo extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel2)
                             .addComponent(jLabel3)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+                            .addComponent(txtRazon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -273,11 +275,11 @@ public class SalidaEfectivo extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtRazon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
@@ -305,31 +307,23 @@ public class SalidaEfectivo extends javax.swing.JFrame {
     }//GEN-LAST:event_btnguardarActionPerformed
 public void guardar(){
         String a[] = new String[2];
-        a[0] = jTextField1.getText();
-        a[1] = jTextField2.getText();
+        a[0] = txtCantidad.getText();
+        a[1] = txtRazon.getText();
 
         if (Utilidades.hayVacios(a)) {
             mensaje( "Por favor ingresa todos los datos",1);
         } else {
-
-            try {
                 double tem = Double.parseDouble(a[0]);
-                obj.registrarEfectivoInicial(jTextField1.getText(), "salida_efectivo", jTextField2.getText(), "Actualizada","Registro");
-                mensaje( "Se ha registrado la salida correctamente",2);
-                jTextField1.setText("");//Cantidad
-                jTextField2.setText("");//Proveedor
+                MovimientosExtras mov = new MovimientosExtras();
+                mov.setDescripcion(a[1]);
+                mov.setIdMovimiento(0);
+                mov.setMonto(Float.parseFloat(a[0]));
+                mov.setTipo("salida_efectivo");
+                ResponseGeneral res = api.usarAPI(EnviromentLocal.urlG + "movimientos", mov, "POST");
+                mensaje( res.getMensaje(),2);
+                txtCantidad.setText("");//Cantidad
+                txtRazon.setText("");//Proveedor
                 this.dispose();
-            } catch (ClassNotFoundException ex) {
-                     
-                mensaje( "Hubo un error en el sistema",1);
-            } catch (SQLException ex) {
-                     
-                mensaje( "Hubo un error con la base de datos",1);
-            } catch (NumberFormatException e) {
-                   
-                mensaje( "Por favor revisa los datos ingresados",1);
-            }
-
         }        // TODO add your handling code here:
 }
     private void btncancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelarActionPerformed
@@ -345,7 +339,7 @@ public void guardar(){
                 public void actionPerformed(ActionEvent e) {
                  confirma.dispose();
                  if(tipo == 1){
-                 jTextField1.requestFocus();
+                 txtCantidad.requestFocus();
                  }else{
                  ventas.requerirFoco();
                  }
@@ -373,13 +367,13 @@ public void guardar(){
         // total 500
     }//GEN-LAST:event_btnversalidasActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadActionPerformed
        guardar();
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtCantidadActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void txtRazonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRazonActionPerformed
     guardar();
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_txtRazonActionPerformed
 
  
 
@@ -395,8 +389,8 @@ public void guardar(){
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTable tablaSalidas;
+    private javax.swing.JTextField txtCantidad;
+    private javax.swing.JTextField txtRazon;
     // End of variables declaration//GEN-END:variables
 }

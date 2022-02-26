@@ -10,13 +10,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
 import punto.venta.dao.Movimientos;
 import punto.venta.utilidades.Utilidades;
 import punto.venta.ventanas.VentasEstructura;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.MovimientosExtras;
+import punto.venta.modelo.response.*;
 
 /**
  *
@@ -24,12 +32,13 @@ import punto.venta.ventanas.VentasEstructura;
  */
 public class EntradaEfectivo extends javax.swing.JFrame {
 
-     Movimientos obj = new Movimientos();
-     Confirmacion confirma= new Confirmacion();
-     int ocultar = 0;
-     VentasEstructura ventas;
-     
-     
+    Movimientos obj = new Movimientos();
+    Confirmacion confirma = new Confirmacion();
+    DateFormat formatoFecha = new SimpleDateFormat("yyyy/MM/dd");
+    int ocultar = 0;
+    VentasEstructura ventas;
+    ApiSend api = new ApiSend();
+
     public EntradaEfectivo(VentasEstructura ventas) {
         initComponents();
         setTitle("Registro de Entradas de Efectivo");
@@ -38,30 +47,30 @@ public class EntradaEfectivo extends javax.swing.JFrame {
         ImageIcon a = new ImageIcon("iconos/check.png");
         ImageIcon b = new ImageIcon("iconos/cancelar.png");
         ImageIcon c = new ImageIcon("iconos/entradas_pasadas.png");
-      
+
         btnguardaref.setIcon(a);
         btnc.setIcon(b);
         btnverEntradas.setIcon(c);
         txtcantidade.requestFocus();
-        this.ventas= ventas;
+        this.ventas = ventas;
         setSize(550, 235);
     }
 
-      public void mensaje(String men){
-    confirma.setMensaje(men);
-    confirma.setVisible(true);
-    
-    Timer timer = new Timer(1000, new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                 confirma.dispose();
-                 txtcantidade.requestFocus();
-                }
-                
-            });
+    public void mensaje(String men) {
+        confirma.setMensaje(men);
+        confirma.setVisible(true);
 
-    timer.setRepeats(false);
-            timer.start();
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                confirma.dispose();
+                txtcantidade.requestFocus();
+            }
+
+        });
+
+        timer.setRepeats(false);
+        timer.start();
     }
 
     public void limpiaTabla() {
@@ -74,37 +83,26 @@ public class EntradaEfectivo extends javax.swing.JFrame {
 
     public void actualizaTabla() {
 
-        try {
-            DefaultTableModel modelo = (DefaultTableModel) tablaEntradas.getModel();
-            
-            
-            ResultSet rs = obj.getEntradasDelDia("entrada_efectivo");
-            String[] x = new String[3];
-            if (rs == null) {
+        DefaultTableModel modelo = (DefaultTableModel) tablaEntradas.getModel();
+        MovimientosExtras obj = new MovimientosExtras();
+        obj.setTipo("entrada_efectivo");
+        MovimientosExtrasResponse res = api.getMovimientosExtras(EnviromentLocal.urlG + "movimientos-fecha", obj);
+        List<MovimientosExtras> lista = res.getMovimientos();
+        String[] x = new String[3];
+        if (lista.isEmpty()) {
 
-            } else {
-                while (rs.next()) {
-
-                    x[0] = rs.getString(3);
-                    x[1] = rs.getString(4);
-                    x[2] = rs.getString(5);
-                    System.out.println("Datos resultados = " + rs.getString(2));
-                    System.out.println("Datos resultados = " + x[0]);
-                    modelo.addRow(x);
-
-                }
-                tablaEntradas.setModel(modelo);
+        } else {
+            for (MovimientosExtras m : lista) {
+                x[0] = m.getDescripcion();
+                x[1] = m.getMonto() + "";
+                x[2] = formatoFecha.format(m.getFecha()) + "";
+                modelo.addRow(x);
             }
-        } catch (ClassNotFoundException ex) {
-                 
-            mensaje ("Hubo un error en el sistema");
-        } catch (SQLException ex) {
-                 
-            mensaje ("Hubo un error con la conexión a la base de datos");
+            tablaEntradas.setModel(modelo);
         }
-        
 
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -303,64 +301,55 @@ public class EntradaEfectivo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnguardarefActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarefActionPerformed
-guardar();
+        guardar();
     }//GEN-LAST:event_btnguardarefActionPerformed
 
-    public void guardar(){
-    
-        String a[] =  new String[2];
-        a[0]= jTextField1.getText();
-        a[1]= txtcantidade.getText();
+    public void guardar() {
 
-        if(Utilidades.hayVacios(a)){
+        String a[] = new String[2];
+        a[0] = jTextField1.getText();
+        a[1] = txtcantidade.getText();
+
+        if (Utilidades.hayVacios(a)) {
             mensaje("Por favor ingresa todos los datos");
 
-        }else{
+        } else {
+            double tem = Double.parseDouble(a[1]);
+            MovimientosExtras mov = new MovimientosExtras();
+            mov.setDescripcion(a[0]);
+            mov.setIdMovimiento(0);
+            mov.setMonto(Float.parseFloat(a[1]));
+            mov.setTipo("entrada_efectivo");
+            ResponseGeneral res = api.usarAPI(EnviromentLocal.urlG + "movimientos", mov, "POST");
+            //   obj.registrarEfectivoInicial(txtcantidade.getText(),"entrada_efectivo",jTextField1.getText(), "Actualizada","Registro");
 
-            try {
-                double tem = Double.parseDouble(a[1]);
-                
-                obj.registrarEfectivoInicial(txtcantidade.getText(),"entrada_efectivo",jTextField1.getText(), "Actualizada","Registro");
-                String men="Se ha realizado el registro de efectivo correctamente";
-                confirma.setMensaje(men);
-    confirma.setVisible(true);
-    
-    Timer timer = new Timer(1000, new ActionListener(){
+            confirma.setMensaje(res.getMensaje());
+            confirma.setVisible(true);
+
+            Timer timer = new Timer(1000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                 confirma.dispose();
-                
+                    confirma.dispose();
+
                 }
-                
+
             });
             jTextField1.setText("");
             txtcantidade.setText("");
             timer.setRepeats(false);
             timer.start();
-              
-                
-                this.dispose();
 
-            } catch (ClassNotFoundException ex) {
-                     
-                mensaje ("Hubo un error en el sistema");
-            } catch (SQLException ex) {
-                     
-                mensaje ("Hubo un error con la conexión a la base de datos");
-            }catch(NumberFormatException e){
-                   
-                mensaje ("Por favor, revisa los datos ingresados");
-            }
+            this.dispose();
 
         }
     }
     private void btncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncActionPerformed
-    
+
         dispose();
     }//GEN-LAST:event_btncActionPerformed
 
     private void btnverEntradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnverEntradasActionPerformed
- if (ocultar == 0) {
+        if (ocultar == 0) {
             btnverEntradas.setText("Ocultar salidas");
             setSize(550, 525);
             actualizaTabla();
@@ -370,16 +359,16 @@ guardar();
             setSize(550, 235);
             ocultar = 0;
             limpiaTabla();
-        }      
+        }
     }//GEN-LAST:event_btnverEntradasActionPerformed
 
     private void txtcantidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcantidadeActionPerformed
-       guardar();
+        guardar();
     }//GEN-LAST:event_txtcantidadeActionPerformed
 
     private void btnguardarefKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnguardarefKeyPressed
-        if(evt.getKeyCode()== KeyEvent.VK_ENTER){
-        guardar();
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            guardar();
         }
     }//GEN-LAST:event_btnguardarefKeyPressed
 
@@ -387,7 +376,6 @@ guardar();
         guardar();
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnc;

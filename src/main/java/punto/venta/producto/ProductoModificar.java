@@ -11,17 +11,27 @@ import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.AreaDAO;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dao.ProductoDAO;
 import punto.venta.dialogos.Confirmacion;
-import punto.venta.misclases.Producto;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.Area;
+import punto.venta.modelo.Producto;
+import punto.venta.modelo.response.AreaResponse;
+import punto.venta.modelo.response.ProductoResponse;
+import punto.venta.modelo.response.ResponseGeneral;
+
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -31,56 +41,46 @@ import punto.venta.utilidades.Utilidades;
 public class ProductoModificar extends javax.swing.JPanel {
 
     ProductoDAO obj = new ProductoDAO();
-    Producto pTemporal = new Producto();
+    Producto info;
     ArrayList<Producto> lista = new ArrayList();
-    Confirmacion confirma= new Confirmacion();
+    Confirmacion confirma = new Confirmacion();
     AreaDAO objArea = new AreaDAO();
-    
+    ApiSend api = new ApiSend();
+
     public ProductoModificar() {
         initComponents();
         formulario.setVisible(false);
-        llenarCombo();  
+
         AutoCompleteDecorator.decorate(comboProductos, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
     }
-    
-    public void requerirFoco(){
-    comboProductos.setFocusable(true);
-    comboProductos.requestFocus();
-    }
-    
-     public void requerirFoco2(){
-    txtCodigo.requestFocus();
-    }
-    public void ocultarFormulario(){
-   formulario.setVisible(false);
+
+    public void requerirFoco() {
+        comboProductos.setFocusable(true);
+        comboProductos.requestFocus();
     }
 
-     public void llenarCombo()  {
-        lista = new ArrayList<Producto>();
-        try {
-            lista = obj.obtenerProductosSiHuboModificacion(lista, true);
-             comboProductos.removeAllItems();
-               comboProductos.addItem("");
-        int i = 0;
-      
-        while (i < lista.size()) {
-            comboProductos.addItem(lista.get(i).getNombre());
-            i++;
+    public void requerirFoco2() {
+        txtCodigo.requestFocus();
+    }
+
+    public void ocultarFormulario() {
+        formulario.setVisible(false);
+    }
+
+    public void llenarCombo() {
+
+        comboProductos.removeAllItems();
+        Producto vacio = new Producto();
+        vacio.setIdProducto(0);
+        comboProductos.addItem(vacio);
+
+        ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos/" + Datos.idSucursal);
+        for (Producto p : res.getProductos()) {
+            comboProductos.addItem(p);
         }
-        } catch (ClassNotFoundException ex) {
-                 
-            Logger.getLogger(ProductoModificar.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-                 
-            mensaje("Hubo un problema con la base de datos");
-           
-           
-            
-        }
-       
 
     }
-     
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -88,7 +88,7 @@ public class ProductoModificar extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        comboProductos = new javax.swing.JComboBox<>();
+        comboProductos = new javax.swing.JComboBox<Producto>();
         btn5 = new javax.swing.JButton();
         formulario = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
@@ -110,7 +110,7 @@ public class ProductoModificar extends javax.swing.JPanel {
         txtPrecioMayoreo = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
         jLabel18 = new javax.swing.JLabel();
-        comboArea = new javax.swing.JComboBox<>();
+        comboArea = new javax.swing.JComboBox<Area>();
         txtPrecioDistribuidor = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
 
@@ -127,7 +127,7 @@ public class ProductoModificar extends javax.swing.JPanel {
 
         comboProductos.setEditable(true);
         comboProductos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        comboProductos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        comboProductos.setModel(new javax.swing.DefaultComboBoxModel<Producto>());
         comboProductos.setMaximumSize(new java.awt.Dimension(25, 25));
         comboProductos.setMinimumSize(new java.awt.Dimension(10, 10));
         comboProductos.setPreferredSize(new java.awt.Dimension(15, 25));
@@ -251,7 +251,7 @@ public class ProductoModificar extends javax.swing.JPanel {
                     .addComponent(inventarioMinimo, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(88, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -295,36 +295,34 @@ public class ProductoModificar extends javax.swing.JPanel {
             formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(formularioLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(formularioLayout.createSequentialGroup()
-                        .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(formularioLayout.createSequentialGroup()
-                                .addComponent(jLabel17)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtPrecioDistribuidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(formularioLayout.createSequentialGroup()
-                                .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel14)
-                                    .addComponent(jLabel15)
-                                    .addComponent(jLabel16)
-                                    .addComponent(jLabel12)
-                                    .addComponent(jLabel13))
-                                .addGap(24, 24, 24)
-                                .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtPrecioCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtPrecioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtPrecioMayoreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(65, 65, 65)
-                        .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(formularioLayout.createSequentialGroup()
-                        .addGap(131, 131, 131)
-                        .addComponent(comboArea, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel18)
-                    .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(formularioLayout.createSequentialGroup()
+                            .addComponent(jLabel18)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboArea, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(formularioLayout.createSequentialGroup()
+                            .addComponent(jLabel17)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtPrecioDistribuidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(formularioLayout.createSequentialGroup()
+                            .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel14)
+                                .addComponent(jLabel15)
+                                .addComponent(jLabel16)
+                                .addComponent(jLabel12)
+                                .addComponent(jLabel13))
+                            .addGap(24, 24, 24)
+                            .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtPrecioCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtPrecioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtPrecioMayoreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(65, 65, 65)
+                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 27, Short.MAX_VALUE))
         );
         formularioLayout.setVerticalGroup(
@@ -359,15 +357,15 @@ public class ProductoModificar extends javax.swing.JPanel {
                 .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtPrecioDistribuidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel17))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel18)
-                    .addComponent(comboArea, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboArea, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -394,10 +392,10 @@ public class ProductoModificar extends javax.swing.JPanel {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
-guardar();
+        guardar();
     }//GEN-LAST:event_btnGuardarActionPerformed
-  public void guardar(){
-          Producto prod = new Producto();
+    public void guardar() {
+        Producto prod = new Producto();
         String a[] = new String[9];
         // `codigo`, `descripcion`, `precioCosto`, `precioVenta`, `precioMayoreo`, `cantidad`, `inventarioMinimo "
         a[0] = txtCodigo.getText();
@@ -407,253 +405,244 @@ guardar();
         a[2] = txtPrecioCosto.getText();
         a[5] = cantidad.getText();
         a[6] = inventarioMinimo.getText();
-        a[7] = (String)comboArea.getSelectedItem()!=null?(String)comboArea.getSelectedItem():"S/A";
+         Area ar=(Area) comboArea.getSelectedItem(); //? (String) comboArea.getSelectedItem() : "S/A";
+        a[7] =ar.getNombre();
         a[8] = txtPrecioDistribuidor.getText();
 
         boolean bandera = Utilidades.hayVacios(a);
         boolean banLimpiar = false;
 
         if (bandera == true) {
-           mensaje("Por favor ingresa todos los datos solicitados");
-           
-        Timer timer = new Timer(1000, new ActionListener(){
+            mensaje("Por favor ingresa todos los datos solicitados");
+            Timer timer = new Timer(1000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    
-                 confirma.dispose();
-                 txtCodigo.requestFocus();
+
+                    confirma.dispose();
+                    txtCodigo.requestFocus();
                 }
-                
+
             });
 
-    timer.setRepeats(false);
+            timer.setRepeats(false);
             timer.start();
-           
 
         } else {
-           
-            try{
-                prod.setCodigo(a[0]);
-                prod.setCantidad(Double.parseDouble(a[5]));
-                prod.setInvMinimo(Integer.parseInt(a[6]));
-                prod.setNombre(a[1]);
-                prod.setpCosto(Double.parseDouble(a[2]));
-                prod.setpMayoreo(Double.parseDouble(a[4]));
-                prod.setpVenta(Double.parseDouble(a[3]));
-                prod.setArea(a[7]);
-                prod.setpDistribuidor(Double.parseDouble(a[8]));
-                banLimpiar=true;
-            }catch(NumberFormatException e){
-                   
-                  mensaje("Por favor ingresa el tipo de dato que se te solicita para dar de alta el producto");
-                  Timer timer = new Timer(1000, new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    
-                 confirma.dispose();
-                 txtCodigo.requestFocus();
-                }
-                
-            });
 
-    timer.setRepeats(false);
-            timer.start();
-                  
-               
+            try {
+                prod.setIdProducto(info.getIdProducto());
+                prod.setCodigo(a[0]);
+                prod.setCantidad(Float.parseFloat(a[5]));
+                prod.setInventarioMinimo(Integer.parseInt(a[6]));
+                prod.setDescripcion(a[1]);
+                prod.setPrecioCosto(Float.parseFloat(a[2]));
+                prod.setPrecioMayoreo(Float.parseFloat(a[4]));
+                prod.setPrecioVenta(Float.parseFloat(a[3]));
+                prod.setArea(a[7]);
+                prod.setPrecioDistribuidor(Float.parseFloat(a[8]));
+                banLimpiar = true;
+            } catch (NumberFormatException e) {
+
+                mensaje("Por favor ingresa el tipo de dato que se te solicita para dar de alta el producto");
+                Timer timer = new Timer(1000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        confirma.dispose();
+                        txtCodigo.requestFocus();
+                    }
+
+                });
+
+                timer.setRepeats(false);
+                timer.start();
+
             }
-            if(banLimpiar==true){
-           
-                    String x="";
-                    String estatus="Actualizada";
-                        x=obj.modificarDatosProducto(prod, prod,"Actualizada","Modificacion");
-                    
-                    
-                    if(x.equalsIgnoreCase("Datos del producto modificados")){
-                        formulario.setVisible(false);
-                        mensaje(x);
-                        Timer timer = new Timer(1000, new ActionListener(){
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                
-                                confirma.dispose();
-                                comboProductos.requestFocus();
-                            }
-                            
-                        });
-                        
-                        timer.setRepeats(false);
-                        timer.start();
-                    }  
-                
-           
-              }
-              
+            if (banLimpiar == true) {
+
+                ResponseGeneral res = api.usarAPI(EnviromentLocal.urlG + "productos", prod, "PUT");
+                mensaje(res.getMensaje());
+                Timer timer = new Timer(1000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        confirma.dispose();
+                        comboProductos.requestFocus();
+                    }
+
+                });
+
+                timer.setRepeats(false);
+                timer.start();
+
+                if (res.isRealizado() == true) {
+                    llenarCombo();
+                    txtCodigo.setText("");
+            txtNombre.setText("");
+            txtPrecioVenta.setText("");
+            txtPrecioCosto.setText("");
+            txtPrecioMayoreo.setText("");
+            cantidad.setText("");
+            inventarioMinimo.setText("");
+            txtPrecioDistribuidor.setText("");
+            formulario.setVisible(false);
+                }
+
+            }
 
         }
-                llenarCombo();
-        
-  }
-    public void mensaje(String men){
-    confirma.setMensaje(men);
-    confirma.setVisible(true);
+        info=null;
+
     }
 
-    public void buscarProducto(){
-     String nombre = (String) comboProductos.getSelectedItem();
+    public void mensaje(String men) {
+        confirma.setMensaje(men);
+        confirma.setVisible(true);
+    }
 
-        Producto info = new Producto();
-        info = obj.getDatosProducto(nombre, lista);
-        pTemporal=info;
-
-        if(info.getNombre().equalsIgnoreCase("")){
-           mensaje("El producto no fue encontrado en la base de datos");
-           Timer timer = new Timer(1000, new ActionListener(){
+    public void buscarProducto() {
+         info = (Producto) comboProductos.getSelectedItem();
+            if (info.getIdProducto() == 0) {
+            mensaje("El producto no fue encontrado en la base de datos");
+            Timer timer = new Timer(1000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                 confirma.dispose();
-                 comboProductos.requestFocus();
+                    confirma.dispose();
+                    comboProductos.requestFocus();
                 }
-                
+
             });
 
-    timer.setRepeats(false);
+            timer.setRepeats(false);
             timer.start();
-           
 
-        }else{
+        } else {
             formulario.setVisible(true);
 
-         
             txtCodigo.setText(info.getCodigo());
-            txtNombre.setText(info.getNombre());
-            txtPrecioVenta.setText(info.getpVenta() + "");
-            txtPrecioCosto.setText(info.getpCosto()+"");
-            txtPrecioMayoreo.setText(info.getpMayoreo()+"");
-            cantidad.setText(info.getCantidad()+"");
-            inventarioMinimo.setText(info.getInvMinimo()+"");
+            txtNombre.setText(info.getDescripcion());
+            txtPrecioVenta.setText(info.getPrecioVenta() + "");
+            txtPrecioCosto.setText(info.getPrecioCosto() + "");
+            txtPrecioMayoreo.setText(info.getPrecioMayoreo() + "");
+            cantidad.setText(info.getCantidad() + "");
+            inventarioMinimo.setText(info.getInventarioMinimo() + "");
             txtCodigo.requestFocus();
-            txtPrecioDistribuidor.setText(info.getpDistribuidor()+"");
+            txtPrecioDistribuidor.setText(info.getPrecioDistribuidor() + "");
             llenarComboArea(info.getArea());
 
         }
 
         comboProductos.setSelectedIndex(0);
     }
-    
-       public void llenarComboArea(String tipo) {
+
+    public void llenarComboArea(String tipo) {
         comboArea.removeAllItems();
-        comboArea.addItem(tipo);
-        int i = 0;
-
-       try {
-                  
-                   ResultSet areas= objArea.obtenerAreas();
-                      
-                if(areas!=null){
-              
-                   while (areas.next()) {
-                     System.out.println(areas.getString(2));
-                     System.out.println(tipo);
-                       if(!areas.getString(2).trim().equalsIgnoreCase(tipo))
-                       comboArea.addItem(areas.getString(2));
-                       i++;
-                   }  
-                }
-                
-       } catch (SQLException ex) {
-                
-            Logger.getLogger(ProductoModificar.class.getName()).log(Level.SEVERE, null, ex);
+        List<Area> ordenada= new ArrayList<Area>();
+        AreaResponse res = api.getAreas(EnviromentLocal.urlG + "areas/" + Datos.idSucursal);
+      
+        for (Area a : res.getAreas()) {
+           
+           if(a.getNombre().equalsIgnoreCase(tipo)){
+           ordenada.add(0, a);
+           }else{
+           ordenada.add(a);
+           }
         }
-    }
-    
-    public void buscarProductoDesdeVentas(String nombre){
-    Producto info = new Producto();
-        info = obj.getDatosProducto(nombre, lista);
+        for(Area a: ordenada){
+        comboArea.addItem(a);
+        }
 
-        if(info.getNombre().equalsIgnoreCase("")){
-           mensaje("El producto no fue encontrado en la base de datos");
-           Timer timer = new Timer(1000, new ActionListener(){
+    }
+
+    public void buscarProductoDesdeVentas(String idProducto) {
+       ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos-id/" + idProducto);
+List<Producto> lis= res.getProductos();
+
+        if (lis.isEmpty()) {
+            mensaje("El producto no fue encontrado en la base de datos");
+            Timer timer = new Timer(1000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                 confirma.dispose();
-                 comboProductos.requestFocus();
+                    confirma.dispose();
+                    comboProductos.requestFocus();
                 }
-                
+
             });
 
-    timer.setRepeats(false);
+            timer.setRepeats(false);
             timer.start();
-           
 
-        }else{
+        } else {
+            Producto info= lis.get(0);
             formulario.setVisible(true);
 
-            
             txtCodigo.setText(info.getCodigo());
-            txtNombre.setText(info.getNombre());
-            txtPrecioVenta.setText(info.getpVenta() + "");
-            txtPrecioCosto.setText(info.getpCosto()+"");
-            txtPrecioMayoreo.setText(info.getpMayoreo()+"");
-            txtPrecioDistribuidor.setText(info.getpDistribuidor()+"");
-            cantidad.setText(info.getCantidad()+"");
-            inventarioMinimo.setText(info.getInvMinimo()+"");
+            txtNombre.setText(info.getDescripcion());
+            txtPrecioVenta.setText(info.getPrecioVenta() + "");
+            txtPrecioCosto.setText(info.getPrecioCosto() + "");
+            txtPrecioMayoreo.setText(info.getPrecioMayoreo() + "");
+            txtPrecioDistribuidor.setText(info.getPrecioDistribuidor() + "");
+            cantidad.setText(info.getCantidad() + "");
+            inventarioMinimo.setText(info.getInventarioMinimo() + "");
             txtCodigo.requestFocus();
             llenarComboArea(info.getArea());
-            
+            this.info=info;
+
         }
+            
     }
     private void btn5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn5ActionPerformed
 
-        if(!comboProductos.getSelectedItem().toString().equalsIgnoreCase("")){
+        if (!comboProductos.getSelectedItem().toString().equalsIgnoreCase("")) {
             buscarProducto();
-        }else{
-             mensaje("Por favor selecciona un producto");
-           Timer timer = new Timer(1000, new ActionListener(){
+        } else {
+            mensaje("Por favor selecciona un producto");
+            Timer timer = new Timer(1000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                 confirma.dispose();
-                 comboProductos.requestFocus();
+                    confirma.dispose();
+                    comboProductos.requestFocus();
                 }
-                
+
             });
 
-    timer.setRepeats(false);
+            timer.setRepeats(false);
             timer.start();
         }
-      
+
     }//GEN-LAST:event_btn5ActionPerformed
 
     private void comboProductosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_comboProductosKeyTyped
-     
+
 
     }//GEN-LAST:event_comboProductosKeyTyped
 
     private void btn5KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn5KeyPressed
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-        
-       if(!comboProductos.getSelectedItem().toString().equalsIgnoreCase("")){
-            buscarProducto();
-        }else{
-         mensaje("Por favor selecciona un producto");
-           Timer timer = new Timer(1000, new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                 confirma.dispose();
-                 comboProductos.requestFocus();
-                }
-                
-            });
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 
-    timer.setRepeats(false);
-            timer.start();
-        }
+            if (!comboProductos.getSelectedItem().toString().equalsIgnoreCase("")) {
+                buscarProducto();
+            } else {
+                mensaje("Por favor selecciona un producto");
+                Timer timer = new Timer(1000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        confirma.dispose();
+                        comboProductos.requestFocus();
+                    }
+
+                });
+
+                timer.setRepeats(false);
+                timer.start();
+            }
         }
 
     }//GEN-LAST:event_btn5KeyPressed
 
     private void btnGuardarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnGuardarKeyPressed
-     if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-      guardar();
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            guardar();
         }
 
     }//GEN-LAST:event_btnGuardarKeyPressed
@@ -663,8 +652,8 @@ guardar();
     private javax.swing.JButton btn5;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JTextField cantidad;
-    private javax.swing.JComboBox<String> comboArea;
-    private javax.swing.JComboBox<String> comboProductos;
+    private javax.swing.JComboBox<Area> comboArea;
+    private javax.swing.JComboBox<Producto> comboProductos;
     private javax.swing.JPanel formulario;
     private javax.swing.JTextField inventarioMinimo;
     private javax.swing.JLabel jLabel10;

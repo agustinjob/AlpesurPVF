@@ -17,7 +17,6 @@ import punto.venta.dao.ActualizacionDAO;
 import punto.venta.dao.Conexion;
 import punto.venta.dao.SucursalDAO;
 import punto.venta.dialogos.BusquedaProductos;
-import punto.venta.misclases.Producto;
 import punto.venta.misclases.TransferenciaProductos;
 import punto.venta.utilidades.Utilidades;
 

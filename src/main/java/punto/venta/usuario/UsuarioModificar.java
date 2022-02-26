@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -17,10 +18,16 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dao.UsuarioDAO;
 import punto.venta.dialogos.Confirmacion;
-import punto.venta.misclases.Usuario;
+import punto.venta.enviroment.Enviroment;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.Usuario;
+import punto.venta.modelo.response.ResponseGeneral;
+import punto.venta.modelo.response.UsuarioResponse;
 import punto.venta.utilidades.Utilidades;
 import static punto.venta.utilidades.Utilidades.confirma;
 
@@ -33,15 +40,14 @@ public class UsuarioModificar extends javax.swing.JPanel implements ActionListen
     Confirmacion confirma = new Confirmacion();
     UsuarioDAO obj = new UsuarioDAO();
     Usuario usu = new Usuario();
-
-    ArrayList<Usuario> lista = new ArrayList<Usuario>();
+    ApiSend api = new ApiSend();
+    List<Usuario> lista;
 
     public UsuarioModificar() {
         initComponents();
         formulario.setVisible(false);
         ImageIcon check = new ImageIcon("iconos/check.png");
         btnGuardar.setIcon(check);
-        llenarCombo();
         AutoCompleteDecorator.decorate(comboUsuario, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
     }
 
@@ -52,14 +58,14 @@ public class UsuarioModificar extends javax.swing.JPanel implements ActionListen
 
     public void llenarCombo() {
 
-        lista = obj.getDatosUsuarios();
         comboUsuario.removeAllItems();
-        comboUsuario.addItem("");
+        Usuario vacio= new Usuario();
+        vacio.setIdUsuario(0);
+        comboUsuario.addItem(vacio);
 
-        int i = 0;
-        while (i < lista.size()) {
-            comboUsuario.addItem(lista.get(i).getNombre());
-            i++;
+        UsuarioResponse res = api.getUsuarios(EnviromentLocal.urlG + "usuarios/" + Datos.idSucursal);
+        for (Usuario usua : res.getUsuarios()) {
+            comboUsuario.addItem(usua);
         }
 
     }
@@ -76,7 +82,7 @@ public class UsuarioModificar extends javax.swing.JPanel implements ActionListen
         jLabel4 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         btn4 = new javax.swing.JButton();
-        comboUsuario = new javax.swing.JComboBox<>();
+        comboUsuario = new javax.swing.JComboBox<Usuario>();
         formulario = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -120,7 +126,7 @@ public class UsuarioModificar extends javax.swing.JPanel implements ActionListen
             }
         });
 
-        comboUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        comboUsuario.setModel(new javax.swing.DefaultComboBoxModel<Usuario>());
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -291,80 +297,37 @@ public class UsuarioModificar extends javax.swing.JPanel implements ActionListen
     }//GEN-LAST:event_btn4ActionPerformed
 
     public void buscar() {
-        String nombreU = (String) comboUsuario.getSelectedItem();
-
-        if (nombreU.equalsIgnoreCase("")) {
-            mensajeB("Por favor ingresa un usuario");
+        Usuario user = (Usuario) comboUsuario.getSelectedItem();
+        if (user.getIdUsuario() == 0) {
+            Utilidades.mensajePorTiempo("Por favor selecciona o ingresa un usuario");
         } else {
-            int i = 0;
-            while (i < lista.size()) {
-                if (lista.get(i).getNombre().equalsIgnoreCase(nombreU)) {
-                    usu = lista.get(i);
-
-                    break;
-                }
-                i++;
-            }
+            UsuarioResponse res = api.getUsuarios(EnviromentLocal.urlG + "usuarios/" + user.getIdUsuario() + "/" + Datos.idSucursal);
+            tipoUsuario.removeAllItems();
+            this.usu = res.getUsuarios().get(0);
             formulario.setVisible(true);
             nombre.setText(usu.getNombre());
             direccion.setText(usu.getDireccion());
             email.setText(usu.getUsername());
             password.setText(usu.getPassword());
-            comboUsuario.removeAllItems();
-            tipoUsuario.addItem(usu.getTipo());
+           
+            tipoUsuario.addItem(usu.getTipoUsuario());
             telefono.setText(usu.getTelefono());
-            if (usu.getTipo().equalsIgnoreCase("administrador")) {
+            if (usu.getTipoUsuario().equalsIgnoreCase("administrador")) {
                 tipoUsuario.addItem("Empleado");
             } else {
                 tipoUsuario.addItem("Administrador");
             }
             nombre.requestFocus();
+            
 
-            llenarCombo();
         }
     }
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         guardar();
     }//GEN-LAST:event_btnGuardarActionPerformed
-    public void mensajeB(String men) {
-
-        confirma.setMensaje(men);
-        confirma.setVisible(true);
-
-        Timer timer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                confirma.dispose();
-                comboUsuario.requestFocus();
-            }
-
-        });
-
-        timer.setRepeats(false);
-        timer.start();
-
-    }
-
-    public void mensajeG(String men) {
-        confirma.setMensaje(men);
-        confirma.setVisible(true);
-
-        Timer timer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                confirma.dispose();
-                nombre.requestFocus();
-            }
-
-        });
-
-        timer.setRepeats(false);
-        timer.start();
-    }
 
     public void guardar() {
         String a[] = new String[6];
-        UsuarioDAO obj = new UsuarioDAO();
 
         // `nombre`, `direccion`, `username`, `password`, `tipoUsuario`, `telefono`
         a[0] = nombre.getText();
@@ -376,33 +339,26 @@ public class UsuarioModificar extends javax.swing.JPanel implements ActionListen
 
         boolean bandera = Utilidades.hayVacios(a);
         if (bandera == true) {
-            mensajeG("Por favor ingresa todos los datos solicitados");
+            Utilidades.mensajePorTiempo("Por favor ingresa todos los datos solicitados");
         } else {
 
-            Usuario temporal = new Usuario();
-            temporal.setUsername(usu.getUsername());
-            temporal.setPassword(usu.getPassword());
-            temporal.setNombre(usu.getNombre());
             usu.setNombre(a[0]);
             usu.setDireccion(a[1]);
             usu.setUsername(a[2]);
             usu.setPassword(a[3]);
-            usu.setTipo(a[4]);
+            usu.setTipoUsuario(a[4]);
             usu.setTelefono(a[5]);
-            String x = "";
-            String estatus = "En proceso";
-            String res = obj.modificarDatosUsuario(usu, temporal, "Actualizada", "Modificacion");
-            if (x.equalsIgnoreCase("Datos del usuario modificados correctamente")) {
-                mensajeB(x);
-                formulario.setVisible(false);
-                llenarCombo();
-                nombre.setText("");
-                direccion.setText("");
-                email.setText("");
-                password.setText("");
-                telefono.setText("");
-            } else {
-                mensajeG(x);
+
+            ResponseGeneral res=api.usarAPI(EnviromentLocal.urlG + "usuarios", usu, "PUT");
+            Utilidades.mensajePorTiempo(res.getMensaje());
+            if(res.isRealizado()==true){
+            formulario.setVisible(false);
+            llenarCombo();
+            nombre.setText("");
+            direccion.setText("");
+            email.setText("");
+            password.setText("");
+            telefono.setText("");
             }
 
         }
@@ -426,7 +382,7 @@ public class UsuarioModificar extends javax.swing.JPanel implements ActionListen
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn4;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JComboBox<String> comboUsuario;
+    private javax.swing.JComboBox<Usuario> comboUsuario;
     private javax.swing.JTextField direccion;
     private javax.swing.JTextField email;
     private javax.swing.JPanel formulario;
