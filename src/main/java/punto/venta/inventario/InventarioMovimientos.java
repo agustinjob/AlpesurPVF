@@ -5,17 +5,26 @@
  */
 package punto.venta.inventario;
 
+import java.util.Date;
+import javax.swing.table.DefaultTableModel;
+import punto.servicio.rest.ApiSend;
+import punto.venta.dao.Datos;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.MovimientosInv;
+import punto.venta.modelo.response.MovimientosInvResponse;
+import punto.venta.utilidades.Utilidades;
+
 /**
  *
  * @author agus_
  */
 public class InventarioMovimientos extends javax.swing.JPanel {
 
-    /**
-     * Creates new form InventarioMovimientos
-     */
+    ApiSend api = new ApiSend();
+
     public InventarioMovimientos() {
         initComponents();
+        fecha.setDate(new Date());
     }
 
     /**
@@ -29,13 +38,12 @@ public class InventarioMovimientos extends javax.swing.JPanel {
 
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jTextField1 = new javax.swing.JTextField();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        fecha = new com.toedter.calendar.JDateChooser();
+        tipo = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaMov = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -46,33 +54,35 @@ public class InventarioMovimientos extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Del día:");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel3.setText("Buscar por:");
-
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Movimientos");
 
-        jTextField1.setToolTipText("Hola mundo");
+        tipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Entradas", "Salidas", "Devoluciones", " " }));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Entradas", "Salidas", "Devoluciones", " " }));
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaMov.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Hora", "Descripcion", "Movimiento", "Había", "Cantidad", "Hay", "Cajero", "Departamento"
+                "Hora", "Descripcion", "Movimiento", "Tipo", "Cantidad", "Había", "Hay", "Cajero", "Departamento"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaMov);
+
+        jButton1.setText("Buscar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -84,23 +94,17 @@ public class InventarioMovimientos extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(39, 39, 39)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(157, 157, 157)
-                                .addComponent(jLabel3)))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 576, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(tipo, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(56, 56, 56)
+                        .addComponent(jButton1)))
+                .addContainerGap(676, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1225, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -109,31 +113,67 @@ public class InventarioMovimientos extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel3)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tipo, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(13, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-   public void llenarTabla(){}
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        llenarTabla();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    public void llenarTabla() {
+        limpiarTabla();
+         String tipotxt = (String) tipo.getSelectedItem();
+        if(fecha.getDate()!=null && !tipotxt.equalsIgnoreCase("")){
+        DefaultTableModel mod = (DefaultTableModel) tablaMov.getModel();
+        String fech = Utilidades.getFechaString(fecha.getDate());
+        MovimientosInvResponse res = api.getMovimientosInv(EnviromentLocal.urlG + "movimientosinv/" + fech + "/" + tipotxt + "/" + Datos.idSucursal);
+        String data[] = new String[9];
+        if(res != null || !res.getMovimientos().isEmpty()){
+        for (MovimientosInv m : res.getMovimientos()) {
+            data[0] = Utilidades.getHora(m.getFecha());
+            data[1] = m.getNombre();
+            data[2] = m.getDescripcion();
+            data[3] = m.getTipoMovimiento();
+            data[4] = m.getCantidad() + "";
+            data[5] = m.getHabia() + "";
+            data[6] = m.getHay() + "";
+            data[7] = m.getIdUsuario() + "";
+            data[8] = m.getDepartamento();
+            mod.addRow(data);
+        }
+        }else{
+        Utilidades.mensajePorTiempo("Datos no encontrados");
+        }
+        }else{
+        Utilidades.mensajePorTiempo("Por favor ingresa la fecha y el tipo de busqueda");
+        }
+    }
+    
+    public void limpiarTabla(){
+    int r=0;
+    DefaultTableModel md=(DefaultTableModel)tablaMov.getModel();
+        while (r<md.getRowCount()){
+            md.removeRow(r);
+    }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser fecha;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tablaMov;
+    private javax.swing.JComboBox<String> tipo;
     // End of variables declaration//GEN-END:variables
 }

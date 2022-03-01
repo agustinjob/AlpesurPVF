@@ -10,15 +10,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Timer;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.ClienteDAO;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dialogos.Confirmacion;
-import punto.venta.misclases.Cliente;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.Cliente;
+import punto.venta.modelo.response.ClienteResponse;
+import punto.venta.modelo.response.ResponseGeneral;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -30,40 +36,30 @@ public class ClienteEliminar extends javax.swing.JPanel {
     ClienteDAO obj = new ClienteDAO();
     ArrayList<Cliente> c;
     Confirmacion confi = new Confirmacion();
+    ApiSend api = new ApiSend();
 
     public ClienteEliminar() {
         initComponents();
-        llenarCombo();
-        AutoCompleteDecorator.decorate(jComboBox1, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
+        AutoCompleteDecorator.decorate(comboClientes, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
     }
-    
-    
-    public void requerirFoco(){
-    jComboBox1.setFocusable(true);
-    jComboBox1.requestFocus();
+
+    public void requerirFoco() {
+        comboClientes.setFocusable(true);
+        comboClientes.requestFocus();
     }
-    
 
     public void llenarCombo() {
 
-        try {
-            c = new ArrayList<Cliente>();
-            c = obj.getClientes();
-            jComboBox1.removeAllItems();
-            jComboBox1.addItem("");
-            int i = 0;
-            while (i < c.size()) {
-                jComboBox1.addItem(c.get(i).getNombres());
-                i++;
-            }
-        } catch (ClassNotFoundException ex) {
-                 
-            Utilidades.confirma(confi, "Hubo un error en el sistema");
-        } catch (SQLException ex) {
-                 
-            Utilidades.confirma(confi, "Hubo un error con la conexion a la base de datos");
-        }
+        ClienteResponse res = api.getClientes(EnviromentLocal.urlG + "clientes/" + Datos.idSucursal);
+        List<punto.venta.modelo.Cliente> lista = res.getClientes();
+        comboClientes.removeAllItems();
+        punto.venta.modelo.Cliente vacio = new punto.venta.modelo.Cliente();
+        vacio.setIdCliente(0);
+        comboClientes.addItem(vacio);
+        for (punto.venta.modelo.Cliente c : lista) {
+            comboClientes.addItem(c);
 
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -74,7 +70,7 @@ public class ClienteEliminar extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         btnaAceptar = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        comboClientes = new javax.swing.JComboBox<Cliente>();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -103,7 +99,7 @@ public class ClienteEliminar extends javax.swing.JPanel {
         jLabel11.setFont(new java.awt.Font("Cambria", 0, 14)); // NOI18N
         jLabel11.setText("Teclee el nombre del cliente:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        comboClientes.setModel(new javax.swing.DefaultComboBoxModel<Cliente>());
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -115,7 +111,7 @@ public class ClienteEliminar extends javax.swing.JPanel {
                 .addGap(0, 68, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(comboClientes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -135,8 +131,8 @@ public class ClienteEliminar extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel11)
                 .addGap(31, 31, 31)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addComponent(comboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addComponent(btnaAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(158, 158, 158))
         );
@@ -160,63 +156,52 @@ public class ClienteEliminar extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnaAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaAceptarActionPerformed
-eliminar();
+        eliminar();
     }//GEN-LAST:event_btnaAceptarActionPerformed
 
-    public void eliminar(){
-            String nombre = (String) jComboBox1.getSelectedItem();
-            
-             int x=0;
-        if(nombre.equalsIgnoreCase("")){
-        Utilidades.confirma(confi,"Datos del cliente no encontrados");
-        }else{
-        int i = 0;
-        Cliente cliente = new Cliente();
-           while(i<c.size()){
-            if(c.get(i).getNombres().equalsIgnoreCase(nombre)){
-               
-              
-                    cliente = c.get(i);
-                   
-                        x= obj.eliminarDatosCliente(cliente,"Actualizada","Eliminacion");
-                        
-                    llenarCombo();
-                    break;
-               
-                
-            }
-            i++;
-        }
-           if(x>0){
-           confi.setMensaje("Datos del cliente eliminados");
-           confi.setVisible(true);
-           }
-        }
-        
-        Timer timer = new Timer(1000, new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    
-                 confi.dispose();
-                 jComboBox1.requestFocus();
-                
-                }
-                
-            });
+    public void eliminar() {
+        Cliente cli = (Cliente) comboClientes.getSelectedItem();
+        cli.setEstatusCliente("eliminado");
 
-    timer.setRepeats(false);
-            timer.start();
+        if (cli.getIdCliente() == 0) {
+            Utilidades.confirma(confi, "Por favor selecciona un cliente");
+        } else {
+            ResponseGeneral res = api.usarAPI(EnviromentLocal.urlG + "clientes", cli, "PUT");
+            if (res.isRealizado() == true) {
+                llenarCombo();
+                confi.setMensaje("Datos eliminados satisfactoriamente");
+                confi.setVisible(true);
+            } else {
+                confi.setMensaje("No se pudieron eliminar los datos, vuelve a intentarlo por favor");
+
+            }
+
+        }
+
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                confi.dispose();
+                comboClientes.requestFocus();
+
+            }
+
+        });
+
+        timer.setRepeats(false);
+        timer.start();
     }
     private void btnaAceptarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnaAceptarKeyPressed
-       if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-      eliminar();
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            eliminar();
         }
     }//GEN-LAST:event_btnaAceptarKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnaAceptar;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<Cliente> comboClientes;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel6;

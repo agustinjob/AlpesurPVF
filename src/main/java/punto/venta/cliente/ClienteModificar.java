@@ -10,16 +10,22 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.ClienteDAO;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dialogos.Confirmacion;
-import punto.venta.misclases.Cliente;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.Cliente;
+import punto.venta.modelo.response.ClienteResponse;
+import punto.venta.modelo.response.ResponseGeneral;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -30,58 +36,50 @@ public class ClienteModificar extends javax.swing.JPanel {
 
     int filas;
     ClienteDAO obj = new ClienteDAO();
-    ArrayList<Cliente> c;
+
     Cliente cliente = new Cliente();
-     Cliente clienteTemporal;
     Confirmacion confirma = new Confirmacion();
+    ApiSend api = new ApiSend();
 
     public ClienteModificar() {
         initComponents();
         formulario.setVisible(false);
-        llenarCombo();
+
         ImageIcon check = new ImageIcon("iconos/check.png");
         btnModificar.setIcon(check);
-        AutoCompleteDecorator.decorate(jComboBox1, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
-        
-    }
-    
-    public void ocultarFormulario(){
-   formulario.setVisible(false);
-    }
-    
-    public void requerirFoco(){
-    jComboBox1.setFocusable(true);
-    jComboBox1.requestFocus();
+        AutoCompleteDecorator.decorate(comboClientes, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
+
     }
 
-    
+    public void ocultarFormulario() {
+        formulario.setVisible(false);
+    }
+
+    public void requerirFoco() {
+        comboClientes.setFocusable(true);
+        comboClientes.requestFocus();
+    }
+
     public void llenarCombo() {
-          
-        try {
-            c = new ArrayList<Cliente>();
-            c = obj.getClientes();
-                jComboBox1.removeAllItems();
-                jComboBox1.addItem("");
-            int i = 0;
-            while (i < c.size()) {
-                jComboBox1.addItem(c.get(i).getNombres());
-                i++;
-            }
-        } catch (ClassNotFoundException ex) {
-                 
-           mensaje("Hubo un error en el sistema");
-        } catch (SQLException ex) {
-                 
-            mensaje("Hubo un error con la conexion a la base de datos");
+
+        ClienteResponse res = api.getClientes(EnviromentLocal.urlG + "clientes/" + Datos.idSucursal);
+        List<Cliente> lista = res.getClientes();
+
+        comboClientes.removeAllItems();
+        Cliente vacio = new Cliente();
+        vacio.setIdCliente(0);
+        comboClientes.addItem(vacio);
+        for (Cliente c : lista) {
+            comboClientes.addItem(c);
+
         }
 
     }
-    
-      public void mensaje(String men){
-    confirma.setMensaje(men);
-    confirma.setVisible(true);
-    }
 
+    public void mensaje(String men) {
+        confirma.setMensaje(men);
+        confirma.setVisible(true);
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -91,7 +89,7 @@ public class ClienteModificar extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         btnaa = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        comboClientes = new javax.swing.JComboBox<Cliente>();
         formulario = new javax.swing.JPanel();
         jLabel31 = new javax.swing.JLabel();
         jLabel32 = new javax.swing.JLabel();
@@ -137,7 +135,7 @@ public class ClienteModificar extends javax.swing.JPanel {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        comboClientes.setModel(new javax.swing.DefaultComboBoxModel<Cliente>());
 
         javax.swing.GroupLayout buscarLayout = new javax.swing.GroupLayout(buscar);
         buscar.setLayout(buscarLayout);
@@ -155,7 +153,7 @@ public class ClienteModificar extends javax.swing.JPanel {
                             .addComponent(jLabel11))
                         .addGroup(buscarLayout.createSequentialGroup()
                             .addGap(42, 42, 42)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(comboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(49, Short.MAX_VALUE))
         );
         buscarLayout.setVerticalGroup(
@@ -166,7 +164,7 @@ public class ClienteModificar extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel11)
                 .addGap(28, 28, 28)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(comboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
                 .addComponent(btnaa, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -246,7 +244,7 @@ public class ClienteModificar extends javax.swing.JPanel {
                         .addGap(92, 92, 92)))
                 .addContainerGap(94, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, formularioLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 60, Short.MAX_VALUE)
                 .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -299,7 +297,7 @@ public class ClienteModificar extends javax.swing.JPanel {
                 .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtcredito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel34))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel10)
                     .addComponent(txtRFC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -339,178 +337,160 @@ public class ClienteModificar extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnaaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaaActionPerformed
-    buscar();
+        buscar();
     }//GEN-LAST:event_btnaaActionPerformed
 
-    public void buscar(){
-    String nombre = (String) jComboBox1.getSelectedItem();
-        int i = 0;
-        clienteTemporal=new Cliente();
-        Cliente cli = new Cliente();
-                while(i<c.size()){
-            if(c.get(i).getNombres().equalsIgnoreCase(nombre)){
-                cli = c.get(i);
-                cliente = cli;
-                clienteTemporal = c.get(i);
-                break;
-            }
-            i++;
-        }
+    public void buscar() {
+         cliente = (Cliente) comboClientes.getSelectedItem();
+        
+       
+        if (cliente.getIdCliente() == 0) {
 
-        if(cli.getNombres() == null){
-           
-            mensaje("Datos del cliente no encontrados");
-           Timer timer = new Timer(1000, new ActionListener(){
+            mensaje("Por favor selecciona a un cliente");
+            Timer timer = new Timer(1000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                 confirma.dispose();
-                 jComboBox1.requestFocus();
+                    confirma.dispose();
+                    comboClientes.requestFocus();
                 }
-                
+
             });
 
-    timer.setRepeats(false);
+            timer.setRepeats(false);
             timer.start();
-            
-        }else{
+
+        } else {
             formulario.setVisible(true);
-            txtnombrec.setText(cli.getNombres());
-            txtdireccion.setText(cli.getDireccion());
-            txttelefono.setText(cli.getTelefono());
-            txtcredito.setText(cli.getLimiteCredito());
-            txtEmail.setText(cli.getEmail());
-            txtRFC.setText(cli.getRfc());
-            llenarComboMayorista(cli.getMayorista());
+            txtnombrec.setText(cliente.getNombre());
+            txtdireccion.setText(cliente.getDireccion());
+            txttelefono.setText(cliente.getTelefono());
+            txtcredito.setText(cliente.getLimiteCredito()+"");
+            txtEmail.setText(cliente.getEmail());
+            txtRFC.setText(cliente.getRfc());
+            llenarComboMayorista(cliente.getMayorista());
             txtnombrec.requestFocus();
         }
     }
-    
-    public void llenarComboMayorista(String opcion){
-     comboMayorista.removeAllItems();
+
+    public void llenarComboMayorista(String opcion) {
+        comboMayorista.removeAllItems();
         comboMayorista.addItem(opcion);
-       if(opcion.equalsIgnoreCase("Sí")){
-        comboMayorista.addItem("No");
-       }else{
-           comboMayorista.addItem("Sí");
-       }
+        if (opcion.equalsIgnoreCase("Sí")) {
+            comboMayorista.addItem("No");
+        } else {
+            comboMayorista.addItem("Sí");
+        }
     }
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
 
         modificar();
     }//GEN-LAST:event_btnModificarActionPerformed
 
-    public void modificar(){
-        
-    String [] a = new String[7];
-        a[0]= txtnombrec.getText();
-        a[1]=txtdireccion.getText();
-        a[2]=txttelefono.getText();
-        a[3]=txtcredito.getText();
-         a[4]=txtRFC.getText();
-        a[5]= txtEmail.getText();
-        a[6]= comboMayorista.getSelectedItem().toString();
+    public void modificar() {
+
+        String[] a = new String[7];
+        a[0] = txtnombrec.getText();
+        a[1] = txtdireccion.getText();
+        a[2] = txttelefono.getText();
+        a[3] = txtcredito.getText();
+        a[4] = txtRFC.getText();
+        a[5] = txtEmail.getText();
+        a[6] = comboMayorista.getSelectedItem().toString();
         boolean bandera = Utilidades.hayVacios(a);
 
-        if(bandera == true){
-       
+        if (bandera == true) {
+
             mensaje("Por favor ingresa todos los datos");
-            Timer timer = new Timer(1000, new ActionListener(){
+            Timer timer = new Timer(1000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     confirma.dispose();
-                   txtnombrec.requestFocus();
+                    txtnombrec.requestFocus();
                 }
-                
+
             });
-            
+
             timer.setRepeats(false);
             timer.start();
-           
-            
-        }else{
-           
-            cliente.setNombres(a[0]);
+
+        } else {
+
+            cliente.setNombre(a[0]);
             cliente.setTelefono(a[2]);
             cliente.setDireccion(a[1]);
-            cliente.setLimiteCredito(a[3]);
+            cliente.setLimiteCredito(Integer.parseInt(a[3]));
             cliente.setRfc(a[4]);
             cliente.setEmail(a[5]);
             cliente.setMayorista(a[6]);
-           int ban=0;
-            try{
-            Double.parseDouble(a[3]);
-            
-             
-                 
-              ban=obj.modificarDatosCliente(cliente,clienteTemporal,"Actualizada","Modificacion");
-              String estatus=ban>=1?"Realizada":"En proceso";
-                         
           
-           if(ban>0){
-            formulario.setVisible(false);
-            txtnombrec.setText("");
-            txtdireccion.setText("");
-            txttelefono.setText("");
-            txtcredito.setText("");
-            txtRFC.setText("");
-            txtEmail.setText("");
-            llenarCombo();
-              mensaje("Datos del cliente modificados correctamente");
-              
-            Timer timer = new Timer(1000, new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    confirma.dispose();
-                    jComboBox1.requestFocus();
-                }
+            try {
+                Double.parseDouble(a[3]);
+                ResponseGeneral res=api.usarAPI(EnviromentLocal.urlG+"clientes", cliente, "PUT");
                 
-            });
-            
-            timer.setRepeats(false);
-            timer.start();
-            
-            
-           }else{
-            mensaje("Ocurrio un error vuelve a intentarlo por favor");
-            
-            Timer timer = new Timer(1000, new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                       confirma.dispose();
-                  txtnombrec.requestFocus();
+                if (res.isRealizado() == true) {
+                    formulario.setVisible(false);
+                    txtnombrec.setText("");
+                    txtdireccion.setText("");
+                    txttelefono.setText("");
+                    txtcredito.setText("");
+                    txtRFC.setText("");
+                    txtEmail.setText("");
+                    llenarCombo();
+                    mensaje("Datos del cliente modificados correctamente");
+
+                    Timer timer = new Timer(1000, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            confirma.dispose();
+                            comboClientes.requestFocus();
+                        }
+
+                    });
+
+                    timer.setRepeats(false);
+                    timer.start();
+
+                } else {
+                    mensaje("Ocurrio un error vuelve a intentarlo por favor");
+
+                    Timer timer = new Timer(1000, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            confirma.dispose();
+                            txtnombrec.requestFocus();
+                        }
+
+                    });
+                    timer.setRepeats(false);
+                    timer.start();
+
                 }
-                
-            });
+
+            } catch (NumberFormatException e) {
+
+                mensaje("Por favor revisa los datos ingresados");
+                Timer timer = new Timer(1000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        confirma.dispose();
+                        txtnombrec.requestFocus();
+                    }
+
+                });
                 timer.setRepeats(false);
-            timer.start();
-           
-           }
-         
-           }catch(NumberFormatException e){
-                  
-           mensaje("Por favor revisa los datos ingresados");
-            Timer timer = new Timer(1000, new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                         confirma.dispose();
-                  txtnombrec.requestFocus();
-                }
-                
-            });
-                timer.setRepeats(false);
-            timer.start();
-           }
+                timer.start();
+            }
         }
     }
     private void btnaaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnaaKeyPressed
-if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-      buscar();
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            buscar();
         }
     }//GEN-LAST:event_btnaaKeyPressed
 
     private void btnModificarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnModificarKeyPressed
-     if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-     modificar();
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            modificar();
         }
     }//GEN-LAST:event_btnModificarKeyPressed
 
@@ -519,9 +499,9 @@ if(evt.getKeyCode() == KeyEvent.VK_ENTER){
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnaa;
     private javax.swing.JPanel buscar;
+    private javax.swing.JComboBox<Cliente> comboClientes;
     private javax.swing.JComboBox<String> comboMayorista;
     private javax.swing.JPanel formulario;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;

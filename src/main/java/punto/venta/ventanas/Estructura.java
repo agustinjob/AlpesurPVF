@@ -59,7 +59,7 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
         btnProductos.addActionListener(this);
         btnTransferir.addActionListener(this);
         btnCorte.addActionListener(this);
-        btnBitacora.addActionListener(this);
+    //    btnBitacora.addActionListener(this);
         btnConfiguracion.addActionListener(this);
         btnActualizaciones.setFocusable(false);
         btnVentas.setFocusable(false);
@@ -70,7 +70,7 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
         btnTransferir.setFocusable(false);
         btnTransferencia.setFocusable(false);
         btnCorte.setFocusable(false);
-        btnBitacora.setFocusable(false);
+    //    btnBitacora.setFocusable(false);
         btnConfiguracion.setFocusable(false);   
         addKeyListener(this);
         setFocusable(true);
@@ -100,7 +100,6 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
         btnProductos = new javax.swing.JButton();
         btnTransferir = new javax.swing.JButton();
         btnUsuario = new javax.swing.JButton();
-        btnBitacora = new javax.swing.JButton();
         btnInventario = new javax.swing.JButton();
         btnConfiguracion = new javax.swing.JButton();
         btnCorte = new javax.swing.JButton();
@@ -171,15 +170,6 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
         btnUsuario.setMinimumSize(new java.awt.Dimension(20, 19));
         btnUsuario.setPreferredSize(new java.awt.Dimension(80, 35));
         jPanel2.add(btnUsuario);
-
-        btnBitacora.setBackground(new java.awt.Color(0, 51, 102));
-        btnBitacora.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
-        btnBitacora.setForeground(new java.awt.Color(255, 255, 255));
-        btnBitacora.setText("Bitácora");
-        btnBitacora.setBorder(null);
-        btnBitacora.setMinimumSize(new java.awt.Dimension(20, 19));
-        btnBitacora.setPreferredSize(new java.awt.Dimension(110, 35));
-        jPanel2.add(btnBitacora);
 
         btnInventario.setBackground(new java.awt.Color(0, 51, 102));
         btnInventario.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
@@ -510,7 +500,7 @@ actualizaciones.setVisible(false);
             transferencia.setVisible(false);
             contenedor.validate();
 
-        } else if (evt.equals(btnBitacora)) {
+        }else  /*if (evt.equals(btnBitacora)) {
             actualizaciones.setVisible(false);
             objVentas.setVisible(false);
             nube.setVisible(true);
@@ -525,7 +515,7 @@ actualizaciones.setVisible(false);
              transferencia.setVisible(false);
             contenedor.add(nube);
             contenedor.validate();
-        }else if (evt.equals(btnConfiguracion)){
+        }else */if (evt.equals(btnConfiguracion)){
             actualizaciones.setVisible(false);
         confi.setVisible(true);
         confi.llenarCombo();
@@ -585,7 +575,7 @@ actualizaciones.setVisible(false);
         btnCliente.setIcon(b);
         btnProductos.setIcon(c);
         btnInventario.setIcon(d);
-        btnBitacora.setIcon(nubeIcon);
+       // btnBitacora.setIcon(nubeIcon);
         btnUsuario.setIcon(f);
         btnCorte.setIcon(h);
         btnConfiguracion.setIcon(configuracion);
@@ -606,8 +596,8 @@ actualizaciones.setVisible(false);
             btnUsuario.setVisible(false);
             btnConfiguracion.setEnabled(false);
             btnConfiguracion.setVisible(false);
-            btnBitacora.setEnabled(false);
-            btnBitacora.setVisible(false);
+       //     btnBitacora.setEnabled(false);
+         //   btnBitacora.setVisible(false);
             btnInventario.setEnabled(false);
             btnInventario.setVisible(false);
             btnTransferencia.setVisible(false);
@@ -660,7 +650,6 @@ actualizaciones.setVisible(false);
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizaciones;
-    private javax.swing.JButton btnBitacora;
     private javax.swing.JButton btnCaptura;
     private javax.swing.JButton btnCerrarSesion;
     private javax.swing.JButton btnCliente;

@@ -6,8 +6,14 @@
 package punto.venta.dialogos;
 
 import java.sql.SQLException;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dao.TicketDAO;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.response.ResponseGeneral;
+import punto.venta.utilidades.Utilidades;
+import punto.venta.ventanas.VentasEstructura;
 
 /**
  *
@@ -15,10 +21,12 @@ import punto.venta.dao.TicketDAO;
  */
 public class TicketDevolverTodo extends javax.swing.JFrame {
 
-      String idTicket,fecha,hora = "";
+   String idTicket,fecha,hora = "";
    Devoluciones dev;
+   ApiSend api = new ApiSend();
+   VentasEstructura ventas;
    
-    public TicketDevolverTodo(String idTicket, Devoluciones dev,String fecha,String hora) {
+    public TicketDevolverTodo(String idTicket, Devoluciones dev,String fecha,String hora, VentasEstructura ventas) {
         initComponents();
         setTitle("Devolver todos los productos");
         setLocationRelativeTo(null);
@@ -26,6 +34,7 @@ public class TicketDevolverTodo extends javax.swing.JFrame {
         this.fecha = fecha;
         this.hora = hora;
         this.dev = dev;
+        this.ventas=ventas;
     }
 
     @SuppressWarnings("unchecked")
@@ -104,11 +113,13 @@ public class TicketDevolverTodo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        TicketDAO ti = new TicketDAO();
-
-        ti.eliminarVentasDeTicket(idTicket,fecha,hora);
+     //   TicketDAO ti = new TicketDAO();
+       ResponseGeneral res= api.usarAPI(EnviromentLocal.urlG+"ventas-devoluciones/"+idTicket+"/"+fecha+"%20"+hora+"/"+Datos.idSucursal, null, "PUT");
+       Utilidades.mensajePorTiempo(res.getMensaje());
+       // ti.eliminarVentasDeTicket(idTicket,fecha,hora);
         this.dispose();
              dev.dispose();
+             ventas.llenarCombo();
     }//GEN-LAST:event_jButton1ActionPerformed
 
 

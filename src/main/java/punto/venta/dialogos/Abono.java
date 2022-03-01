@@ -6,11 +6,13 @@
 package punto.venta.dialogos;
 
 import javax.swing.ImageIcon;
+import punto.servicio.rest.ApiSend;
 import punto.venta.cliente.ClienteEstadoInformacion;
 import punto.venta.dao.Conexion;
-import punto.venta.dao.CreditoDAO;
-import punto.venta.misclases.Cliente;
-import punto.venta.misclases.Credito;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.Cliente;
+import punto.venta.modelo.Credito;
+import punto.venta.modelo.response.ResponseGeneral;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -21,11 +23,11 @@ public class Abono extends javax.swing.JFrame {
 
     Credito cre;
     Confirmacion confir;
-    CreditoDAO objCre= new CreditoDAO();
-    double resto;
+    float resto;
     ClienteEstadoInformacion cEI;
     Cliente cli;
-    public Abono(Credito cre, double resto, ClienteEstadoInformacion cEI, Cliente cli) {
+    ApiSend api = new ApiSend();
+    public Abono(Credito cre, float resto, ClienteEstadoInformacion cEI, Cliente cli) {
         initComponents();
         setLocationRelativeTo(null);
       //  setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE); 
@@ -142,17 +144,25 @@ public class Abono extends javax.swing.JFrame {
     private void btnrealizaAbonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnrealizaAbonoActionPerformed
     
         try{    
-       double abo = Double.parseDouble(txtAbono.getText());
+       float abo = Float.parseFloat(txtAbono.getText());
        if(resto<abo){
            Utilidades.mensajePorTiempo("El abono no puede ser mayor a la deuda del ticket");
        }else{
-       cre.setAbonado(abo);
+       
        boolean finalizado=false;
        
        if(resto==abo){
        finalizado = true;
        }
-       objCre.almacena(cre,finalizado);
+       Credito obcre= new Credito();
+       obcre.setAbonado(abo);
+       obcre.setFinalizado(finalizado);
+       obcre.setIdCliente(cli.getIdCliente());
+       obcre.setIdCredito(0);
+       obcre.setMonto(resto);
+       obcre.setIdTicket(cre.getIdTicket());
+       
+       ResponseGeneral res=api.usarAPI(EnviromentLocal.urlG+"credito", abo, "POST");
        
        cEI.llenarDatos(cli);
        

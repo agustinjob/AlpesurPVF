@@ -10,17 +10,16 @@ import javax.swing.ImageIcon;
 import punto.venta.cliente.ClienteEstadoInformacion;
 import punto.venta.dao.ClienteDAO;
 import punto.venta.dao.Conexion;
-import punto.venta.misclases.Cliente;
+import punto.venta.modelo.Cliente;
 
 /**
  *
  * @author agus_
  */
 public class LiquidarAdeudo extends javax.swing.JFrame {
-
+    ClienteDAO objCliente;
     NumberFormat formatoImporte = NumberFormat.getCurrencyInstance();
     Cliente cli;
-    ClienteDAO objCliente = new ClienteDAO();
     ClienteEstadoInformacion cEI;
     String monto;
 
@@ -144,7 +143,7 @@ public class LiquidarAdeudo extends javax.swing.JFrame {
 
     private void btnLiquidarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLiquidarActionPerformed
 
-        objCliente.liquidarAdeudo(cli.getId(), cli.getNombres(),monto);
+    //    objCliente.liquidarAdeudo(cli.getId(), cli.getNombres(),monto);
         cEI.llenarDatos(cli);
         this.dispose();
     }//GEN-LAST:event_btnLiquidarActionPerformed

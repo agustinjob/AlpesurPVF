@@ -78,7 +78,7 @@ public class Devoluciones extends javax.swing.JFrame {
         String x[] = new String[3];
 
         Date fechas = seleccionaFecha.getDate();
-        VentasResponse res = api.getVentas(EnviromentLocal.urlG + "ventas/" + formatoFecha.format(fechas));
+        VentasResponse res = api.getVentas(EnviromentLocal.urlG + "ventas/" + formatoFecha.format(fechas)+"/"+Datos.idSucursal);
         List<Ventas> lista = res.getVentas();
 
         if (lista.isEmpty()) {
@@ -290,9 +290,9 @@ public class Devoluciones extends javax.swing.JFrame {
         } else {
             String id = (String) tablaTickets.getValueAt(row, 0);
 
-            TicketDevolverTodo obj = new TicketDevolverTodo(id, this, fecha, hora);
+            TicketDevolverTodo obj = new TicketDevolverTodo(id, this, fecha, hora,ventas);
             obj.setVisible(true);
-            ventas.llenarCombo();
+          
 
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -304,9 +304,9 @@ public class Devoluciones extends javax.swing.JFrame {
         String nombre = (String) tablaVentas.getValueAt(row, 1);
         String cantidad = (String) tablaVentas.getValueAt(row, 2);
         String monto = (String) tablaVentas.getValueAt(row, 3);
-
-        // Ticket obj = new Ticket(idTicket, codigo, nombre, cantidad, monto, this, ven);
-        Ticket obj = new Ticket(idTicket, codigo, nombre, cantidad, monto, this, fecha, hora);
+        
+     // Aquí registrar
+        Ticket obj = new Ticket(idTicket, codigo, nombre, cantidad, monto, this, fecha, hora,ventas);
         obj.setVisible(true);
     }//GEN-LAST:event_tablaVentasdevolverCantidadDeArticulos
 
@@ -323,8 +323,8 @@ public class Devoluciones extends javax.swing.JFrame {
         limpiarTabla(tablaVentas);
         String x[] = new String[5];
 
-        VentasResponse res = api.getVentas(EnviromentLocal.urlG + "ventas-ticket/" + idTicket + "/" + fecha + "%20" + hora);
-        System.out.println(EnviromentLocal.urlG + "ventas-ticket/" + idTicket + "/" + fecha +" "+ hora);
+        VentasResponse res = api.getVentas(EnviromentLocal.urlG + "ventas-ticket/" + idTicket + "/" + fecha + "%20" + hora+"/"+Datos.idSucursal);
+        System.out.println(EnviromentLocal.urlG + "ventas-ticket/" + idTicket + "/" + fecha + "%20" + hora+"/"+Datos.idSucursal);
         List<Ventas> lista = res.getVentas();
 
         if (lista==null) {

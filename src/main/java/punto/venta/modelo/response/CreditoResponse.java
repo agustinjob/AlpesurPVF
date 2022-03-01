@@ -1,0 +1,60 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package punto.venta.modelo.response;
+
+import java.util.List;
+import punto.venta.modelo.Credito;
+
+/**
+ *
+ * @author agus_
+ */
+public class CreditoResponse {
+    private List<Credito> creditos;
+    private String mensaje;
+    private boolean realizado;
+
+    /**
+     * @return the creditos
+     */
+    public List<Credito> getCreditos() {
+        return creditos;
+    }
+
+    /**
+     * @param creditos the creditos to set
+     */
+    public void setCreditos(List<Credito> creditos) {
+        this.creditos = creditos;
+    }
+
+    /**
+     * @return the mensaje
+     */
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    /**
+     * @param mensaje the mensaje to set
+     */
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
+    }
+
+    /**
+     * @return the realizado
+     */
+    public boolean isRealizado() {
+        return realizado;
+    }
+
+    /**
+     * @param realizado the realizado to set
+     */
+    public void setRealizado(boolean realizado) {
+        this.realizado = realizado;
+    }
+}

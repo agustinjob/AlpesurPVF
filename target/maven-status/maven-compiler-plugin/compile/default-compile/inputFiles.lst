@@ -19,6 +19,7 @@ C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\ventanas\V
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\cliente\ClienteAgregar.java
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\dialogos\LiquidarAdeudo.java
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\modelo\response\ProductoResponse.java
+C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\modelo\MovimientosInv.java
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\transferencia\Paso2.java
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\cliente\ClienteEstadoEstructura.java
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\ventanas\CorteAmbosEstructura.java
@@ -59,6 +60,7 @@ C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\dao\Conexi
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\usuario\UsuarioEstructura.java
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\transferencia\TransferenciaEstructura.java
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\modelo\Ventas.java
+C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\modelo\Devolucion.java
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\pruebas\PruebasCliente.java
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\dao\InventaMovimiDAO.java
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\dao\VentasDAO.java
@@ -78,6 +80,7 @@ C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\test\Prueb
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\misclases\CrearExcel.java
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\dao\ProductoDAO.java
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\inventario\InventarioDatos.java
+C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\modelo\response\MovimientosInvResponse.java
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\actualizaciones\EstructuraActualizaciones.java
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\reportes\ReporteVentas.java
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\producto\ProductoArea.java
@@ -103,6 +106,7 @@ C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\dao\Ticket
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\tabla\TablaVentas.java
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\servicio\rest\ApiSend.java
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\cliente\ClienteEstructura.java
+C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\modelo\VentasModel.java
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\misclases\ServicioDeImpresion.java
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\usuario\UsuarioModificar.java
 C:\Users\agus_\Desktop\proyectos\AlpesurPVF\src\main\java\punto\venta\modelo\Usuario.java

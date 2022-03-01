@@ -10,10 +10,14 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
 import punto.venta.dao.Movimientos;
 import punto.venta.dialogos.Confirmacion;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.MovimientosExtras;
 import punto.venta.modelo.Usuario;
+import punto.venta.modelo.response.ResponseGeneral;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -23,8 +27,8 @@ import punto.venta.utilidades.Utilidades;
 public class EfectivoInicial extends javax.swing.JFrame {
 
     private Usuario usu;
-    Movimientos obj = new Movimientos();
     Confirmacion confir;
+    ApiSend api=new ApiSend();
 
     public EfectivoInicial() {
         initComponents();
@@ -154,23 +158,22 @@ public class EfectivoInicial extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public void registrarEfectivoInicial() {
-        try {
-            double efectivo = Double.parseDouble(jTextField1.getText());
-
-            obj.registrarEfectivoInicial(efectivo + "", "efectivo_inicial", "Nueva","Actualizada","Registro");
+    try{
+            float efectivo = Float.parseFloat(jTextField1.getText());
+            MovimientosExtras mov = new MovimientosExtras();
+            mov.setDescripcion("Registro de efectivo");
+            mov.setIdMovimiento(0);
+            mov.setMonto(efectivo);
+            mov.setTipo("entrada_efectivo");
+            ResponseGeneral res = api.usarAPI(EnviromentLocal.urlG + "movimientos", mov, "POST");
+           // obj.registrarEfectivoInicial(efectivo + "", "efectivo_inicial", "Nueva","Actualizada","Registro");
             Estructura obj = new Estructura();
             obj.setVisible(true);
             dispose();
-        } catch (ClassNotFoundException ex) {
-                 
-            Utilidades.mensajePorTiempo("Hubo un error con el sistema");
-        } catch (SQLException ex) {
-                 
-           Utilidades.mensajePorTiempo("Hubo un error con la conexion a la base de datos");
-            System.out.println(ex.getLocalizedMessage() + "Error en registroEfectivoInicial");
+       
         } catch (NumberFormatException e) {
                
-         Utilidades.mensajePorTiempo("Debes ingresar un valor correcto");
+         Utilidades.mensajePorTiempo("Debes ingresar un valor númerico");
         }
     }
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed

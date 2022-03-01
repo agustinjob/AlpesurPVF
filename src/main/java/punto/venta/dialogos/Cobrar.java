@@ -28,13 +28,15 @@ import punto.servicio.rest.FechaYHora;
 import punto.servicio.rest.RestDatos;
 import punto.venta.dao.ClienteDAO;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dao.TicketDAO;
 import punto.venta.dao.VentasDAO;
 import punto.venta.enviroment.EnviromentLocal;
-import punto.venta.misclases.Cliente;
 import punto.venta.misclases.ImprimirTicket;
+import punto.venta.modelo.Cliente;
 import punto.venta.modelo.Ventas;
 import punto.venta.modelo.VentasModel;
+import punto.venta.modelo.response.ClienteResponse;
 import punto.venta.modelo.response.ResponseGeneral;
 import punto.venta.utilidades.Utilidades;
 import punto.venta.ventanas.VentasEstructura;
@@ -116,42 +118,22 @@ public class Cobrar extends javax.swing.JFrame {
     }
 
     public void llenarCombo() {
+        comboClientes.removeAllItems();
+        Cliente vacio = new Cliente();
+        vacio.setIdCliente(0);
+        ClienteResponse res = api.getClientes(EnviromentLocal.urlG + "clientes/" + Datos.idSucursal);
+        comboClientes.addItem(vacio);
 
-        try {
-            c = new ArrayList<Cliente>();
-            c = obj.getClientes();
-            comboClientes.removeAllItems();
-            comboClientes.addItem("");
-            int i = 0;
-            while (i < c.size()) {
-                comboClientes.addItem(c.get(i).getNombres());
-                i++;
-            }
-        } catch (ClassNotFoundException ex) {
+        for (Cliente c : res.getClientes()) {
+            comboClientes.addItem(c);
 
-            mensaje("Hubo un error en el sistema", tipoVenta);
-        } catch (SQLException ex) {
-
-            mensaje("Hubo un error con la conexion a la base de datos", tipoVenta);
         }
 
     }
 
     public boolean buscarCliente() {
-        String nombre = (String) comboClientes.getSelectedItem();
-        int i = 0;
-        Cliente cli = new Cliente();
-        while (i < c.size()) {
-            if (c.get(i).getNombres().equalsIgnoreCase(nombre)) {
-                cli = c.get(i);
-                cliente = cli;
-                break;
-            }
-            i++;
-        }
-
-        if (cli.getNombres() == null) {
-            System.out.println("No lo Encontro al cliente");
+        Cliente cli = (Cliente) comboClientes.getSelectedItem();
+        if (cli.getIdCliente() == 0) {
             mensaje("Datos del cliente no encontrados", tipoVenta);
             return false;
         } else {
@@ -177,7 +159,7 @@ public class Cobrar extends javax.swing.JFrame {
         txtresultado = new javax.swing.JTextField();
         txtn1 = new javax.swing.JTextField();
         panelClientes = new javax.swing.JPanel();
-        comboClientes = new javax.swing.JComboBox<>();
+        comboClientes = new javax.swing.JComboBox<Cliente>();
         jPanel13 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jPanel15 = new javax.swing.JPanel();
@@ -342,7 +324,7 @@ public class Cobrar extends javax.swing.JFrame {
         panelClientes.setBackground(new java.awt.Color(255, 255, 255));
 
         comboClientes.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        comboClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboClientes.setModel(new javax.swing.DefaultComboBoxModel<Cliente>());
         comboClientes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboClientesActionPerformed(evt);
@@ -413,7 +395,7 @@ public class Cobrar extends javax.swing.JFrame {
             .addGroup(jPanel13Layout.createSequentialGroup()
                 .addGap(161, 161, 161)
                 .addComponent(jLabel9)
-                .addContainerGap(173, Short.MAX_VALUE))
+                .addContainerGap(172, Short.MAX_VALUE))
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -583,7 +565,7 @@ public class Cobrar extends javax.swing.JFrame {
             v.setCodigo((String) md.getValueAt(i, 0));
             v.setNombre((String) md.getValueAt(i, 1));
             v.setPrecioVenta(Float.parseFloat((String) md.getValueAt(i, 2)));
-            v.setCantidad(Float.parseFloat((String)md.getValueAt(i, 3)));
+            v.setCantidad(Float.parseFloat((String) md.getValueAt(i, 3)));
             v.setImporte(Float.parseFloat((String) md.getValueAt(i, 4)));
             v.setPrecioCosto(Float.parseFloat((String) md.getValueAt(i, 6)));
             v.setIdTicket(idTicket);
@@ -609,17 +591,17 @@ public class Cobrar extends javax.swing.JFrame {
 
         boolean ban = true;
 
-         String idCliente = cliente.getId()==null?"0":cliente.getId();
+        Integer idCliente=0;
         if (tipoVenta == 2) {
-            ban = buscarCliente();
-            idCliente = cliente.getId();
+           Cliente c = (Cliente) comboClientes.getSelectedItem();
+            idCliente = c.getIdCliente();
         }
         if (ban == true) {
 
             try {
-              //    x= ventas.registrarVenta(md, tipoVenta, idCliente, "Local", "Actualizada", "Registro", numTic);
+                //    x= ventas.registrarVenta(md, tipoVenta, idCliente, "Local", "Actualizada", "Registro", numTic);
 
-                ResponseGeneral resul = api.usarAPI(EnviromentLocal.urlG + "ventas", modeloAVentasModel(md, numTic, Integer.parseInt(idCliente)), "POST");
+                ResponseGeneral resul = api.usarAPI(EnviromentLocal.urlG + "ventas", modeloAVentasModel(md, numTic, idCliente), "POST");
                 x = resul.getMensaje();
                 tick.sumarTicket();
                 String res = obj.convertirModeloAString(md, txtn2.getText());
@@ -646,15 +628,16 @@ public class Cobrar extends javax.swing.JFrame {
         try {
 
             boolean ban = true;
-            String idCliente = cliente.getId()==null?"0":cliente.getId();
+            Integer idCliente=0;
             if (tipoVenta == 2) {
-                ban = buscarCliente();
+                Cliente c= (Cliente) comboClientes.getSelectedItem();
                 if (ban == true) {
-                    idCliente = cliente.getId();
+                    idCliente = c.getIdCliente();
                     double totalPro = Double.parseDouble(txtn2.getText());
-                    double saldo = obj.getSaldoCliente(idCliente);
+                    String saldoC=api.getDato(EnviromentLocal.urlG+"/saldo-cliente");
+                    double saldo = Double.parseDouble(saldoC);
                     double totalTotal = totalPro + saldo;
-                    if (totalTotal > Double.parseDouble(cliente.getLimiteCredito())) {
+                    if (totalTotal > c.getLimiteCredito()) {
                         ban = false;
                         mensaje("Esta compra sobre pasa el limite de credito asignado al cliente", tipoVenta);
                     }
@@ -665,8 +648,8 @@ public class Cobrar extends javax.swing.JFrame {
 
                 int numTic = tick.getNumero();
 
-              //  x = ventas.registrarVenta(md, tipoVenta, idCliente, "Local", "Actualizada", "Registro", numTic);
-                  ResponseGeneral resul = api.usarAPI(EnviromentLocal.urlG + "ventas", modeloAVentasModel(md, numTic, Integer.parseInt(idCliente)), "POST");
+                //  x = ventas.registrarVenta(md, tipoVenta, idCliente, "Local", "Actualizada", "Registro", numTic);
+                ResponseGeneral resul = api.usarAPI(EnviromentLocal.urlG + "ventas", modeloAVentasModel(md, numTic, idCliente), "POST");
                 x = resul.getMensaje();
                 tick.sumarTicket();
                 if (resul.isRealizado()) {
@@ -687,7 +670,7 @@ public class Cobrar extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
 
             System.out.println(ex.getLocalizedMessage());
-        } 
+        }
     }
     private void btn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn3ActionPerformed
         this.dispose();
@@ -772,7 +755,7 @@ public class Cobrar extends javax.swing.JFrame {
     private javax.swing.JButton btn3;
     private javax.swing.JButton btnCredito;
     private javax.swing.JButton btnefectivo;
-    private javax.swing.JComboBox<String> comboClientes;
+    private javax.swing.JComboBox<Cliente> comboClientes;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

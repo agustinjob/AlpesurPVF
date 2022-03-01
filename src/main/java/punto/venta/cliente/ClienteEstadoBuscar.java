@@ -16,7 +16,7 @@ import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
 import punto.venta.dao.ClienteDAO;
 import punto.venta.dao.Conexion;
 import punto.venta.dialogos.Confirmacion;
-import punto.venta.misclases.Cliente;
+import punto.venta.modelo.Cliente;
 import punto.venta.utilidades.Utilidades;
 
 /**

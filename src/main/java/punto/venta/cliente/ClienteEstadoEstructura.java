@@ -5,7 +5,8 @@
  */
 package punto.venta.cliente;
 
-import punto.venta.misclases.Cliente;
+import punto.venta.modelo.Cliente;
+
 
 /**
  *

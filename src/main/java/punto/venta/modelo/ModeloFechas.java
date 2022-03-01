@@ -4,10 +4,16 @@
  */
 package punto.venta.modelo;
 
+import punto.venta.dao.Datos;
+
 public class ModeloFechas {
      private String fechaI;
    private String fechaF;
+   private Integer idSucursal=Datos.idSucursal;
 
+   public Integer getIdSucursal(){
+       return this.idSucursal;
+   }
     /**
      * @return the fechaI
      */

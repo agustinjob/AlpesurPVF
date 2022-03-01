@@ -315,7 +315,6 @@ public void llenaTabla() throws SQLException {
               fechs.setFechaF(formatoFecha.format(fin));
               
               VentasResponse ven=api.getVentas(EnviromentLocal.urlG+"ventas-fiff", fechs);
-              Utilidades.im(EnviromentLocal.urlG+"ventas-fiff");
               List<Ventas>listaV= ven.getVentas();
             DefaultTableModel modelo = new DefaultTableModel();
             modelo.addColumn("Código de Barras");
@@ -382,7 +381,6 @@ public void llenaTabla() throws SQLException {
               fechs.setFechaF(formatoFecha.format(fin));
               
               VentasResponse ven=api.getVentas(EnviromentLocal.urlG+"ventas-fiff", fechs);
-              Utilidades.im(EnviromentLocal.urlG+"ventas-fiff");
               List<Ventas>listaV= ven.getVentas();;
                 CrearExcel objE = new CrearExcel();
                 

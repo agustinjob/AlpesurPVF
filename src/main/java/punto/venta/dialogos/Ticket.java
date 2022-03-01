@@ -7,9 +7,14 @@ package punto.venta.dialogos;
 
 import java.sql.SQLException;
 import javax.swing.SwingConstants;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
 import punto.venta.dao.TicketDAO;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.Devolucion;
+import punto.venta.modelo.response.ResponseGeneral;
 import punto.venta.utilidades.Utilidades;
+import punto.venta.ventanas.VentasEstructura;
 
 /**
  *
@@ -17,29 +22,32 @@ import punto.venta.utilidades.Utilidades;
  */
 public class Ticket extends javax.swing.JFrame {
 
-    String idTicket, codigo,nombre,cantidad,monto,fecha,hora;
+    String idTicket, codigo, nombre, cantidad, monto, fecha, hora;
     Devoluciones dev;
     Confirmacion confir;
-    
-    public Ticket(String idTicket, String codigo, String nombre, String cantidad,String monto,Devoluciones dev, String fecha, String hora) {
+    VentasEstructura ventas;
+    ApiSend api = new ApiSend();
+
+    public Ticket(String idTicket, String codigo, String nombre, String cantidad, String monto, Devoluciones dev, String fecha, String hora, VentasEstructura ventas) {
         initComponents();
         setTitle("Devolución");
         setLocationRelativeTo(null);
-        
-         this.idTicket = idTicket;
-         this.codigo = codigo;
-         this.nombre = nombre;
-         this.cantidad = cantidad;
-         this.monto = monto;
-         this.dev = dev;
-         this.fecha = fecha;
-         this.hora = hora;
-         txtProducto.setText("<html><center>"+nombre+"</center></html>");
-         txtProducto.setHorizontalAlignment(SwingConstants.CENTER);
-         txtProducto.setVerticalAlignment(SwingConstants.CENTER);
-         txtCantidad.setText("La cantidad es de " + cantidad);
-         txtCantidad.setHorizontalAlignment(SwingConstants.CENTER);
-         txtCantidad.setVerticalAlignment(SwingConstants.CENTER);
+
+        this.idTicket = idTicket;
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+        this.monto = monto;
+        this.dev = dev;
+        this.fecha = fecha;
+        this.hora = hora;
+        this.ventas = ventas;
+        txtProducto.setText("<html><center>" + nombre + "</center></html>");
+        txtProducto.setHorizontalAlignment(SwingConstants.CENTER);
+        txtProducto.setVerticalAlignment(SwingConstants.CENTER);
+        txtCantidad.setText("La cantidad es de " + cantidad);
+        txtCantidad.setHorizontalAlignment(SwingConstants.CENTER);
+        txtCantidad.setVerticalAlignment(SwingConstants.CENTER);
     }
 
     /**
@@ -141,24 +149,34 @@ public class Ticket extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         TicketDAO obj = new TicketDAO();
-        double cantidadText = Double.parseDouble(txtCanti.getText());
-        double cantidadPro = Double.parseDouble(cantidad);
-        double montod = Double.parseDouble(monto);
+        float cantidadText = Float.parseFloat(txtCanti.getText());
+        float cantidadPro = Float.parseFloat(cantidad);
+        float montod = Float.parseFloat(monto);
         double totalCantidad = 0;
         int opcion = 0;
-        if(cantidadText == cantidadPro){
+        if (cantidadText == cantidadPro) {
             opcion = 1;
-        }else{
+        } else {
             opcion = 2;
             totalCantidad = cantidadPro - cantidadText;
         }
-        if(cantidadText>cantidadPro){
+        if (cantidadText > cantidadPro) {
             Utilidades.confirma(confir, "No puedes devolver más producto del que se vendio");
-        }else{
-            double montoTotal = (cantidadText*montod)/cantidadPro ;
-            obj.eliminarVentasDeTicketPorProducto(idTicket, codigo, montoTotal+"", totalCantidad,opcion,txtCanti.getText(),fecha,hora);
+        } else {
+            float montoTotal = (cantidadText * montod) / cantidadPro;
+            Devolucion devo = new Devolucion();
+            devo.setCodigo(codigo);
+            devo.setFecha(fecha + " " + hora);
+            devo.setCantidadDevuelta(cantidadText);
+            devo.setIdTicket(Integer.parseInt(idTicket));
+            devo.setMontoDevuelto(montoTotal);
+            devo.setTipo(opcion);
+            
+            ResponseGeneral res = api.usarAPI(EnviromentLocal.urlG + "ventas-devoluciones/", devo, "PUT");
+            Utilidades.mensajePorTiempo(res.getMensaje());
+            //    obj.eliminarVentasDeTicketPorProducto(idTicket, codigo, montoTotal+"", totalCantidad,opcion,txtCanti.getText(),fecha,hora);
+            ventas.llenarCombo();
             this.dispose();
-            //    ven.llenarCombo();
             dev.dispose();
         }
 

@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import punto.venta.utilidades.Utilidades;
 
 /**
  *
@@ -49,7 +50,8 @@ public class InventarioEstructura extends javax.swing.JPanel implements ActionLi
     public void asignaPrimerContenedor(){
         getIagregar().setVisible(true);
         getIbajos().setVisible(false);
-        getIdatos().setVisible(false); 
+        getIdatos().setVisible(false);
+        getImovimientos().setVisible(false);
         contenedor.add(getIagregar());
     }
     @SuppressWarnings("unchecked")
@@ -135,7 +137,7 @@ public class InventarioEstructura extends javax.swing.JPanel implements ActionLi
             .addComponent(panelTicket1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(contenedor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, 790, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, 850, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -210,7 +212,7 @@ public class InventarioEstructura extends javax.swing.JPanel implements ActionLi
               getIagregar().setVisible(false);
             getIbajos().setVisible(false);
             getIdatos().setVisible(false); 
-            getImovimientos().llenarTabla();
+           getImovimientos().limpiarTabla();
             contenedor.add(getImovimientos());
      }
     

@@ -256,7 +256,7 @@ public class ClienteDAO {
            
 
         try {
-        
+        // esto en credito la conjunción de todo
             conn.setAutoCommit(false);
             Statement s = conn.createStatement();
             int rs = s.executeUpdate("INSERT INTO `credito`(`idCliente`, `idTicket`, `fecha`, `monto`, `abonado`, `fechaAbono`,`idUsuario`,`realizadaEn`,`estatus`,`operacion`,`propietario`) VALUES "

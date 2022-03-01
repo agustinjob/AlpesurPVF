@@ -28,9 +28,11 @@ punto\venta\ventanas\EfectivoInicial$3.class
 punto\venta\ventanas\VentasEstructura$22.class
 punto\venta\inventario\InventarioDatos$1.class
 punto\venta\dao\ProductoDAO.class
+punto\venta\modelo\response\MovimientosInvResponse.class
 punto\venta\ventanas\CorteAmbosEstructura$1.class
 punto\venta\cliente\ClienteModificar$5.class
 punto\venta\usuario\UsuarioEstructura$1.class
+punto\venta\modelo\MovimientosInv.class
 punto\venta\ventanas\VentasEstructura$14.class
 punto\venta\ventanas\Estructura$1.class
 punto\venta\dao\ConfiguracionDAO.class
@@ -42,6 +44,7 @@ punto\venta\dialogos\BusquedaProductos$6.class
 punto\venta\dialogos\BusquedaProductos.class
 punto\venta\inventario\InventarioAgregar$9.class
 punto\venta\dialogos\EntradaEfectivo$3.class
+punto\venta\modelo\Devolucion.class
 punto\venta\ventanas\NubeEstructura.class
 punto\venta\actualizaciones\EstructuraActualizaciones$6.class
 punto\venta\dialogos\EntradaEfectivo$4.class
@@ -106,6 +109,7 @@ punto\venta\configuracion\Configuracion$2.class
 punto\venta\dialogos\EntradaEfectivo$2.class
 bd\PanelTabla$1.class
 punto\venta\dialogos\Ticket$1.class
+punto\venta\producto\ProductoModificar$12.class
 punto\venta\transferencia\Paso1$1.class
 punto\venta\dialogos\BusquedaProductos$2.class
 punto\venta\dialogos\Devoluciones.class
@@ -167,6 +171,7 @@ punto\venta\producto\ProductoVentas$4.class
 punto\venta\ventanas\CorteSemanal$2.class
 punto\venta\producto\ProductoAgregar$3.class
 punto\venta\dialogos\SalidaEfectivo$1.class
+punto\venta\modelo\VentasModel.class
 punto\venta\ventanas\VentasEstructura$6.class
 punto\venta\usuario\UsuarioEstructura.class
 punto\venta\dialogos\Devoluciones$4.class
@@ -181,6 +186,7 @@ bd\Tabbed$1.class
 punto\venta\dialogos\BusquedaProductos$4.class
 punto\venta\transferencia\Paso2$8.class
 punto\venta\producto\ProductoModificar$11.class
+punto\venta\inventario\InventarioMovimientos$2.class
 punto\venta\usuario\UsuarioAgregar$1.class
 punto\venta\ventanas\EstructuraGeneral$2.class
 punto\venta\dialogos\Abono$1.class
@@ -298,7 +304,6 @@ punto\venta\dialogos\Cobrar$2.class
 punto\venta\actualizaciones\EstructuraActualizaciones$5.class
 punto\venta\misclases\ActualizacionesNecesarias.class
 punto\venta\ventanas\VentasEstructura$20.class
-punto\venta\dialogos\BusquedaProductos$10.class
 punto\venta\ventanas\InicioSesion$5.class
 punto\venta\dao\Movimientos.class
 punto\venta\reportes\GraficaPastel.class

@@ -14,13 +14,19 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.ClienteDAO;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dialogos.Abono;
 import punto.venta.dialogos.Confirmacion;
 import punto.venta.dialogos.LiquidarAdeudo;
-import punto.venta.misclases.Cliente;
-import punto.venta.misclases.Credito;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.Cliente;
+import punto.venta.modelo.Credito;
+import punto.venta.modelo.Ventas;
+import punto.venta.modelo.response.CreditoResponse;
+import punto.venta.modelo.response.VentasResponse;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -29,17 +35,17 @@ import punto.venta.utilidades.Utilidades;
  */
 public class ClienteEstadoInformacion extends javax.swing.JPanel {
 
-    String idCliente;
+    Integer idCliente;
     NumberFormat formatoImporte = NumberFormat.getCurrencyInstance();
     ClienteDAO objCliente = new ClienteDAO();
     Credito cre = new Credito();
     Confirmacion confir;
     Cliente cli;
-    double total;
-    double totalAbonos;
-    double saldo;
-    
-    
+    float total;
+    float totalAbonos;
+    float saldo;
+    ApiSend api = new ApiSend();
+
     public ClienteEstadoInformacion() {
         initComponents();
         ImageIcon abo = new ImageIcon("iconos/oro.png");
@@ -49,46 +55,43 @@ public class ClienteEstadoInformacion extends javax.swing.JPanel {
         comboLiquidadas.setVisible(false);
     }
 
-    public void llenarDatos(Cliente c){
+    public void llenarDatos(Cliente c) {
         limpiarTabla(tablaTickets);
         limpiarTabla(tablaProductos);
         limpiarTabla(tablaAbonos);
-        totalAbonos=0;
-        total=0;
+        totalAbonos = 0;
+        total = 0;
         lblTotal.setText("0");
-    lblNombre.setText(c.getNombres());
-    btnLiquidar.setEnabled(false);
-    btnAbonar.setEnabled(false);
-  
-    lblCredito.setText(formatoImporte.format(Double.parseDouble(c.getLimiteCredito())));
-    idCliente = c.getId();
-    cli=c;
-   saldo=objCliente.getSaldoCliente(idCliente);
-   if(saldo>0){
-   btnLiquidar.setEnabled(true);
-   }
-  
-     lblSaldo.setText(formatoImporte.format(saldo));
-    ResultSet res =objCliente.obtenerTicketsCliente(idCliente, false);
-    String tickets[]= new String[2];
-    if(res!=null){
-        try {
-            DefaultTableModel modelTicket= (DefaultTableModel) tablaTickets.getModel();
-            
-            while(res.next()){
-                tickets[0]=res.getString("idTicket");
-                tickets[1]=res.getString("fecha");
-                modelTicket.addRow(tickets);
-            }   
-        
-        } catch (SQLException ex) {
-                
-           Utilidades.mensajePorTiempo("Hubo un error con la conexión a la base de datos");
+        lblNombre.setText(c.getNombre());
+        btnLiquidar.setEnabled(false);
+        btnAbonar.setEnabled(false);
+
+        lblCredito.setText(formatoImporte.format(c.getLimiteCredito()));
+        idCliente = c.getIdCliente();
+        cli = c;
+        String saldoC = api.getDato(EnviromentLocal.urlG + "/saldo-cliente");
+        saldo = Float.parseFloat(saldoC);
+        if (saldo > 0) {
+            btnLiquidar.setEnabled(true);
         }
+
+        lblSaldo.setText(formatoImporte.format(saldo));
+        VentasResponse ven = api.getVentas(EnviromentLocal.urlG + "/" + idCliente + "/" + Datos.idSucursal);
+        // ResultSet res =objCliente.obtenerTicketsCliente(idCliente, false);
+        String tickets[] = new String[2];
+        if (ven != null) {
+            DefaultTableModel modelTicket = (DefaultTableModel) tablaTickets.getModel();
+
+            for (Ventas v : ven.getVentas()) {
+                tickets[0] = v.getIdTicket() + "";
+                tickets[1] = v.getFecha() + "";
+                modelTicket.addRow(tickets);
+            }
+
+        }
+
     }
-    
-    }
-    
+
     public void limpiarTabla(JTable tabla) {
         try {
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
@@ -97,35 +100,32 @@ public class ClienteEstadoInformacion extends javax.swing.JPanel {
                 modelo.removeRow(0);
             }
         } catch (Exception e) {
-               
+
             Utilidades.mensajePorTiempo("Error al limpiar la tabla");
         }
     }
-    
-    public void llenaTablaAbonos(String idTicket, String fecha){
-    
+
+    public void llenaTablaAbonos(String idTicket, String fecha) {
+
         DefaultTableModel m2 = (DefaultTableModel) tablaAbonos.getModel();
         limpiarTabla(tablaAbonos);
         String x[] = new String[2];
-        ResultSet abonos = objCliente.getAbonos(idTicket, idCliente, fecha);
-        if(abonos!=null){
-            try {
-                while(abonos.next()){
-                   x[0]= abonos.getString("abonado");
-                   x[1]= abonos.getString("fechaAbono");
-                  
-                   m2.addRow(x);
-                   totalAbonos = totalAbonos + Double.parseDouble(x[0]);
-                }   
-                
-           cre.setMonto(total);
-            } catch (SQLException ex) {
-                     
-                Utilidades.mensajePorTiempo("Hubo un error en la conexión a la base de datos");
-            }
+       CreditoResponse abonos= api.getCredito(EnviromentLocal.urlG+"/creditos-abonos/"+idTicket+"/"+idCliente+"/"+Datos.idSucursal+"/"+fecha);
+        //ResultSet abonos = objCliente.getAbonos(idTicket, idCliente, fecha);
+        if (abonos != null) {
+                for (Credito cre: abonos.getCreditos()) {
+                    x[0] = cre.getAbonado()+"";
+                    x[1] = cre.getFecha()+"";
+
+                    m2.addRow(x);
+                    totalAbonos = totalAbonos + Float.parseFloat(x[0]);
+                }
+
+                cre.setMonto(total);
+        
         }
     }
-     
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -387,67 +387,65 @@ public class ClienteEstadoInformacion extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAbonarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonarActionPerformed
-   double resto = total - totalAbonos;
-   Utilidades.im("Total " + total + " abonos " + totalAbonos);
-        Abono objAb= new Abono(cre,resto,this,cli);
+        float resto = total - totalAbonos;
+        Utilidades.im("Total " + total + " abonos " + totalAbonos);
+        Abono objAb = new Abono(cre, resto, this, cli);
         objAb.setVisible(true);
-        
+
     }//GEN-LAST:event_btnAbonarActionPerformed
 
     private void tablaTicketsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaTicketsMouseClicked
         btnLiquidar.setEnabled(true);
-   btnAbonar.setEnabled(true);
-        total =0;
+        btnAbonar.setEnabled(true);
+        total = 0;
         int row = tablaTickets.getSelectedRow();
         DefaultTableModel m = (DefaultTableModel) tablaTickets.getModel();
         String idTicket = (String) m.getValueAt(row, 0);
         String fecha = (String) m.getValueAt(row, 1);
-        
+
         //Tabla abonos
-        llenaTablaAbonos(idTicket,fecha);
-       // Llenado de datos del credito
+        llenaTablaAbonos(idTicket, fecha);
+        // Llenado de datos del credito
         cre.setIdTicket(Integer.parseInt(idTicket));
-        cre.setFecha(fecha);
-        cre.setIdCliente(Integer.parseInt(idCliente));
-        
+        cre.setFecha(Utilidades.getStringToDate(fecha));
+        cre.setIdCliente(idCliente);
+
         DefaultTableModel m2 = (DefaultTableModel) tablaProductos.getModel();
         limpiarTabla(tablaProductos);
         String x[] = new String[4];
-        ResultSet productos = objCliente.getVentasPorTicketCliente(idTicket, idCliente, fecha);
+        VentasResponse vr=api.getVentas(EnviromentLocal.urlG+"/tickets-ventas-clientes/"+Datos.idSucursal+"/"+idTicket+"/"+idCliente+"/"+fecha);
+      //  ResultSet productos = objCliente.getVentasPorTicketCliente(idTicket, idCliente, fecha);
+
+        if (vr != null) {
+   
+                for (Ventas v: vr.getVentas()) {
+                    x[0] = v.getNombre();
+                    x[1] = v.getPrecioVenta()+"";
+                    x[2] = v.getCantidad()+"";
+                    x[3] = v.getImporte()+"";
+                    m2.addRow(x);
+                    total = total + Float.parseFloat(x[3]);
+                }
+
+                cre.setMonto(total);
         
-        if(productos!=null){
-            try {
-                while(productos.next()){
-                   x[0]= productos.getString("nombre");
-                   x[1]= productos.getString("precioVenta");
-                   x[2]= productos.getString("cantidad");
-                   x[3]= productos.getString("importe");
-                   m2.addRow(x);
-                   total = total + Double.parseDouble(x[3]);
-                }   
-               
-           cre.setMonto(total);
-            } catch (SQLException ex) {
-                     
-                Utilidades.mensajePorTiempo("Hubo un error en la conexión a la base de datos");
-            }
         }
-         lblTotal.setText(formatoImporte.format(total));
+        lblTotal.setText(formatoImporte.format(total));
     }//GEN-LAST:event_tablaTicketsMouseClicked
 
     private void btnLiquidarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLiquidarActionPerformed
-        LiquidarAdeudo liqui = new LiquidarAdeudo(saldo+"",cli,this);
+        LiquidarAdeudo liqui = new LiquidarAdeudo(saldo + "", cli, this);
         liqui.setVisible(true);
-        
+
     }//GEN-LAST:event_btnLiquidarActionPerformed
 
     private void comboLiquidadasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboLiquidadasActionPerformed
-      String tipo = (String) comboLiquidadas.getSelectedItem();
-      if(tipo.equalsIgnoreCase("ya liquidadas")){
-      
-      }else{
-      
-      }
+        String tipo = (String) comboLiquidadas.getSelectedItem();
+        if (tipo.equalsIgnoreCase("ya liquidadas")) {
+
+        } else {
+
+        }
     }//GEN-LAST:event_comboLiquidadasActionPerformed
 
 

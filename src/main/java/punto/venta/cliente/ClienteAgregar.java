@@ -13,9 +13,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.ClienteDAO;
 import punto.venta.dao.Conexion;
 import punto.venta.dialogos.Confirmacion;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.Cliente;
+import punto.venta.modelo.response.ResponseGeneral;
 import punto.venta.utilidades.Utilidades;
 import static punto.venta.utilidades.Utilidades.confirma;
 
@@ -25,8 +29,9 @@ import static punto.venta.utilidades.Utilidades.confirma;
  */
 public class ClienteAgregar extends javax.swing.JPanel {
 
-    Confirmacion confirma= new Confirmacion();
     
+    Confirmacion confirma= new Confirmacion();
+    ApiSend api = new ApiSend();
     public ClienteAgregar() {
         initComponents();
         ImageIcon guardar = new ImageIcon("iconos/check.png");
@@ -228,22 +233,21 @@ public class ClienteAgregar extends javax.swing.JPanel {
                 mensaje("Por favor ingresa todos los datos");
             }else{
                 try {
-                    Double.parseDouble(a[3]);
-                   
-                        
-                        String estatus= ban.equalsIgnoreCase("Datos del cliente agregados correctamente")?"Actualizada":"En proceso";
-                        
-                      ban =obj.almacena(a,estatus,"Registro");
-                   
-             
                     
-                    mensaje(ban);
-               
-                }catch(NumberFormatException e){
-                       
-                    mensaje("Por favor revisa los datos que ingresaste");
-                }
-                if(ban.equalsIgnoreCase("Datos del cliente agregados correctamente")){
+                   Cliente objc= new Cliente();
+                   objc.setDireccion(a[1]);
+                   objc.setEliminado(false);
+                   objc.setEstatusCliente("vigente");
+                   objc.setIdCliente(0);
+                   objc.setLimiteCredito(Integer.parseInt(a[3]));
+                   objc.setMayorista(a[6]);
+                   objc.setNombre(a[0]);
+                   objc.setRfc(a[4]);
+                   objc.setEmail(a[5]);
+                   objc.setTelefono(a[2]);
+                   ResponseGeneral res= api.usarAPI(EnviromentLocal.urlG+"clientes", objc, "POST");
+                   mensaje(res.getMensaje());
+                   if(res.isRealizado()){
                     txtnombrec.setText("");
                     txtdireccion.setText("");
                     txttelefono.setText("");
@@ -251,6 +255,11 @@ public class ClienteAgregar extends javax.swing.JPanel {
                     txtRFC.setText("");
                     txtEmail.setText("");
                 }
+                }catch(NumberFormatException e){
+                       
+                    mensaje("Por favor revisa los datos que ingresaste");
+                }
+                
             }
             Timer timer = new Timer(1000, new ActionListener(){
                 @Override

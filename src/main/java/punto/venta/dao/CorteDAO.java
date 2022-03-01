@@ -103,8 +103,8 @@ public class CorteDAO {
              }
              info[7]=creditosVerificada;
              
-            for (int i = 0; i < info.length; i++) {
-                System.out.println(info[i]);
+            for (String info1 : info) {
+                System.out.println(info1);
             }
 
         } catch (SQLException e) {

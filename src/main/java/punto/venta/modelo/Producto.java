@@ -5,6 +5,7 @@
 package punto.venta.modelo;
 
 import punto.venta.dao.Datos;
+import punto.venta.dao.UsuarioDAO;
 
 /**
  *
@@ -24,6 +25,7 @@ public class Producto {
     private boolean eliminado;
     private String area;
     private String propietario=Datos.propietario;
+    private Integer idUSuario= UsuarioDAO.getIdUsuario();
 
     /**
      * @return the idProducto
