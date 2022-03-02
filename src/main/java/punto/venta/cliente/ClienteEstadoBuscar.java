@@ -10,13 +10,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.Timer;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.ClienteDAO;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dialogos.Confirmacion;
+import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.modelo.Cliente;
+import punto.venta.modelo.response.ClienteResponse;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -26,10 +31,8 @@ import punto.venta.utilidades.Utilidades;
 public class ClienteEstadoBuscar extends javax.swing.JPanel {
 
     ClienteEstadoEstructura cEE;
-    ClienteDAO obj = new ClienteDAO();
-    ArrayList<Cliente> c;
-    Cliente cliente = new Cliente();
     Confirmacion confirma = new Confirmacion();
+    ApiSend api = new ApiSend();
 
     public ClienteEstadoBuscar(ClienteEstadoEstructura cEE) {
         initComponents();
@@ -37,30 +40,23 @@ public class ClienteEstadoBuscar extends javax.swing.JPanel {
         llenarCombo();
         AutoCompleteDecorator.decorate(comboClientes, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
     }
-public void requerirFoco(){
-comboClientes.setFocusable(true);
-comboClientes.requestFocus();
 
-}
+    public void requerirFoco() {
+        comboClientes.setFocusable(true);
+        comboClientes.requestFocus();
+
+    }
+
     public void llenarCombo() {
-
-        try {
-            c = new ArrayList<Cliente>();
-            c = obj.getClientes();
-            comboClientes.removeAllItems();
-            comboClientes.addItem("");
-            int i = 0;
-            while (i < c.size()) {
-                comboClientes.addItem(c.get(i).getNombres());
-                i++;
-            }
-        } catch (ClassNotFoundException ex) {
-                 
-            mensaje( "Hubo un error en el sistema");
-        } catch (SQLException ex) {
-                 
-            mensaje( "Hubo un error con la conexion a la base de datos");
-        }
+        ClienteResponse res = api.getClientes(EnviromentLocal.urlG + "clientes/" + Datos.idSucursal);
+        List<Cliente> lista = res.getClientes();
+        comboClientes.removeAllItems();
+        Cliente vacio = new Cliente();
+        vacio.setIdCliente(0);
+        comboClientes.addItem(vacio);
+        lista.forEach(c -> {
+            comboClientes.addItem(c);
+        });
 
     }
 
@@ -70,7 +66,7 @@ comboClientes.requestFocus();
 
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        comboClientes = new javax.swing.JComboBox<>();
+        comboClientes = new javax.swing.JComboBox<Cliente>();
         btnBuscar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
 
@@ -80,7 +76,7 @@ comboClientes.requestFocus();
         jLabel2.setForeground(new java.awt.Color(0, 0, 102));
         jLabel2.setText("Estado de cuenta");
 
-        comboClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboClientes.setModel(new javax.swing.DefaultComboBoxModel<Cliente>());
 
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -148,49 +144,37 @@ comboClientes.requestFocus();
 
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-      public void mensaje(String men){
-    confirma.setMensaje(men);
-    confirma.setVisible(true);
+    public void mensaje(String men) {
+        confirma.setMensaje(men);
+        confirma.setVisible(true);
     }
 
-    public void buscar(){
-            String nombre = (String) comboClientes.getSelectedItem();
-        int i = 0;
-        Cliente cli = new Cliente();
-        while (i < c.size()) {
-            if (c.get(i).getNombres().equalsIgnoreCase(nombre)) {
-                cli = c.get(i);
-                cliente = cli;
-                break;
-            }
-            i++;
-        }
+    public void buscar() {
+        Cliente cli = (Cliente) comboClientes.getSelectedItem();
 
-        if (cli.getNombres() == null) {
-
-            mensaje( "Datos del cliente no encontrados");
-            Timer timer = new Timer(1000, new ActionListener(){
+        if (cli.getIdCliente() == 0) {
+            mensaje("Por favor selecciona un cliente");
+            Timer timer = new Timer(1000, new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    
-                 confirma.dispose();
-                 comboClientes.requestFocus();
+                    confirma.dispose();
+                    comboClientes.requestFocus();
                 }
-                
+
             });
 
-    timer.setRepeats(false);
+            timer.setRepeats(false);
             timer.start();
-            
+
         } else {
-            
-            cEE.mostrarEstado(cliente);
-            
+
+            cEE.mostrarEstado(cli);
+
         }
     }
     private void btnBuscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnBuscarKeyPressed
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-      buscar();
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            buscar();
         }
 
     }//GEN-LAST:event_btnBuscarKeyPressed
@@ -198,7 +182,7 @@ comboClientes.requestFocus();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
-    private javax.swing.JComboBox<String> comboClientes;
+    private javax.swing.JComboBox<Cliente> comboClientes;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;

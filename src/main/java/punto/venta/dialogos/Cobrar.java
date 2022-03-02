@@ -538,7 +538,7 @@ public class Cobrar extends javax.swing.JFrame {
         confirma.setMensaje(men);
         confirma.setVisible(true);
 
-        Timer timer = new Timer(1000, new ActionListener() {
+        Timer timer = new Timer(4000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 confirma.dispose();
@@ -558,7 +558,7 @@ public class Cobrar extends javax.swing.JFrame {
 
     public VentasModel modeloAVentasModel(DefaultTableModel md, int idTicket, int idCliente) {
         VentasModel res = new VentasModel();
-        List<Ventas> ven = new ArrayList<Ventas>();
+        List<Ventas> ven = new ArrayList<>();
         int i = 0;
         while (i < md.getRowCount()) {
             Ventas v = new Ventas();
@@ -571,6 +571,8 @@ public class Cobrar extends javax.swing.JFrame {
             v.setIdTicket(idTicket);
             v.setIdCliente(idCliente);
             v.setIdVenta(0);
+            v.setTipoCompra(tipoVenta==2?"Credito":"Efectivo");
+            v.setFinalizada(tipoVenta==2?false:true);
 
             i++;
             ven.add(v);
@@ -634,7 +636,7 @@ public class Cobrar extends javax.swing.JFrame {
                 if (ban == true) {
                     idCliente = c.getIdCliente();
                     double totalPro = Double.parseDouble(txtn2.getText());
-                    String saldoC=api.getDato(EnviromentLocal.urlG+"/saldo-cliente");
+                    String saldoC=api.getDato(EnviromentLocal.urlG+"saldo-cliente/"+idCliente+"/"+Datos.idSucursal);
                     double saldo = Double.parseDouble(saldoC);
                     double totalTotal = totalPro + saldo;
                     if (totalTotal > c.getLimiteCredito()) {

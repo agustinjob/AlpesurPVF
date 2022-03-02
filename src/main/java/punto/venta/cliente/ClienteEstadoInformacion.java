@@ -37,7 +37,7 @@ public class ClienteEstadoInformacion extends javax.swing.JPanel {
 
     Integer idCliente;
     NumberFormat formatoImporte = NumberFormat.getCurrencyInstance();
-    ClienteDAO objCliente = new ClienteDAO();
+  
     Credito cre = new Credito();
     Confirmacion confir;
     Cliente cli;
@@ -69,14 +69,17 @@ public class ClienteEstadoInformacion extends javax.swing.JPanel {
         lblCredito.setText(formatoImporte.format(c.getLimiteCredito()));
         idCliente = c.getIdCliente();
         cli = c;
-        String saldoC = api.getDato(EnviromentLocal.urlG + "/saldo-cliente");
+        String saldoC = api.getDato(EnviromentLocal.urlG + "saldo-cliente/"+idCliente+"/"+Datos.idSucursal);
+        String abonosC = api.getDato(EnviromentLocal.urlG + "creditos-abonos/"+ idCliente+"/" +Datos.idSucursal);
+       
         saldo = Float.parseFloat(saldoC);
+         float abonos= Float.parseFloat(abonosC);
         if (saldo > 0) {
             btnLiquidar.setEnabled(true);
         }
-
-        lblSaldo.setText(formatoImporte.format(saldo));
-        VentasResponse ven = api.getVentas(EnviromentLocal.urlG + "/" + idCliente + "/" + Datos.idSucursal);
+        
+        lblSaldo.setText(formatoImporte.format(saldo-abonos));
+        VentasResponse ven = api.getVentas(EnviromentLocal.urlG + "tickets-cliente/" + idCliente + "/" + Datos.idSucursal);
         // ResultSet res =objCliente.obtenerTicketsCliente(idCliente, false);
         String tickets[] = new String[2];
         if (ven != null) {
@@ -84,14 +87,16 @@ public class ClienteEstadoInformacion extends javax.swing.JPanel {
 
             for (Ventas v : ven.getVentas()) {
                 tickets[0] = v.getIdTicket() + "";
-                tickets[1] = v.getFecha() + "";
+                tickets[1] = Utilidades.getFechaStringCompleto(v.getFecha())  + "";
                 modelTicket.addRow(tickets);
             }
 
         }
 
     }
+public void obtenerAdeudo(){
 
+}
     public void limpiarTabla(JTable tabla) {
         try {
             DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
@@ -110,12 +115,14 @@ public class ClienteEstadoInformacion extends javax.swing.JPanel {
         DefaultTableModel m2 = (DefaultTableModel) tablaAbonos.getModel();
         limpiarTabla(tablaAbonos);
         String x[] = new String[2];
-       CreditoResponse abonos= api.getCredito(EnviromentLocal.urlG+"/creditos-abonos/"+idTicket+"/"+idCliente+"/"+Datos.idSucursal+"/"+fecha);
+       String dataFecha[]= Utilidades.getFechaDivididaString(fecha);
+       CreditoResponse abonos= api.getCredito(EnviromentLocal.urlG+"creditos-abonos/"+idTicket+"/"+idCliente+"/"+Datos.idSucursal+"/"+dataFecha[0]+"%20"+dataFecha[1]);
         //ResultSet abonos = objCliente.getAbonos(idTicket, idCliente, fecha);
+        totalAbonos=0;
         if (abonos != null) {
                 for (Credito cre: abonos.getCreditos()) {
                     x[0] = cre.getAbonado()+"";
-                    x[1] = cre.getFecha()+"";
+                    x[1] = Utilidades.getFechaStringCompleto(cre.getFecha());
 
                     m2.addRow(x);
                     totalAbonos = totalAbonos + Float.parseFloat(x[0]);
@@ -249,7 +256,7 @@ public class ClienteEstadoInformacion extends javax.swing.JPanel {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, false
+                false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -259,6 +266,7 @@ public class ClienteEstadoInformacion extends javax.swing.JPanel {
         jScrollPane4.setViewportView(tablaAbonos);
         if (tablaAbonos.getColumnModel().getColumnCount() > 0) {
             tablaAbonos.getColumnModel().getColumn(0).setResizable(false);
+            tablaAbonos.getColumnModel().getColumn(0).setPreferredWidth(30);
             tablaAbonos.getColumnModel().getColumn(1).setResizable(false);
         }
 
@@ -337,10 +345,10 @@ public class ClienteEstadoInformacion extends javax.swing.JPanel {
                                         .addGap(358, 358, 358)
                                         .addComponent(jLabel2)))
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel5)
-                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addGap(0, 102, Short.MAX_VALUE))
+                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addGap(0, 62, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jLabel8)
@@ -388,8 +396,11 @@ public class ClienteEstadoInformacion extends javax.swing.JPanel {
 
     private void btnAbonarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbonarActionPerformed
         float resto = total - totalAbonos;
-        Utilidades.im("Total " + total + " abonos " + totalAbonos);
-        Abono objAb = new Abono(cre, resto, this, cli);
+       int row = tablaTickets.getSelectedRow();
+        DefaultTableModel m = (DefaultTableModel) tablaTickets.getModel();
+        String idTicket = (String) m.getValueAt(row, 0);
+        String fecha = (String) m.getValueAt(row, 1);
+        Abono objAb = new Abono(Integer.parseInt(idTicket),fecha, resto, this, cli);
         objAb.setVisible(true);
 
     }//GEN-LAST:event_btnAbonarActionPerformed
@@ -402,7 +413,6 @@ public class ClienteEstadoInformacion extends javax.swing.JPanel {
         DefaultTableModel m = (DefaultTableModel) tablaTickets.getModel();
         String idTicket = (String) m.getValueAt(row, 0);
         String fecha = (String) m.getValueAt(row, 1);
-
         //Tabla abonos
         llenaTablaAbonos(idTicket, fecha);
         // Llenado de datos del credito
@@ -413,7 +423,8 @@ public class ClienteEstadoInformacion extends javax.swing.JPanel {
         DefaultTableModel m2 = (DefaultTableModel) tablaProductos.getModel();
         limpiarTabla(tablaProductos);
         String x[] = new String[4];
-        VentasResponse vr=api.getVentas(EnviromentLocal.urlG+"/tickets-ventas-clientes/"+Datos.idSucursal+"/"+idTicket+"/"+idCliente+"/"+fecha);
+       String dataFecha[]= Utilidades.getFechaDivididaString(fecha);
+        VentasResponse vr=api.getVentas(EnviromentLocal.urlG+"tickets-ventas-clientes/"+Datos.idSucursal+"/"+idTicket+"/"+idCliente+"/"+dataFecha[0]+"%20"+dataFecha[1]);
       //  ResultSet productos = objCliente.getVentasPorTicketCliente(idTicket, idCliente, fecha);
 
         if (vr != null) {
@@ -434,6 +445,7 @@ public class ClienteEstadoInformacion extends javax.swing.JPanel {
     }//GEN-LAST:event_tablaTicketsMouseClicked
 
     private void btnLiquidarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLiquidarActionPerformed
+     
         LiquidarAdeudo liqui = new LiquidarAdeudo(saldo + "", cli, this);
         liqui.setVisible(true);
 

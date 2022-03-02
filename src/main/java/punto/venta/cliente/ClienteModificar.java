@@ -64,15 +64,13 @@ public class ClienteModificar extends javax.swing.JPanel {
 
         ClienteResponse res = api.getClientes(EnviromentLocal.urlG + "clientes/" + Datos.idSucursal);
         List<Cliente> lista = res.getClientes();
-
         comboClientes.removeAllItems();
         Cliente vacio = new Cliente();
         vacio.setIdCliente(0);
         comboClientes.addItem(vacio);
-        for (Cliente c : lista) {
+        lista.forEach(c -> {
             comboClientes.addItem(c);
-
-        }
+        });
 
     }
 

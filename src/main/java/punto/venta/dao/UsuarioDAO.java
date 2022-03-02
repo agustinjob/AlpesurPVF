@@ -31,11 +31,11 @@ public class UsuarioDAO {
     Date d = new Date();
     DateFormat formatoFecha = new SimpleDateFormat("yyyy/MM/dd");
     DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
-     static int idUsuario;
-     static String nombre;
-     static String tipo;
-     static String hora;
-     static String fecha;
+     public static int idUsuario;
+     public static String nombre;
+     public static String tipo;
+     public static String hora;
+     public static String fecha;
 
      Connection conn= Conexion.conectarMySQL();
   

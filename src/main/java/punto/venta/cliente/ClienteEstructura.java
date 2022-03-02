@@ -212,6 +212,7 @@ public class ClienteEstructura extends javax.swing.JPanel implements ActionListe
       
       contenedor.add(getcEstado());
       getcEstado().cEB.requerirFoco();
+      getcEstado().cEB.llenarCombo();
       
      }
     }

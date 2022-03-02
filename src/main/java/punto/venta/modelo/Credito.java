@@ -6,6 +6,7 @@ package punto.venta.modelo;
 
 import java.util.Date;
 import punto.venta.dao.Datos;
+import punto.venta.dao.UsuarioDAO;
 
 /**
  *
@@ -16,10 +17,11 @@ public class Credito {
     private Integer idCliente;
     private Integer idTicket;
     private Date    fecha;
+    private Date    fechaVenta;
     private float   monto;
     private float   abonado;
     private boolean finalizado;
-    private Integer idUsuario;
+    private Integer idUsuario=UsuarioDAO.idUsuario;
     private Integer idSucursal=Datos.idSucursal;
     private String  propietario=Datos.propietario;
 
@@ -161,5 +163,19 @@ public class Credito {
      */
     public void setPropietario(String propietario) {
         this.propietario = propietario;
+    }
+
+    /**
+     * @return the fechaVenta
+     */
+    public Date getFechaVenta() {
+        return fechaVenta;
+    }
+
+    /**
+     * @param fechaVenta the fechaVenta to set
+     */
+    public void setFechaVenta(Date fechaVenta) {
+        this.fechaVenta = fechaVenta;
     }
 }

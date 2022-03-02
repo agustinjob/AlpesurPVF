@@ -21,13 +21,15 @@ import punto.venta.utilidades.Utilidades;
  */
 public class Abono extends javax.swing.JFrame {
 
-    Credito cre;
+ 
     Confirmacion confir;
     float resto;
+    Integer idTicket;
+    String fecha;
     ClienteEstadoInformacion cEI;
     Cliente cli;
     ApiSend api = new ApiSend();
-    public Abono(Credito cre, float resto, ClienteEstadoInformacion cEI, Cliente cli) {
+    public Abono(Integer idTicket,String fecha, float resto, ClienteEstadoInformacion cEI, Cliente cli) {
         initComponents();
         setLocationRelativeTo(null);
       //  setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE); 
@@ -35,10 +37,11 @@ public class Abono extends javax.swing.JFrame {
         Utilidades.im("RESTOO " + resto);
      
         monedas.setIcon(mone);
-        this.cre = cre;
         this.resto = resto;
         this.cEI=cEI;
         this.cli = cli;
+        this.fecha=fecha;
+        this.idTicket=idTicket;
         txtAbono.setText(resto+"");
     }
 
@@ -160,10 +163,10 @@ public class Abono extends javax.swing.JFrame {
        obcre.setIdCliente(cli.getIdCliente());
        obcre.setIdCredito(0);
        obcre.setMonto(resto);
-       obcre.setIdTicket(cre.getIdTicket());
-       
-       ResponseGeneral res=api.usarAPI(EnviromentLocal.urlG+"credito", abo, "POST");
-       
+       obcre.setIdTicket(idTicket);
+       String f[]=Utilidades.getFechaDivididaString(this.fecha);
+       ResponseGeneral res=api.usarAPI(EnviromentLocal.urlG+"creditos/"+f[0]+"%20"+f[1], obcre, "POST");
+       Utilidades.mensajePorTiempo(res.getMensaje());
        cEI.llenarDatos(cli);
        
        this.dispose();}

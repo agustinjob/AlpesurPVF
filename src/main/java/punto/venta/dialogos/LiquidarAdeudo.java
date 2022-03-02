@@ -143,7 +143,7 @@ public class LiquidarAdeudo extends javax.swing.JFrame {
 
     private void btnLiquidarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLiquidarActionPerformed
 
-    //    objCliente.liquidarAdeudo(cli.getId(), cli.getNombres(),monto);
+    //   objCliente.liquidarAdeudo(cli.getId(), cli.getNombres(),monto);
         cEI.llenarDatos(cli);
         this.dispose();
     }//GEN-LAST:event_btnLiquidarActionPerformed

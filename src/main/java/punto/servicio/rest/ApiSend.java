@@ -196,7 +196,7 @@ public class ApiSend {
         HttpPost envio = new HttpPost(url);
         Gson gson = new Gson();
         // System.out.println(url);
-        System.out.println(gson.toJson(obj));
+
         envio.setEntity(new StringEntity(gson.toJson(obj), contentType));
 
         try ( CloseableHttpClient httpClient = HttpClients.createDefault();  CloseableHttpResponse response = httpClient.execute(envio)) {
@@ -229,7 +229,7 @@ public class ApiSend {
         ContentType contentType = ContentType.APPLICATION_JSON;
         VentasResponse res = new VentasResponse();
         // System.out.println(url);
-        System.out.println(gson.toJson(obj));
+
         envio.setEntity(new StringEntity(gson.toJson(obj), contentType));
 
         try ( CloseableHttpClient httpClient = HttpClients.createDefault();  CloseableHttpResponse response = httpClient.execute(envio)) {

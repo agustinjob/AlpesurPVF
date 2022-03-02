@@ -43,6 +43,8 @@ public class Utilidades {
 
     static Confirmacion confirma = new Confirmacion();
     static DateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
+    static DateFormat formatoCompleto = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    static DateFormat formatoCompletoConT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     static DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
 
     public static void im(String mensaje) {
@@ -176,6 +178,26 @@ public class Utilidades {
         }
        return null; 
     }
+    
+      public static Date getStringToDateCompleto(String d){
+        try {
+            Date da=formatoFecha.parse(d);
+              return da;
+        } catch (ParseException ex) {
+            Logger.getLogger(Utilidades.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       return null; 
+    }
+      
+         public static Date getStringToDateCompletoConT(String d){
+        try {
+            Date da=formatoCompletoConT.parse(d);
+              return da;
+        } catch (ParseException ex) {
+            Logger.getLogger(Utilidades.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       return null; 
+    }
 
     public static String getFechaString() {
         Date date = new Date();
@@ -189,5 +211,18 @@ public class Utilidades {
         String fecha = formatoFecha.format(date);
         System.out.println(fecha);
         return fecha;
+    }
+    
+     public static String getFechaStringCompleto(Date date) {
+
+        String fecha = formatoCompleto.format(date);
+        System.out.println(fecha);
+        return fecha;
+    }
+     
+         public static String[] getFechaDivididaString(String date) {
+             String[] dat=new String[2];
+             dat=date.split(" ");
+        return dat;
     }
 }

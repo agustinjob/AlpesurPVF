@@ -7,6 +7,7 @@ punto\venta\modelo\response\ResponseGeneral.class
 punto\venta\actualizaciones\EstructuraActualizaciones$1.class
 punto\venta\dialogos\EntradaEfectivo$9.class
 punto\venta\dialogos\Ticket.class
+punto\venta\modelo\Credito.class
 punto\venta\inventario\InventarioAgregar$3.class
 punto\venta\dialogos\Cobrar$9.class
 punto\venta\modelo\response\MovimientosExtrasResponse.class
@@ -31,6 +32,7 @@ punto\venta\dao\ProductoDAO.class
 punto\venta\modelo\response\MovimientosInvResponse.class
 punto\venta\ventanas\CorteAmbosEstructura$1.class
 punto\venta\cliente\ClienteModificar$5.class
+punto\venta\modelo\CorteModelo.class
 punto\venta\usuario\UsuarioEstructura$1.class
 punto\venta\modelo\MovimientosInv.class
 punto\venta\ventanas\VentasEstructura$14.class
@@ -154,6 +156,7 @@ punto\venta\dialogos\TicketDevolverTodo$1.class
 punto\venta\producto\ProductoEliminar$4.class
 punto\venta\dialogos\Abonar.class
 punto\venta\transferencia\Paso2$9.class
+punto\venta\modelo\Cliente.class
 punto\venta\transferencia\Paso1$4.class
 punto\venta\ventanas\InicioSesion$1.class
 punto\venta\inventario\InventarioMovimientos$1.class
@@ -264,6 +267,7 @@ punto\venta\producto\ProductoModificar$7.class
 punto\venta\cliente\ClienteEliminar.class
 punto\venta\dialogos\EntradaEfectivo$5.class
 punto\venta\inventario\InventarioAgregar$7.class
+punto\venta\modelo\response\ClienteResponse.class
 punto\venta\cliente\ClienteModificar$3.class
 bd\PanelTabla$2.class
 punto\venta\inventario\InventarioBajos.class
@@ -320,6 +324,7 @@ punto\venta\modelo\response\ProductoResponse.class
 punto\servicio\rest\RestDatos.class
 punto\venta\modelo\Ventas.class
 punto\venta\transferencia\Paso2$2.class
+punto\venta\modelo\response\CreditoResponse.class
 punto\venta\cliente\ClienteModificar$6.class
 punto\venta\dialogos\Cobrar$4.class
 punto\venta\transferencia\Paso2.class
