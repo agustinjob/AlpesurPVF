@@ -16,13 +16,17 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dao.Movimientos;
 import punto.venta.dao.TicketDAO;
 import punto.venta.dao.UsuarioDAO;
 import static punto.venta.dialogos.Cobrar.txtn1;
 import punto.venta.dialogos.Confirmacion;
+import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.modelo.Usuario;
+import punto.venta.modelo.response.UsuarioResponse;
 import punto.venta.utilidades.Imagen;
 import punto.venta.utilidades.Utilidades;
 
@@ -37,6 +41,7 @@ public class InicioSesion extends javax.swing.JFrame {
     DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
     ArrayList<Usuario> p;
     Confirmacion confirma = new Confirmacion();
+    ApiSend api = new ApiSend();
 
     public InicioSesion() {
 
@@ -57,13 +62,21 @@ public class InicioSesion extends javax.swing.JFrame {
     }
 
     public void llenarCombo() {
+        UsuarioResponse res = api.getUsuarios(EnviromentLocal.urlG + "/usuarios/" + Datos.idSucursal);
+        Usuario vacio = new Usuario();
+        vacio.setIdUsuario(0);
+        vacio.setNombre("");
+        vacio.setTipo(1);
+        vacio.setUsername("");
 
-        p = usuDAO.getDatosUsuarios();
-        int i = 0;
-        while (i < p.size()) {
-            comboUsuario.addItem(p.get(i).getUsername());
-            i++;
+        comboUsuario.removeAllItems();
+        comboUsuario.addItem(vacio);
+
+        for (Usuario u : res.getUsuarios()) {
+            u.setTipo(1);
+            comboUsuario.addItem(u);
         }
+
     }
 
     public void asignarFolioTicket() {
@@ -71,10 +84,10 @@ public class InicioSesion extends javax.swing.JFrame {
             TicketDAO tick = new TicketDAO();
             tick.consultarNumeroTicket();
         } catch (ClassNotFoundException ex) {
-           
+
             Utilidades.confirma(confir, "Hubo un error con el sistema");
         } catch (SQLException ex) {
-           
+
             System.out.println("Error " + ex.getLocalizedMessage() + "Asinar folio");
         }
     }
@@ -82,6 +95,8 @@ public class InicioSesion extends javax.swing.JFrame {
     public void efectivoInicial() throws ClassNotFoundException, SQLException {
         boolean ban = false;
         ResultSet rs;
+        AQUI ME QUEDE
+        api.getMovimientosExtras(EnviromentLocal.urlG+"/movimientos-efectivo-inicial/"+usuDao+"/{idSucursal}", obj)
         rs = obj.obteneEfectivoInicial(UsuarioDAO.getIdUsuario());
         if (rs == null) {
             EfectivoInicial objeto = new EfectivoInicial();
@@ -108,7 +123,7 @@ public class InicioSesion extends javax.swing.JFrame {
         password = new javax.swing.JPasswordField();
         btnIniciar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
-        comboUsuario = new javax.swing.JComboBox<>();
+        comboUsuario = new javax.swing.JComboBox<Usuario>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -164,7 +179,7 @@ public class InicioSesion extends javax.swing.JFrame {
 
         comboUsuario.setEditable(true);
         comboUsuario.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        comboUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        comboUsuario.setModel(new javax.swing.DefaultComboBoxModel<Usuario>());
         comboUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboUsuarioActionPerformed(evt);
@@ -237,17 +252,12 @@ public class InicioSesion extends javax.swing.JFrame {
 
     public void buscarUsuario() {
         UsuarioDAO obj = new UsuarioDAO();
-        String usuario = (String) comboUsuario.getSelectedItem();
+        Usuario usuario = (Usuario) comboUsuario.getSelectedItem();
         String pass = new String(password.getPassword());
-        ResultSet rs;
 
         try {
-            rs = obj.obtenerUsuario(usuario, pass);
-
-            if (rs != null) {
-                rs.next();
-                Usuario usu = new Usuario();
-                obj.modificarFechaYhoraSesionUsuario();
+            if (usuario.getPassword().equals(pass)) {
+                //   obj.modificarFechaYhoraSesionUsuario();
                 efectivoInicial();
             } else {
                 mensaje("Usuario o contraseña incorrectos");
@@ -338,7 +348,7 @@ public class InicioSesion extends javax.swing.JFrame {
     private javax.swing.JButton btnIniciar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JLabel cajaSeguro;
-    private javax.swing.JComboBox<String> comboUsuario;
+    private javax.swing.JComboBox<Usuario> comboUsuario;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;

@@ -5,6 +5,8 @@
  */
 package punto.venta.modelo;
 
+import punto.venta.dao.Datos;
+
 /**
  *
  * @author job
@@ -12,7 +14,7 @@ package punto.venta.modelo;
 
 public class Usuario {
     private Integer idUsuario=0;
-    private Integer idSucursal;
+    private Integer idSucursal=Datos.idSucursal;
     private String nombre;
     private String direccion;
     private String username;
@@ -23,7 +25,8 @@ public class Usuario {
     private boolean enSesion;
     private boolean eliminado;
     private String foto;
-    private String propietario;
+    private Integer tipo;
+    private String propietario=Datos.propietario;
   
 
 
@@ -220,7 +223,26 @@ public class Usuario {
     
     @Override
     public String toString(){
-    return this.nombre;
+        if(tipo==1)
+    return this.username;
+        else{
+      return this.nombre;
+    
+        }
+    }
+
+    /**
+     * @return the tipo
+     */
+    public Integer getTipo() {
+        return tipo;
+    }
+
+    /**
+     * @param tipo the tipo to set
+     */
+    public void setTipo(Integer tipo) {
+        this.tipo = tipo;
     }
 
  

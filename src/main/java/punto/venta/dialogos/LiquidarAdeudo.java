@@ -7,21 +7,27 @@ package punto.venta.dialogos;
 
 import java.text.NumberFormat;
 import javax.swing.ImageIcon;
+import punto.servicio.rest.ApiSend;
 import punto.venta.cliente.ClienteEstadoInformacion;
 import punto.venta.dao.ClienteDAO;
 import punto.venta.dao.Conexion;
+import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.modelo.Cliente;
+import punto.venta.modelo.Credito;
+import punto.venta.modelo.response.ResponseGeneral;
+import punto.venta.utilidades.Utilidades;
 
 /**
  *
  * @author agus_
  */
 public class LiquidarAdeudo extends javax.swing.JFrame {
-    ClienteDAO objCliente;
+ 
     NumberFormat formatoImporte = NumberFormat.getCurrencyInstance();
     Cliente cli;
     ClienteEstadoInformacion cEI;
     String monto;
+    ApiSend api = new ApiSend();
 
     public LiquidarAdeudo(String monto, Cliente cli, ClienteEstadoInformacion cEI) {
         initComponents();
@@ -142,8 +148,14 @@ public class LiquidarAdeudo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLiquidarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLiquidarActionPerformed
-
-    //   objCliente.liquidarAdeudo(cli.getId(), cli.getNombres(),monto);
+        Credito cre = new Credito();
+        cre.setAbonado(Float.parseFloat(monto));
+        cre.setFinalizado(true);
+        cre.setIdCliente(cli.getIdCliente());
+        cre.setIdTicket(0);
+        cre.setMonto(Float.parseFloat(monto));
+        ResponseGeneral res=api.usarAPI(EnviromentLocal.urlG+"creditos-liquidar", cre, "POST");
+        Utilidades.mensajePorTiempo(res.getMensaje());
         cEI.llenarDatos(cli);
         this.dispose();
     }//GEN-LAST:event_btnLiquidarActionPerformed
