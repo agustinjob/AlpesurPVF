@@ -95,8 +95,8 @@ public class InicioSesion extends javax.swing.JFrame {
     public void efectivoInicial() throws ClassNotFoundException, SQLException {
         boolean ban = false;
         ResultSet rs;
-        AQUI ME QUEDE
-        api.getMovimientosExtras(EnviromentLocal.urlG+"/movimientos-efectivo-inicial/"+usuDao+"/{idSucursal}", obj)
+      
+      //  api.getMovimientosExtras(EnviromentLocal.urlG+"/movimientos-efectivo-inicial/"+usuDao+"/{idSucursal}", obj)
         rs = obj.obteneEfectivoInicial(UsuarioDAO.getIdUsuario());
         if (rs == null) {
             EfectivoInicial objeto = new EfectivoInicial();
