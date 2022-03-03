@@ -59,6 +59,7 @@ C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\inventario\InventarioDatos.java
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\modelo\Usuario.java
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\misclases\TransferenciaProductos.java
+C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\test\TransferirDatosBD.java
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\producto\ProductoAgregar.java
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\inventario\InventarioEstructura.java
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\modelo\ModeloFechas.java
@@ -75,6 +76,7 @@ C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\ventanas\CorteAmbosEstructura.java
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\enviroment\Enviroment.java
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\dao\Datos.java
+C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\modelo\Sucursal.java
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\transferencia\TransferenciaEstructura.java
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\dao\VentasDAO.java
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\utilidades\Imagen.java
@@ -88,10 +90,10 @@ C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\dialogos\TicketDevolverTodo.java
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\usuario\UsuarioEliminar.java
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\dao\CorteDAO.java
+C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\modelo\response\SucursalResponse.java
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\servicio\rest\FechaYHora.java
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\actualizaciones\EstructuraActualizaciones.java
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\tabla\TablaVentas.java
-C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\ventanas\EstructuraGeneral.java
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\dialogos\BusquedaProductos.java
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\modelo\response\MovimientosInvResponse.java
 C:\Users\agus_\Desktop\Punto de venta Vicentina\ALPESUR PUNTO V\PuntoAlpesur\src\main\java\punto\venta\dialogos\LiquidarAdeudo.java

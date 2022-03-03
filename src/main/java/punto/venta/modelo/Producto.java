@@ -21,7 +21,7 @@ public class Producto {
     private float precioMayoreo;
     private float precioDistribuidor;
     private float cantidad;
-    private int inventarioMinimo;
+    private float inventarioMinimo;
     private boolean eliminado;
     private String area;
     private String propietario=Datos.propietario;
@@ -156,14 +156,14 @@ public class Producto {
     /**
      * @return the inventarioMinimo
      */
-    public int getInventarioMinimo() {
+    public float getInventarioMinimo() {
         return inventarioMinimo;
     }
 
     /**
      * @param inventarioMinimo the inventarioMinimo to set
      */
-    public void setInventarioMinimo(int inventarioMinimo) {
+    public void setInventarioMinimo(float inventarioMinimo) {
         this.inventarioMinimo = inventarioMinimo;
     }
 

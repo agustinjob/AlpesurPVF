@@ -399,7 +399,7 @@ public class Paso2 extends javax.swing.JPanel {
                 limpiarSeleccionados();
               
                     regresar();}else{
-                   Utilidades.mensajePorTiempo("Ocurrio un error, lo más probable es que tu conexión sea inestable o que el código del producto no exista en la otra sucursal");
+                   Utilidades.mensajePorTiempo(res.getMensaje());
                }
                 
             } else {
@@ -482,20 +482,19 @@ public class Paso2 extends javax.swing.JPanel {
         if (nombre.equalsIgnoreCase("")) {
             Utilidades.mensajePorTiempo("Por favor ingresa el nombre del producto");
         } else {
-            try {
-                ResultSet producto = sucursales.obtenerProductoPorNombre(nombre);
-                producto.last();
-                if (producto.getRow() != 0) {
-                    producto.beforeFirst();
-                    producto.next();
-                    double can = Double.parseDouble(producto.getString("cantidad"));
-                    if (can > 0) {
+
+               ProductoResponse resa = api.getProductos(EnviromentLocal.urlG + "productos-id/"+nombre);
+               List<Producto>lista= resa.getProductos();
+                if (!lista.isEmpty()) {
+                   Producto producto = lista.get(0);
+                    
+                    if (producto.getCantidad() > 0) {
                         String pro[] = new String[5];
-                        pro[0] = producto.getString("codigo");
-                        pro[1] = producto.getString("descripcion");
-                        pro[2] = "" + can;
+                        pro[0] = producto.getCodigo();
+                        pro[1] = producto.getDescripcion();
+                        pro[2] = "" + producto.getCantidad();
                         pro[3] = "";
-                        pro[4] = producto.getString("precioCosto");
+                        pro[4] = producto.getPrecioCosto()+"";
                         String res = buscarCodigoEnTabla(pro[0]);
 
                         if (res.equalsIgnoreCase("correcto")) {
@@ -510,11 +509,6 @@ public class Paso2 extends javax.swing.JPanel {
                 } else {
                     Utilidades.mensajePorTiempo("Producto no encontrado");
                 }
-
-            } catch (SQLException ex) {
-               
-                Logger.getLogger(Paso2.class.getName()).log(Level.SEVERE, null, ex);
-            }
 
         }
 

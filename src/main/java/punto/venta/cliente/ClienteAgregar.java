@@ -219,6 +219,7 @@ public class ClienteAgregar extends javax.swing.JPanel {
             ClienteDAO obj = new ClienteDAO();
      
             String [] a = new String[7];
+            String [] obligatorios=new String[3];
             a[0]= txtnombrec.getText();
             a[1]=txtdireccion.getText();
             a[2]=txttelefono.getText();
@@ -226,11 +227,13 @@ public class ClienteAgregar extends javax.swing.JPanel {
             a[4]=txtRFC.getText();
             a[5]= txtEmail.getText();
             a[6]= comboMayorista.getSelectedItem().toString();
-            
-            boolean bandera = Utilidades.hayVacios(a);
+            obligatorios[0]=a[0];
+            obligatorios[1]=a[3];
+            obligatorios[2]=a[5];
+            boolean bandera = Utilidades.hayVacios(obligatorios);
             String ban = "";
             if(bandera == true){
-                mensaje("Por favor ingresa todos los datos");
+                mensaje("Por favor ingresa todos los datos, el nombre, limite de credito y email son obligatorios");
             }else{
                 try {
                     

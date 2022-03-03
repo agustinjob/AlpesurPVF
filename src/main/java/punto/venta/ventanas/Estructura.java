@@ -61,7 +61,7 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
         btnCorte.addActionListener(this);
     //    btnBitacora.addActionListener(this);
         btnConfiguracion.addActionListener(this);
-        btnActualizaciones.setFocusable(false);
+        btnActualizaciones.setVisible(false);
         btnVentas.setFocusable(false);
         btnInventario.setFocusable(false);
         btnCliente.setFocusable(false);
@@ -383,7 +383,7 @@ if (evt.equals(btnActualizaciones)) {
             corte.setVisible(false);
             confi.setVisible(false);
            
-        
+        transferencia.getPaso1().llenarTabla();
             contenedor.add(transferencia);
             transferencia.requerirFoco();
             contenedor.validate();

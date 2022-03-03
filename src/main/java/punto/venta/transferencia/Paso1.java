@@ -68,9 +68,14 @@ public class Paso1 extends javax.swing.JPanel {
         // txtCodigo.setFocusable(true);
         // txtCodigo.requestFocus();
     }
-
+    public void limpiarTabla(){
+    int i=0;
+        while(i<md.getRowCount()){
+        md.removeRow(i);
+        }
+    }
     public void llenarTabla() {
-
+       limpiarTabla();
         SucursalResponse sucu = api.getSucursales(EnviromentLocal.urlG + "sucursales/" + Datos.propietario + "/" + Datos.idSucursal);
         List<Sucursal> lista = sucu.getSucursal();
 

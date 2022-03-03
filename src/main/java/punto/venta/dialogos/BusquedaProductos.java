@@ -61,7 +61,7 @@ public class BusquedaProductos extends javax.swing.JFrame {
         inicializacionGeneral();
     }
 
-    public void inicializacionGeneral() {
+     public void inicializacionGeneral() {
         setLocationRelativeTo(null);
         setTitle("Busqueda");
         ImageIcon modificar = new ImageIcon("iconos/modificar_datos.png");

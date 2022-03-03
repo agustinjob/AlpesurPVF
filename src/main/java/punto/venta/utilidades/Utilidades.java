@@ -138,7 +138,7 @@ public class Utilidades {
         confirma.setMensaje(men);
         confirma.setVisible(true);
 
-        Timer timer = new Timer(2000, new ActionListener() {
+        Timer timer = new Timer(3000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 confirma.dispose();
