@@ -7,17 +7,25 @@ package punto.venta.transferencia;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.ActualizacionDAO;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dao.SucursalDAO;
 import punto.venta.dialogos.BusquedaProductos;
+import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.misclases.TransferenciaProductos;
+import punto.venta.modelo.Producto;
+import punto.venta.modelo.response.ProductoResponse;
+import punto.venta.modelo.response.ResponseGeneral;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -34,6 +42,7 @@ public class Paso2 extends javax.swing.JPanel {
     String cabeza[] = {"Código", "Descripción", "Inventario", "precioCompra"};
     String cabezaSeleccionados[] = {"Código", "Descripción", "Inventario", "Cantidad", "precioCompra"};
     SucursalDAO sucursales = new SucursalDAO();
+    ApiSend api = new ApiSend();
 
     public Paso2() {
         initComponents();
@@ -140,24 +149,23 @@ public class Paso2 extends javax.swing.JPanel {
 
     public void llenarTabla() {
         limpiarTabla();
-        try {
-            ResultSet res = sucursales.obtenerProductosPorSucursal();
-            res.last();
-            if (res.getRow() != 0) {
-                res.beforeFirst();
+        ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos-transferencia/" + Datos.idSucursal+"/"+Datos.propietario);
+        List<Producto>lista= res.getProductos();
+
+            if (!lista.isEmpty()) {
+          
                 String datos[] = new String[4];
-                while (res.next()) {
-                    datos[0] = res.getString("codigo");
-                    datos[1] = res.getString("descripcion");
-                    datos[2] = res.getString("cantidad");
-                    datos[3] = res.getString("precioCosto");
+                for (Producto p: lista) {
+                    datos[0] = p.getCodigo();
+                    datos[1] = p.getDescripcion();
+                    datos[2] = p.getCantidad()+"";
+                    datos[3] = p.getPrecioCosto()+"";
                     md.addRow(datos);
                 }
+            }else{
+            Utilidades.mensajePorTiempo("Ocurrio un error, vuelve a intentarlo por favor");
             }
-        } catch (SQLException ex) {
-           
-            Logger.getLogger(Paso1.class.getName()).log(Level.SEVERE, null, ex);
-        }
+  
 
     }
 
@@ -354,18 +362,22 @@ public class Paso2 extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //llenar datos en el modelo
-        trans.setMd((DefaultTableModel) tablaSeleccionados.getModel());
-
+        List<Producto> lista= new ArrayList<>();
         int total = tablaSeleccionados.getRowCount();
         boolean permitirTermino = true;
         if (total > 0) {
             int i = 0;
             while (i < total) {
-                double inv = 0.0d;
-                double can = 0.0d;
+                Producto p = new Producto();
+                float inv = 0.0f;
+                float can = 0.0f;
                 try {
-                    inv = Double.parseDouble((String) tablaSeleccionados.getValueAt(i, 2));
-                    can = Double.parseDouble((String) tablaSeleccionados.getValueAt(i, 3));
+                    inv = Float.parseFloat((String) tablaSeleccionados.getValueAt(i, 2));
+                    can = Float.parseFloat((String) tablaSeleccionados.getValueAt(i, 3));
+                    p.setCantidad(can);
+                    p.setCodigo((String) tablaSeleccionados.getValueAt(i, 0));
+                    
+                    lista.add(p);
                 } catch (Exception e) {
                  
                     System.out.println(e.getLocalizedMessage());
@@ -380,14 +392,16 @@ public class Paso2 extends javax.swing.JPanel {
                 i++;
             }
             if (permitirTermino == true) {
-                String mensaje = sucursales.realizarTraspaso(trans);
-                Utilidades.mensajePorTiempo(mensaje);
+                trans.setLista(lista);
+               ResponseGeneral res= api.usarAPI(EnviromentLocal.urlG+"sucursales-transferencia", trans,"POST");
+               if(res.isRealizado()==true){
+                Utilidades.mensajePorTiempo(res.getMensaje());
                 limpiarSeleccionados();
-                if (mensaje.equalsIgnoreCase("La transferencia se realizado correctamente")) {
-                    ActualizacionDAO act = new ActualizacionDAO();
-                    act.buscarNubeProductosModificacionesEliminaciones();
-                    regresar();
-                }
+              
+                    regresar();}else{
+                   Utilidades.mensajePorTiempo("Ocurrio un error, lo más probable es que tu conexión sea inestable o que el código del producto no exista en la otra sucursal");
+               }
+                
             } else {
                 Utilidades.mensajePorTiempo("Por favor revisa tu información ingresada, recuerde que la cantidad no debe superar lo que se tiene en inventario");
             }

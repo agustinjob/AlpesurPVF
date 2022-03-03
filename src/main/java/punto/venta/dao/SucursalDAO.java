@@ -79,8 +79,8 @@ public class SucursalDAO {
         
         public String realizarTraspaso(TransferenciaProductos tran){
        
-         try {
-             Statement s = conn.createStatement();
+     //    try {
+     /*        Statement s = conn.createStatement();
              conn.setAutoCommit(false);
              int total= tran.getMd().getRowCount();
              DefaultTableModel modelo=tran.getMd();
@@ -128,8 +128,8 @@ public class SucursalDAO {
              }
             
                 return "No se hizo la transferencia, por favor revisa tu conexion a internet y vulve a intentarlo, no se realizo ningún cambio";
-              
-         }
+              */
+         //}
          
          return "La transferencia se realizado correctamente";
         }

@@ -7,6 +7,7 @@ package punto.venta.transferencia;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingConstants;
@@ -14,10 +15,14 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
 import punto.venta.dao.Datos;
 import punto.venta.dao.SucursalDAO;
+import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.misclases.TransferenciaProductos;
+import punto.venta.modelo.Sucursal;
+import punto.venta.modelo.response.SucursalResponse;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -32,6 +37,7 @@ public class Paso1 extends javax.swing.JPanel {
     DefaultTableModel md;
     String data[][] = {};
     String cabeza[] = {"Nombre", "Dirección", "id"};
+    ApiSend api = new ApiSend();
 
     public Paso1() {
         initComponents();
@@ -50,8 +56,8 @@ public class Paso1 extends javax.swing.JPanel {
         try {
             llenarTabla();
         } catch (Exception e) {
-         
-            men = "No hay intener, por favor revisa tu conexión y vuelve a intentarlo";
+
+            men = "No hay internet, por favor revisa tu conexión y vuelve a intentarlo";
         }
 
         jLabel1.setText(men);
@@ -65,24 +71,21 @@ public class Paso1 extends javax.swing.JPanel {
 
     public void llenarTabla() {
 
-        try {
-            ResultSet res = sucursales.obtenerSucursales();
-            res.last();
-            if (res.getRow() != 0) {
-                res.beforeFirst();
-                String datos[] = new String[3];
-                while (res.next()) {
-                    datos[0] = res.getString("nombre");
-                    datos[1] = res.getString("direccion");
-                    datos[2] = res.getString("idSucursal");
-                    md.addRow(datos);
-                }
-            }
-        } catch (SQLException ex) {
-           
-            Logger.getLogger(Paso1.class.getName()).log(Level.SEVERE, null, ex);
+        SucursalResponse sucu = api.getSucursales(EnviromentLocal.urlG + "sucursales/" + Datos.propietario + "/" + Datos.idSucursal);
+        List<Sucursal> lista = sucu.getSucursal();
 
+        if (!lista.isEmpty()) {
+            String datos[] = new String[3];
+            for (Sucursal s : lista) {
+                datos[0] = s.getNombre();
+                datos[1] = s.getDireccion();
+                datos[2] = s.getIdSucursal() + "";
+                md.addRow(datos);
+            }
+        } else {
+            Utilidades.mensajePorTiempo("No se encontraron otras sucursales registrada");
         }
+
     }
 
     public void centrarTabla() {
@@ -204,7 +207,7 @@ public class Paso1 extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //llenar datos en el modelo
-        if (transP.getIdSucursalEnvio() != 0) {
+        if (transP.getIdSucursalRecibe() != 0) {
             Paso2 paso2 = TransferenciaEstructura.transferencia.getPaso2();
             paso2.setTrans(transP);
             paso2.llenarTabla();
@@ -222,8 +225,8 @@ public class Paso1 extends javax.swing.JPanel {
         String direccion = (String) tablaSucursales.getValueAt(row, 1);
         int idSucursal = Integer.parseInt((String) tablaSucursales.getValueAt(row, 2));
         jLabel2.setText("Usted ha seleccionado la sucursal: " + nombre);
-        transP.setIdSucursalEnvio(idSucursal);
-        transP.setSucursalEnvio(nombre);
+        transP.setIdSucursalRecibe(idSucursal);
+        transP.setSucursalRecibe(nombre);
 // TODO add your handling code here:
     }//GEN-LAST:event_tablaSucursalesMouseClicked
 

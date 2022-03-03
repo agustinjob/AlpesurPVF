@@ -5,7 +5,12 @@
  */
 package punto.venta.misclases;
 
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import punto.venta.dao.Datos;
+import punto.venta.dao.UsuarioDAO;
+import punto.venta.modelo.Producto;
+import punto.venta.modelo.Sucursal;
 
 /**
  *
@@ -13,49 +18,126 @@ import javax.swing.table.DefaultTableModel;
  */
 public class TransferenciaProductos {
     
-   private int idSucursalEnvio;
-   private String sucursalEnvio;
-   private DefaultTableModel md;
+   private int idSucursalLocal= Datos.idSucursal;
+   private String sucursalLocal=Datos.sucursal;
+   private int idSucursalRecibe;
+   private String sucursalRecibe;
+   private List<Producto> lista;
+   private String propietarioLocal=Datos.propietario;
+   private String propietarioRecibe=Datos.propietario;
+   private Integer idUsuario=UsuarioDAO.idUsuario;
 
     /**
-     * @return the idSucursalEnvio
+     * @return the idSucursalLocal
      */
-    public int getIdSucursalEnvio() {
-        return idSucursalEnvio;
+    public int getIdSucursalLocal() {
+        return idSucursalLocal;
     }
 
     /**
-     * @param idSucursalEnvio the idSucursalEnvio to set
+     * @param idSucursalLocal the idSucursalLocal to set
      */
-    public void setIdSucursalEnvio(int idSucursalEnvio) {
-        this.idSucursalEnvio = idSucursalEnvio;
+    public void setIdSucursalLocal(int idSucursalLocal) {
+        this.idSucursalLocal = idSucursalLocal;
     }
 
     /**
-     * @return the sucursalEnvio
+     * @return the sucursalLocal
      */
-    public String getSucursalEnvio() {
-        return sucursalEnvio;
+    public String getSucursalLocal() {
+        return sucursalLocal;
     }
 
     /**
-     * @param sucursalEnvio the sucursalEnvio to set
+     * @param sucursalLocal the sucursalLocal to set
      */
-    public void setSucursalEnvio(String sucursalEnvio) {
-        this.sucursalEnvio = sucursalEnvio;
+    public void setSucursalLocal(String sucursalLocal) {
+        this.sucursalLocal = sucursalLocal;
     }
 
     /**
-     * @return the md
+     * @return the idSucursalRecibe
      */
-    public DefaultTableModel getMd() {
-        return md;
+    public int getIdSucursalRecibe() {
+        return idSucursalRecibe;
     }
 
     /**
-     * @param md the md to set
+     * @param idSucursalRecibe the idSucursalRecibe to set
      */
-    public void setMd(DefaultTableModel md) {
-        this.md = md;
+    public void setIdSucursalRecibe(int idSucursalRecibe) {
+        this.idSucursalRecibe = idSucursalRecibe;
     }
+
+    /**
+     * @return the sucursalRecibe
+     */
+    public String getSucursalRecibe() {
+        return sucursalRecibe;
+    }
+
+    /**
+     * @param sucursalRecibe the sucursalRecibe to set
+     */
+    public void setSucursalRecibe(String sucursalRecibe) {
+        this.sucursalRecibe = sucursalRecibe;
+    }
+
+    /**
+     * @return the lista
+     */
+    public List<Producto> getLista() {
+        return lista;
+    }
+
+    /**
+     * @param lista the lista to set
+     */
+    public void setLista(List<Producto> lista) {
+        this.lista = lista;
+    }
+
+    /**
+     * @return the propietarioLocal
+     */
+    public String getPropietarioLocal() {
+        return propietarioLocal;
+    }
+
+    /**
+     * @param propietarioLocal the propietarioLocal to set
+     */
+    public void setPropietarioLocal(String propietarioLocal) {
+        this.propietarioLocal = propietarioLocal;
+    }
+
+    /**
+     * @return the propietarioRecibe
+     */
+    public String getPropietarioRecibe() {
+        return propietarioRecibe;
+    }
+
+    /**
+     * @param propietarioRecibe the propietarioRecibe to set
+     */
+    public void setPropietarioRecibe(String propietarioRecibe) {
+        this.propietarioRecibe = propietarioRecibe;
+    }
+
+    /**
+     * @return the idUsuario
+     */
+    public Integer getIdUsuario() {
+        return idUsuario;
+    }
+
+    /**
+     * @param idUsuario the idUsuario to set
+     */
+    public void setIdUsuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+   
 }
