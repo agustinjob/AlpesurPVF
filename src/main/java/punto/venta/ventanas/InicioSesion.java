@@ -26,6 +26,7 @@ import static punto.venta.dialogos.Cobrar.txtn1;
 import punto.venta.dialogos.Confirmacion;
 import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.modelo.Usuario;
+import punto.venta.modelo.response.MovimientosExtrasResponse;
 import punto.venta.modelo.response.UsuarioResponse;
 import punto.venta.utilidades.Imagen;
 import punto.venta.utilidades.Utilidades;
@@ -96,9 +97,9 @@ public class InicioSesion extends javax.swing.JFrame {
         boolean ban = false;
         ResultSet rs;
       
-      //  api.getMovimientosExtras(EnviromentLocal.urlG+"/movimientos-efectivo-inicial/"+usuDao+"/{idSucursal}", obj)
-        rs = obj.obteneEfectivoInicial(UsuarioDAO.getIdUsuario());
-        if (rs == null) {
+     MovimientosExtrasResponse mov= api.getMovimientosExtrasGET(EnviromentLocal.urlG+"movimientos-efectivo-inicial/"+UsuarioDAO.idUsuario+"/"+Datos.idSucursal);
+       
+        if (mov.getMovimientos().isEmpty()) {
             EfectivoInicial objeto = new EfectivoInicial();
             objeto.setVisible(true);
             dispose();
@@ -257,7 +258,12 @@ public class InicioSesion extends javax.swing.JFrame {
 
         try {
             if (usuario.getPassword().equals(pass)) {
-                //   obj.modificarFechaYhoraSesionUsuario();
+               //   obj.modificarFechaYhoraSesionUsuario();
+               UsuarioDAO.idUsuario=usuario.getIdUsuario();
+               UsuarioDAO.nombre=usuario.getNombre();
+               UsuarioDAO.tipo= usuario.getTipoUsuario();
+               UsuarioDAO.username=usuario.getUsername();
+               
                 efectivoInicial();
             } else {
                 mensaje("Usuario o contraseña incorrectos");

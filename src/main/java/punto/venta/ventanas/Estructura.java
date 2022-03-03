@@ -38,7 +38,7 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
     UsuarioEstructura usuarios = new UsuarioEstructura();
     ProductoEstructura productos = new ProductoEstructura();
     TransferirEstructura transferir = new TransferirEstructura();
-    CorteAmbosEstructura corte = new CorteAmbosEstructura();
+    CorteEstructura corte = new CorteEstructura();
     NubeEstructura nube = new NubeEstructura();
     Configuracion confi = new Configuracion();
 

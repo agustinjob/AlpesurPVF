@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ContentType;
+import punto.venta.modelo.CorteModelo;
 import punto.venta.modelo.Usuario;
 import punto.venta.modelo.response.AreaResponse;
 import punto.venta.modelo.response.ClienteResponse;
@@ -132,9 +133,9 @@ public class ApiSend {
         }
         return pro;
     }
-    
-    public String getDato(String url){
-     HttpGet envio = new HttpGet(url);
+
+    public String getDato(String url) {
+        HttpGet envio = new HttpGet(url);
         Gson gson = new Gson();
         String pro = "";
 
@@ -146,8 +147,8 @@ public class ApiSend {
         }
         return pro;
     }
-    
-      public ClienteResponse getClientes(String url) {
+
+    public ClienteResponse getClientes(String url) {
         HttpGet envio = new HttpGet(url);
         Gson gson = new Gson();
         ClienteResponse pro = new ClienteResponse();
@@ -160,8 +161,8 @@ public class ApiSend {
         }
         return pro;
     }
-      
-        public CreditoResponse getCredito(String url) {
+
+    public CreditoResponse getCredito(String url) {
         HttpGet envio = new HttpGet(url);
         Gson gson = new Gson();
         CreditoResponse pro = new CreditoResponse();
@@ -202,6 +203,38 @@ public class ApiSend {
         try ( CloseableHttpClient httpClient = HttpClients.createDefault();  CloseableHttpResponse response = httpClient.execute(envio)) {
 
             pro = gson.fromJson(EntityUtils.toString(response.getEntity()), MovimientosExtrasResponse.class);
+
+        } catch (IOException ex) {
+            Logger.getLogger(ApiSend.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return pro;
+    }
+
+    public MovimientosExtrasResponse getMovimientosExtrasGET(String url) {
+
+        MovimientosExtrasResponse pro = new MovimientosExtrasResponse();
+
+        HttpGet envio = new HttpGet(url);
+        Gson gson = new Gson();
+        try ( CloseableHttpClient httpClient = HttpClients.createDefault();  CloseableHttpResponse response = httpClient.execute(envio)) {
+
+            pro = gson.fromJson(EntityUtils.toString(response.getEntity()), MovimientosExtrasResponse.class);
+
+        } catch (IOException ex) {
+            Logger.getLogger(ApiSend.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return pro;
+    }
+    
+       public CorteModelo getCorteModeloGET(String url) {
+
+        CorteModelo pro = new CorteModelo();
+
+        HttpGet envio = new HttpGet(url);
+        Gson gson = new Gson();
+        try ( CloseableHttpClient httpClient = HttpClients.createDefault();  CloseableHttpResponse response = httpClient.execute(envio)) {
+
+            pro = gson.fromJson(EntityUtils.toString(response.getEntity()), CorteModelo.class);
 
         } catch (IOException ex) {
             Logger.getLogger(ApiSend.class.getName()).log(Level.SEVERE, null, ex);

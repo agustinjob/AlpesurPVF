@@ -12,28 +12,18 @@ import java.util.List;
  */
 public class CorteModelo {
 
-    private String fondoCaja;
-    private String ventas;
-    private String entradas;
-    private String salidas;
-    private String abonos;
-    private String devoluciones;
+ private String dineroCaja;
+   private String ventas;
+   private String ventasACredito;
+   private String costo;
+   private String entradas;
+   private String salidas;
+   private String abonos;
+   private String devoluciones;
     private List<MovimientosExtras> entradasLista;
     private List<MovimientosExtras> salidasLista;
 
-    /**
-     * @return the fondoCaja
-     */
-    public String getFondoCaja() {
-        return fondoCaja;
-    }
-
-    /**
-     * @param fondoCaja the fondoCaja to set
-     */
-    public void setFondoCaja(String fondoCaja) {
-        this.fondoCaja = fondoCaja;
-    }
+  
 
     /**
      * @return the ventas
@@ -131,6 +121,48 @@ public class CorteModelo {
      */
     public void setSalidasLista(List<MovimientosExtras> salidasLista) {
         this.salidasLista = salidasLista;
+    }
+
+    /**
+     * @return the dineroCaja
+     */
+    public String getDineroCaja() {
+        return dineroCaja;
+    }
+
+    /**
+     * @param dineroCaja the dineroCaja to set
+     */
+    public void setDineroCaja(String dineroCaja) {
+        this.dineroCaja = dineroCaja;
+    }
+
+    /**
+     * @return the ventasACredito
+     */
+    public String getVentasACredito() {
+        return ventasACredito;
+    }
+
+    /**
+     * @param ventasACredito the ventasACredito to set
+     */
+    public void setVentasACredito(String ventasACredito) {
+        this.ventasACredito = ventasACredito;
+    }
+
+    /**
+     * @return the costo
+     */
+    public String getCosto() {
+        return costo;
+    }
+
+    /**
+     * @param costo the costo to set
+     */
+    public void setCosto(String costo) {
+        this.costo = costo;
     }
 
 }

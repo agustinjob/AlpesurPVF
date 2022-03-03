@@ -59,6 +59,7 @@ public class UsuarioEliminar extends javax.swing.JPanel {
 
         UsuarioResponse res = api.getUsuarios(EnviromentLocal.urlG + "usuarios/" + Datos.idSucursal);
         for (Usuario usua : res.getUsuarios()) {
+            usua.setTipo(2);
             comboUsuario.addItem(usua);
         }
 

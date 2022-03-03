@@ -164,7 +164,7 @@ public class EfectivoInicial extends javax.swing.JFrame {
             mov.setDescripcion("Registro de efectivo");
             mov.setIdMovimiento(0);
             mov.setMonto(efectivo);
-            mov.setTipo("entrada_efectivo");
+            mov.setTipo("efectivo_inicial");
             ResponseGeneral res = api.usarAPI(EnviromentLocal.urlG + "movimientos", mov, "POST");
            // obj.registrarEfectivoInicial(efectivo + "", "efectivo_inicial", "Nueva","Actualizada","Registro");
             Estructura obj = new Estructura();

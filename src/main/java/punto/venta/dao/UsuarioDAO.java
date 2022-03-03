@@ -36,6 +36,7 @@ public class UsuarioDAO {
      public static String tipo;
      public static String hora;
      public static String fecha;
+     public static String username;
 
      Connection conn= Conexion.conectarMySQL();
   

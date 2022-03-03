@@ -65,6 +65,7 @@ public class UsuarioModificar extends javax.swing.JPanel implements ActionListen
 
         UsuarioResponse res = api.getUsuarios(EnviromentLocal.urlG + "usuarios/" + Datos.idSucursal);
         for (Usuario usua : res.getUsuarios()) {
+            usua.setTipo(2);
             comboUsuario.addItem(usua);
         }
 

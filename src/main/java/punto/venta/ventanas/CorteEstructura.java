@@ -12,6 +12,7 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -19,10 +20,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
 import punto.venta.dao.CorteDAO;
+import punto.venta.dao.Datos;
 import punto.venta.dao.Movimientos;
 import punto.venta.dao.UsuarioDAO;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.CorteModelo;
+import punto.venta.modelo.MovimientosExtras;
+import punto.venta.modelo.response.MovimientosExtrasResponse;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -35,14 +42,14 @@ public class CorteEstructura extends javax.swing.JPanel {
     NumberFormat formatoImporte = NumberFormat.getCurrencyInstance();
     DefaultTableCellRenderer dt = new DefaultTableCellRenderer();
     Movimientos mv = new Movimientos();
-    
+
     DateFormat formatoFecha = new SimpleDateFormat("yyyy/MM/dd");
     DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
+    ApiSend api = new ApiSend();
 
     public CorteEstructura() {
         initComponents();
         corteDe.setVisible(false);
-        deA.setVisible(false);
         ImageIcon ima = new ImageIcon("iconos/corte_dia.png");
         ImageIcon dinero = new ImageIcon("iconos/dinero_caja.png");
         ImageIcon entrada = new ImageIcon("iconos/entradas_dinero.png");
@@ -57,20 +64,20 @@ public class CorteEstructura extends javax.swing.JPanel {
         txtVentasTotales.setIcon(ventaTotal);
         txtGananciaTotal.setIcon(gananciaTotal);
         panelEnsa.setVisible(false);
-        if(UsuarioDAO.getTipo().equalsIgnoreCase("Empleado")){
-        txtGananciaTotal.setVisible(false);
-        txtGanancia.setVisible(false);
+        if (UsuarioDAO.getTipo().equalsIgnoreCase("Empleado")) {
+            txtGananciaTotal.setVisible(false);
+            txtGanancia.setVisible(false);
         }
     }
 
-    public void limpiarTodo(){
-    
+    public void limpiarTodo() {
+
     }
-    
-    public void requerirFoco(){
-    btnCorte.requestFocus();
+
+    public void requerirFoco() {
+        btnCorte.requestFocus();
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -94,9 +101,11 @@ public class CorteEstructura extends javax.swing.JPanel {
         txtSalida = new javax.swing.JLabel();
         txtVentasTotales1 = new javax.swing.JLabel();
         txtVentasCredito = new javax.swing.JLabel();
-        deA = new javax.swing.JLabel();
         btnCorte = new javax.swing.JButton();
         fecha = new com.toedter.calendar.JDateChooser();
+        panelTicket = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        corteDe1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(1401, 540));
@@ -106,7 +115,7 @@ public class CorteEstructura extends javax.swing.JPanel {
 
         corteDe.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
         corteDe.setForeground(new java.awt.Color(0, 0, 204));
-        corteDe.setText("Corte de ...");
+        corteDe.setText("Corte de");
 
         Panelcor.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -158,6 +167,7 @@ public class CorteEstructura extends javax.swing.JPanel {
                 "Descripcion", "Monto"
             }
         ));
+        tablaEntradas.setGridColor(new java.awt.Color(255, 255, 255));
         jScrollPane3.setViewportView(tablaEntradas);
 
         txtEntrada.setFont(new java.awt.Font("Cambria", 1, 18)); // NOI18N
@@ -253,7 +263,7 @@ public class CorteEstructura extends javax.swing.JPanel {
                         .addGap(11, 11, 11)
                         .addComponent(txtDinero)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(panelEnsa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(45, 45, 45)
                 .addGroup(PanelcorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -267,10 +277,6 @@ public class CorteEstructura extends javax.swing.JPanel {
                     .addComponent(txtGananciaTotal))
                 .addContainerGap(99, Short.MAX_VALUE))
         );
-
-        deA.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
-        deA.setForeground(new java.awt.Color(0, 0, 204));
-        deA.setText("De las - a las -");
 
         btnCorte.setBackground(new java.awt.Color(102, 102, 255));
         btnCorte.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
@@ -288,37 +294,73 @@ public class CorteEstructura extends javax.swing.JPanel {
             }
         });
 
+        panelTicket.setBackground(new java.awt.Color(204, 153, 0));
+
+        jLabel1.setBackground(new java.awt.Color(0, 204, 0));
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("CORTE");
+        jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        javax.swing.GroupLayout panelTicketLayout = new javax.swing.GroupLayout(panelTicket);
+        panelTicket.setLayout(panelTicketLayout);
+        panelTicketLayout.setHorizontalGroup(
+            panelTicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelTicketLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelTicketLayout.setVerticalGroup(
+            panelTicketLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelTicketLayout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        corteDe1.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
+        corteDe1.setForeground(new java.awt.Color(0, 0, 204));
+        corteDe1.setText("Seleccionar fecha:");
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelTicket, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(44, 44, 44)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(deA)
-                            .addComponent(corteDe, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(216, 216, 216)
-                        .addComponent(btnCorte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(Panelcor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(Panelcor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(corteDe1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(btnCorte, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(corteDe, javax.swing.GroupLayout.PREFERRED_SIZE, 817, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(deA, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addComponent(panelTicket, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel6Layout.createSequentialGroup()
-                            .addGap(15, 15, 15)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(corteDe)
-                                .addComponent(btnCorte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(35, 35, 35)
+                            .addComponent(btnCorte, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel6Layout.createSequentialGroup()
+                            .addGap(52, 52, 52)
+                            .addComponent(corteDe)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(corteDe1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Panelcor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(101, 101, 101))
@@ -339,56 +381,57 @@ public class CorteEstructura extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCorteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCorteActionPerformed
-        if(fecha.getDate()!=null){
-        String fech = Utilidades.getFechaString(fecha.getDate());
+        if (fecha.getDate() != null) {
+            String fech = Utilidades.getFechaString(fecha.getDate());
+            hacerCorte();
+        } else {
+            Utilidades.mensajePorTiempo("Selecciona una fecha por favor");
         }
-hacerCorte();
+
     }//GEN-LAST:event_btnCorteActionPerformed
 
     private void btnCorteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnCorteKeyPressed
-      if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-      hacerCorte();
-      }
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            hacerCorte();
+        }
     }//GEN-LAST:event_btnCorteKeyPressed
-   public void hacerCorte(){
-           Date d = new Date();
-        String x[] = new String[6];
-        x = corted.getDatosPorDia();
-        Double y[] = new Double[6];
-        y = Utilidades.hayNulosACero(x);
+    public void hacerCorte() {
 
-        tablaDinero.setValueAt("+ " + formatoImporte.format(y[0]), 0, 1);
-        tablaDinero.setValueAt("+ " + formatoImporte.format(y[1]), 1, 1);
-        tablaDinero.setValueAt("+ " + formatoImporte.format(y[3]), 2, 1);
-        tablaDinero.setValueAt("+ " + formatoImporte.format(y[6]), 3, 1);
-        tablaDinero.setValueAt("- " + formatoImporte.format(y[4]), 4, 1);
-        tablaDinero.setValueAt("- " + formatoImporte.format(y[5]), 5, 1);
-        Double total = y[0]+ y[6] + y[1] + y[3] - y[4] - y[5];
+        String x[] = new String[6];
+        //  x = corted.getDatosPorDia();
+        String fechaS = Utilidades.getFechaString(fecha.getDate());
+        CorteModelo corte = api.getCorteModeloGET(EnviromentLocal.urlG + "corte-dia/" + UsuarioDAO.idUsuario + "/" + fechaS + "/" + Datos.idSucursal);
+        tablaDinero.setValueAt("+ " + formatoImporte.format(Float.parseFloat(corte.getDineroCaja())), 0, 1);
+        tablaDinero.setValueAt("+ " + formatoImporte.format(Float.parseFloat(corte.getVentas())), 1, 1);
+        tablaDinero.setValueAt("+ " + formatoImporte.format(Float.parseFloat(corte.getEntradas())), 2, 1);
+        tablaDinero.setValueAt("+ " + formatoImporte.format(Float.parseFloat(corte.getAbonos())), 3, 1);
+        tablaDinero.setValueAt("- " + formatoImporte.format(Float.parseFloat(corte.getSalidas())), 4, 1);
+        tablaDinero.setValueAt("- " + formatoImporte.format(Float.parseFloat(corte.getDevoluciones())), 5, 1);
+        float total = Float.parseFloat(corte.getDineroCaja()) + Float.parseFloat(corte.getVentas()) + Float.parseFloat(corte.getEntradas())
+                + Float.parseFloat(corte.getAbonos()) - Float.parseFloat(corte.getSalidas()) - Float.parseFloat(corte.getDevoluciones());
         tablaDinero.setValueAt(formatoImporte.format(total), 6, 1);
 
-        double gananciaNeta = y[1] - y[2];
-        Utilidades.im("GANACIA "+ y[2]);
-        txtVentas.setText(formatoImporte.format(y[1]));
+        double gananciaNeta = Float.parseFloat(corte.getVentas()) - Float.parseFloat(corte.getCosto());
+        txtVentas.setText(formatoImporte.format(Float.parseFloat(corte.getVentas())));
 
         //new DecimalFormat("#.##").format(gananciaNeta)
         txtGanancia.setText(formatoImporte.format(gananciaNeta));
-        txtVentasCredito.setText(y[7]+"");
-        corteDe.setText("Corte de " + UsuarioDAO.getNombre());
-        deA.setText("De las " + UsuarioDAO.getHora() + " A las " + formatoHora.format(d));
-        System.out.println("De las " + UsuarioDAO.getHora() + " A las " + formatoHora.format(d));
+        txtVentasCredito.setText(corte.getVentasACredito());
+        corteDe.setText("Corte de " + UsuarioDAO.username + " finalizado a las " + formatoHora.format(new Date()));
         corteDe.setVisible(true);
-        deA.setVisible(true);
 
         //DefaultTableModel entrada = new DefaultTableModel();
         llenarTabla(1);
         llenarTabla(2);
         panelEnsa.setVisible(true);
-   }
-    public void ocultarPanel(){
-    panelEnsa.setVisible(false);
     }
+
+    public void ocultarPanel() {
+        panelEnsa.setVisible(false);
+    }
+
     public void llenarTabla(int tipo) {
-        try {
+   
             DefaultTableModel modelo = null;
             String tipoLLamada = "";
             if (tipo == 1) {
@@ -400,42 +443,33 @@ hacerCorte();
                 limpiarTabla(tablaSalidas);
                 tipoLLamada = "salida_efectivo";
             }
-            
-            
-            ResultSet rs = mv.getEntradasDelDia(tipoLLamada);
+
+            MovimientosExtras obj = new MovimientosExtras();
+            obj.setTipo(tipoLLamada);
+            MovimientosExtrasResponse res = api.getMovimientosExtras(EnviromentLocal.urlG + "movimientos-fecha", obj);
+            List<MovimientosExtras> lista = res.getMovimientos();
             String[] x = new String[2];
 
-            if (rs == null) {
+            if (lista.isEmpty()) {
                 System.out.println("Esta vacio");
             } else {
-                
-                try {
-                    while (rs.next()) {
-                        x[0] = rs.getString(3);
-                        x[1] = formatoImporte.format(Double.parseDouble(rs.getString(4)));
+                    for (MovimientosExtras m : lista) {
+                        x[0] = m.getDescripcion();
+                        x[1] = m.getMonto() + "";
                         modelo.addRow(x);
                     }
-                    
+
                     if (tipo == 1) {
                         tablaEntradas.setModel(modelo);
-                        
+
                     } else {
                         tablaSalidas.setModel(modelo);
                     }
-                } catch (SQLException ex) {
-                         
-                    Logger.getLogger(CorteEstructura.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                
 
             }
-        } catch (ClassNotFoundException ex) {
-                 
-            Logger.getLogger(CorteEstructura.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-                 
-           System.out.println(ex.getLocalizedMessage());
-        }
-     
+        
+
     }
 
     public void limpiarTabla(JTable tabla) {
@@ -446,7 +480,7 @@ hacerCorte();
                 modelo.removeRow(0);
             }
         } catch (Exception e) {
-               
+
             JOptionPane.showMessageDialog(null, "Error al limpiar la tabla.");
         }
     }
@@ -455,13 +489,15 @@ hacerCorte();
     private javax.swing.JPanel Panelcor;
     private javax.swing.JButton btnCorte;
     private javax.swing.JLabel corteDe;
-    private javax.swing.JLabel deA;
+    private javax.swing.JLabel corteDe1;
     private com.toedter.calendar.JDateChooser fecha;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPanel panelEnsa;
+    private javax.swing.JPanel panelTicket;
     private javax.swing.JTable tablaDinero;
     private javax.swing.JTable tablaEntradas;
     private javax.swing.JTable tablaSalidas;
