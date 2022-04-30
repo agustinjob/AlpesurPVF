@@ -54,7 +54,6 @@ public class TransferirEstructura extends javax.swing.JPanel {
         agregar.setIcon(agregarI);
         imagen.setIcon(datos);
         l1.setIcon(a3);
-        llenarCombo();
         AutoCompleteDecorator.decorate(producT, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
         AutoCompleteDecorator.decorate(producA, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
     }

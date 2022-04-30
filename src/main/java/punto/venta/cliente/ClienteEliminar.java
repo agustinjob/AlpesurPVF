@@ -33,8 +33,6 @@ import punto.venta.utilidades.Utilidades;
  */
 public class ClienteEliminar extends javax.swing.JPanel {
 
-    ClienteDAO obj = new ClienteDAO();
-    ArrayList<Cliente> c;
     Confirmacion confi = new Confirmacion();
     ApiSend api = new ApiSend();
 

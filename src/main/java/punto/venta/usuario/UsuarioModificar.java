@@ -38,7 +38,6 @@ import static punto.venta.utilidades.Utilidades.confirma;
 public class UsuarioModificar extends javax.swing.JPanel implements ActionListener {
 
     Confirmacion confirma = new Confirmacion();
-    UsuarioDAO obj = new UsuarioDAO();
     Usuario usu = new Usuario();
     ApiSend api = new ApiSend();
     List<Usuario> lista;
@@ -57,10 +56,10 @@ public class UsuarioModificar extends javax.swing.JPanel implements ActionListen
     }
 
     public void llenarCombo() {
-
         comboUsuario.removeAllItems();
         Usuario vacio= new Usuario();
         vacio.setIdUsuario(0);
+        vacio.setTipo(2);
         comboUsuario.addItem(vacio);
 
         UsuarioResponse res = api.getUsuarios(EnviromentLocal.urlG + "usuarios/" + Datos.idSucursal);

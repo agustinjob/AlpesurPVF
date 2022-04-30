@@ -33,7 +33,8 @@ public class PanelTabla extends javax.swing.JPanel implements ActionListener, Ke
 
     DefaultTableModel md;
     String data[][] = {};
-    String cabeza[] = {"Código de barras", "Descripcion de producto", "Precio venta", "Cant", "importe", "Existencia", "Precio Costo"};
+    String cabeza[] = {"Código de barras", "Descripcion de producto", "Precio venta", "Cant", "importe", "Existencia", "Precio Costo","Precio Mayoreo",
+    "Precio Distribuidor","Precio Venta Extra"};
     int filas;
     DecimalFormat df = new DecimalFormat("#.00");
     private VentasEstructura objVentas;
@@ -79,6 +80,18 @@ public class PanelTabla extends javax.swing.JPanel implements ActionListener, Ke
         txtTabla.getColumnModel().getColumn(6).setWidth(0);
         txtTabla.getColumnModel().getColumn(6).setMinWidth(0);
         txtTabla.getColumnModel().getColumn(6).setMaxWidth(0);
+        
+        txtTabla.getColumnModel().getColumn(7).setWidth(0);
+        txtTabla.getColumnModel().getColumn(7).setMinWidth(0);
+        txtTabla.getColumnModel().getColumn(7).setMaxWidth(0);
+        
+        txtTabla.getColumnModel().getColumn(8).setWidth(0);
+        txtTabla.getColumnModel().getColumn(8).setMinWidth(0);
+        txtTabla.getColumnModel().getColumn(8).setMaxWidth(0);
+        
+        txtTabla.getColumnModel().getColumn(9).setWidth(0);
+        txtTabla.getColumnModel().getColumn(9).setMinWidth(0);
+        txtTabla.getColumnModel().getColumn(9).setMaxWidth(0);
         txtTabla.setRowHeight(30);
     }
 
@@ -116,9 +129,7 @@ public class PanelTabla extends javax.swing.JPanel implements ActionListener, Ke
                 tm.removeRow(i);
             } else {
                 double suma = precio * cantidad;
-
                 tm.setValueAt(suma + "", i, 4);
-
                 total = total + suma;
             }
 
@@ -148,9 +159,10 @@ public class PanelTabla extends javax.swing.JPanel implements ActionListener, Ke
         ));
         txtTabla.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         txtTabla.setAutoscrolls(false);
-        txtTabla.setColumnSelectionAllowed(true);
+        txtTabla.setCellSelectionEnabled(false);
         txtTabla.setDropMode(javax.swing.DropMode.ON);
         txtTabla.setGridColor(new java.awt.Color(255, 255, 255));
+        txtTabla.setRowSelectionAllowed(true);
         txtTabla.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         txtTabla.setShowHorizontalLines(false);
         txtTabla.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -293,6 +305,19 @@ public class PanelTabla extends javax.swing.JPanel implements ActionListener, Ke
             }
 
         }
+    }
+    
+    public String obtenerDatosDelModelo(){
+        DefaultTableModel md= (DefaultTableModel)txtTabla.getModel();
+        int i=0;
+        float importe=0.0f;
+        while(md.getRowCount()>i){
+        String imp=(String)md.getValueAt(i, 4);
+        importe=importe+ Float.parseFloat(imp);
+        
+        i++;
+        }
+    return importe+"";
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

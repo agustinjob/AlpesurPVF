@@ -40,11 +40,8 @@ import punto.venta.utilidades.Utilidades;
  */
 public class ProductoModificar extends javax.swing.JPanel {
 
-    ProductoDAO obj = new ProductoDAO();
     Producto info;
-    ArrayList<Producto> lista = new ArrayList();
     Confirmacion confirma = new Confirmacion();
-    AreaDAO objArea = new AreaDAO();
     ApiSend api = new ApiSend();
 
     public ProductoModificar() {
@@ -462,7 +459,7 @@ public class ProductoModificar extends javax.swing.JPanel {
 
                 ResponseGeneral res = api.usarAPI(EnviromentLocal.urlG + "productos", prod, "PUT");
                 mensaje(res.getMensaje());
-                Timer timer = new Timer(1000, new ActionListener() {
+                Timer timer = new Timer(2000, new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
 
@@ -525,7 +522,7 @@ public class ProductoModificar extends javax.swing.JPanel {
             txtPrecioCosto.setText(info.getPrecioCosto() + "");
             txtPrecioMayoreo.setText(info.getPrecioMayoreo() + "");
             cantidad.setText(info.getCantidad() + "");
-            inventarioMinimo.setText(info.getInventarioMinimo() + "");
+            inventarioMinimo.setText(((int)info.getInventarioMinimo()) + "");
             txtCodigo.requestFocus();
             txtPrecioDistribuidor.setText(info.getPrecioDistribuidor() + "");
             llenarComboArea(info.getArea());

@@ -53,7 +53,9 @@ public class EntradaEfectivo extends javax.swing.JFrame {
         btnverEntradas.setIcon(c);
         txtcantidade.requestFocus();
         this.ventas = ventas;
-        setSize(550, 235);
+            ImageIcon logo = new ImageIcon("iconos/lavicentina.jpg");
+        this.setIconImage(logo.getImage());
+        setSize(530, 205);
     }
 
     public void mensaje(String men) {
@@ -123,6 +125,7 @@ public class EntradaEfectivo extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setUndecorated(true);
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -133,7 +136,7 @@ public class EntradaEfectivo extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
         jLabel2.setText("Cantidad:");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(12, 56, 61, 18);
+        jLabel2.setBounds(12, 56, 120, 18);
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -146,7 +149,7 @@ public class EntradaEfectivo extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
         jLabel3.setText("Comentarios:");
         jPanel1.add(jLabel3);
-        jLabel3.setBounds(12, 121, 84, 21);
+        jLabel3.setBounds(12, 121, 120, 21);
 
         jPanel2.setBackground(new java.awt.Color(0, 102, 102));
         jPanel2.setPreferredSize(new java.awt.Dimension(200, 250));
@@ -302,6 +305,7 @@ public class EntradaEfectivo extends javax.swing.JFrame {
 
     private void btnguardarefActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarefActionPerformed
         guardar();
+        VentasEstructura.txtCodigo.requestFocus();
     }//GEN-LAST:event_btnguardarefActionPerformed
 
     public void guardar() {
@@ -314,6 +318,7 @@ public class EntradaEfectivo extends javax.swing.JFrame {
             mensaje("Por favor ingresa todos los datos");
 
         } else {
+            try{
             double tem = Double.parseDouble(a[1]);
             MovimientosExtras mov = new MovimientosExtras();
             mov.setDescripcion(a[0]);
@@ -340,23 +345,25 @@ public class EntradaEfectivo extends javax.swing.JFrame {
             timer.start();
 
             this.dispose();
-
+            }catch(NumberFormatException e){
+            Utilidades.mensajePorTiempo("Por favor ingresa valores númericos en el campo cantidad", 2000);
+            }
         }
     }
     private void btncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncActionPerformed
-
-        dispose();
+        this.dispose();
+        VentasEstructura.txtCodigo.requestFocus();
     }//GEN-LAST:event_btncActionPerformed
 
     private void btnverEntradasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnverEntradasActionPerformed
         if (ocultar == 0) {
             btnverEntradas.setText("Ocultar salidas");
-            setSize(550, 525);
+            setSize(530, 500);
             actualizaTabla();
             ocultar = 1;
         } else {
             btnverEntradas.setText("Mostrar salidas");
-            setSize(550, 235);
+            setSize(530, 205);
             ocultar = 0;
             limpiaTabla();
         }

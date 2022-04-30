@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -55,6 +56,8 @@ public class Devoluciones extends javax.swing.JFrame {
         seleccionaFecha.setDate(d);
         //ancho,largo
         setSize(350, 500);
+            ImageIcon logo = new ImageIcon("iconos/lavicentina.jpg");
+        this.setIconImage(logo.getImage());
 
     }
 

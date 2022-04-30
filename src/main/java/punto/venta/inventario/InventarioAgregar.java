@@ -46,10 +46,8 @@ import punto.venta.utilidades.Utilidades;
  */
 public class InventarioAgregar extends javax.swing.JPanel {
 
-    ProductoDAO obj = new ProductoDAO();
     List<Producto> plist = new ArrayList();
     Confirmacion confir = new Confirmacion();
-    AreaDAO objArea = new AreaDAO();
     ImprimirTicket objImprimir = new ImprimirTicket();
     ApiSend api = new ApiSend();
 
@@ -416,25 +414,22 @@ public class InventarioAgregar extends javax.swing.JPanel {
         }
     }
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        String area = (String) comboAreas.getSelectedItem();
-        if (area.trim().equalsIgnoreCase("")) {
+        Area area = (Area) comboAreas.getSelectedItem();
+        if (area.getIdArea()==0) {
             Utilidades.mensajePorTiempo("Selecciona un área por favor o revisa si el área ingresado se encuentra registrada");
         } else {
-            try {
-                ResultSet res = objArea.obtenerTodoPorArea(area);
-                res.last();
-                if (res.getRow() == 0) {
+       
+                
+             ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos/" + Datos.idSucursal);
+                if (res.getProductos().isEmpty()) {
                     Utilidades.mensajePorTiempo("No se encontrarón productos en esa área");
                 } else {
-                    res.beforeFirst();
-                    String modelo = objImprimir.convertirModeloParaInventario(res, area);
+                  
+                    String modelo = objImprimir.convertirModeloParaInventario(res.getProductos(), area.getNombre());
                     objImprimir.imprimirTicket(modelo);
                 }
 
-            } catch (SQLException ex) {
-
-                Logger.getLogger(InventarioAgregar.class.getName()).log(Level.SEVERE, null, ex);
-            }
+         
         }
         llenarComboArea();
     }//GEN-LAST:event_btnAgregarActionPerformed

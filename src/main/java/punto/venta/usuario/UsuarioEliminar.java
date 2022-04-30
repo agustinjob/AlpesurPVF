@@ -33,15 +33,12 @@ import punto.venta.utilidades.Utilidades;
  */
 public class UsuarioEliminar extends javax.swing.JPanel {
 
-    ArrayList<Usuario> lista = new ArrayList<Usuario>();
-    UsuarioDAO obj = new UsuarioDAO();
-    Usuario usu = new Usuario();
     ApiSend api = new ApiSend();
     Confirmacion confirma = new Confirmacion();
 
     public UsuarioEliminar() {
         initComponents();
-  
+
         AutoCompleteDecorator.decorate(comboUsuario, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
     }
 
@@ -52,9 +49,10 @@ public class UsuarioEliminar extends javax.swing.JPanel {
 
     public void llenarCombo() {
 
-      comboUsuario.removeAllItems();
-        Usuario vacio= new Usuario();
+        comboUsuario.removeAllItems();
+        Usuario vacio = new Usuario();
         vacio.setIdUsuario(0);
+        vacio.setTipo(2);
         comboUsuario.addItem(vacio);
 
         UsuarioResponse res = api.getUsuarios(EnviromentLocal.urlG + "usuarios/" + Datos.idSucursal);
@@ -164,16 +162,16 @@ public class UsuarioEliminar extends javax.swing.JPanel {
         Usuario user = (Usuario) comboUsuario.getSelectedItem();
         if (user.getIdUsuario() == 0) {
             Utilidades.mensajePorTiempo("Por favor selecciona o ingresa un usuario");
-       
+
             mensaje("Por favor ingresa los datos");
         } else {
             user.setEliminado(true);
-            ResponseGeneral res=api.usarAPI(EnviromentLocal.urlG + "usuarios", user, "PUT");
+            ResponseGeneral res = api.usarAPI(EnviromentLocal.urlG + "usuarios", user, "PUT");
             mensaje(res.getMensaje());
-            if (res.isRealizado()==true) {
+            if (res.isRealizado() == true) {
 
                 llenarCombo();
-            } 
+            }
 
         }
     }

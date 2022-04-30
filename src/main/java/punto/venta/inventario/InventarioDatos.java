@@ -69,7 +69,6 @@ public class InventarioDatos extends javax.swing.JPanel {
     
             DefaultTableModel model = (DefaultTableModel) tablaPro.getModel();
             ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos/" + Datos.idSucursal);
-            System.out.println(EnviromentLocal.urlG + "productos/" + Datos.idSucursal);
             List<Producto> prou = res.getProductos();
             if (prou.isEmpty()) {
             } else {

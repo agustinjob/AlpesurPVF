@@ -27,7 +27,6 @@ import punto.venta.utilidades.Utilidades;
  */
 public class ProductoArea extends javax.swing.JPanel {
 
-    AreaDAO objArea = new AreaDAO();
     ApiSend api = new ApiSend();
 
     public ProductoArea() {
@@ -185,15 +184,17 @@ public class ProductoArea extends javax.swing.JPanel {
     }//GEN-LAST:event_comboAreasActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        String nombre = (String) comboAreas.getSelectedItem();
-        if (nombre.trim().equalsIgnoreCase("")) {
+        Area a= (Area) comboAreas.getSelectedItem();
+        if (a.getIdArea()==0) {
             Utilidades.mensajePorTiempo("Por favor ingresa la información solicitada");
         } else {
-
-            String estatus = "En proceso";
-            int num = objArea.eliminar(nombre, "Actualizada", "Eliminacion");
+            a.setEstatusArea("eliminada");
+           ResponseGeneral res= api.usarAPI("areas", a, "PUT");
+           if(res.isRealizado()){
             Utilidades.mensajePorTiempo("Área eliminada con exito");
-            llenarCombo();
+            llenarCombo();}else{
+           Utilidades.mensajePorTiempo("Ocurrio un error, por favor vuelve a intentarlo");
+           }
 
         }
     }//GEN-LAST:event_btnBuscarActionPerformed

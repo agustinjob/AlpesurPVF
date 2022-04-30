@@ -37,7 +37,6 @@ public class ClienteEstadoBuscar extends javax.swing.JPanel {
     public ClienteEstadoBuscar(ClienteEstadoEstructura cEE) {
         initComponents();
         this.cEE = cEE;
-        llenarCombo();
         AutoCompleteDecorator.decorate(comboClientes, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
     }
 

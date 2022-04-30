@@ -33,8 +33,7 @@ public class Configuracion extends javax.swing.JPanel {
     
     public Configuracion() {
         initComponents();
-        llenarCombo();
-        llenarDatos();
+     
     }
 
     public void llenarCombo(){

@@ -43,6 +43,8 @@ public class Abono extends javax.swing.JFrame {
         this.fecha=fecha;
         this.idTicket=idTicket;
         txtAbono.setText(resto+"");
+            ImageIcon logo = new ImageIcon("iconos/lavicentina.jpg");
+        this.setIconImage(logo.getImage());
     }
 
     @SuppressWarnings("unchecked")

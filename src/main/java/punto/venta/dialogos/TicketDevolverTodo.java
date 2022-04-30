@@ -6,6 +6,7 @@
 package punto.venta.dialogos;
 
 import java.sql.SQLException;
+import javax.swing.ImageIcon;
 import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
 import punto.venta.dao.Datos;
@@ -35,6 +36,8 @@ public class TicketDevolverTodo extends javax.swing.JFrame {
         this.hora = hora;
         this.dev = dev;
         this.ventas=ventas;
+        ImageIcon logo = new ImageIcon("iconos/lavicentina.jpg");
+        this.setIconImage(logo.getImage());
     }
 
     @SuppressWarnings("unchecked")

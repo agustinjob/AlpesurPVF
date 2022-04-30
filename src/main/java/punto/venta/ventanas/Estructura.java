@@ -39,7 +39,7 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
     ProductoEstructura productos = new ProductoEstructura();
     TransferirEstructura transferir = new TransferirEstructura();
     CorteEstructura corte = new CorteEstructura();
-    NubeEstructura nube = new NubeEstructura();
+ //   NubeEstructura nube = new NubeEstructura();
     Configuracion confi = new Configuracion();
 
     EstructuraActualizaciones actualizaciones = new EstructuraActualizaciones();
@@ -79,6 +79,8 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
         objVentas.setEstructura(this);
         inicializarIconos();
         objVentas.requerirFoco();
+        ImageIcon logo = new ImageIcon("iconos/lavicentina.jpg");
+        this.setIconImage(logo.getImage());
 
     }
 
@@ -339,7 +341,7 @@ if (evt.equals(btnActualizaciones)) {
             usuarios.setVisible(false);
             productos.setVisible(false);
             transferir.setVisible(false);
-            nube.setVisible(false);
+      //      nube.setVisible(false);
             corte.setVisible(false);
             confi.setVisible(false);
             
@@ -359,7 +361,7 @@ if (evt.equals(btnActualizaciones)) {
             usuarios.setVisible(false);
             productos.setVisible(false);
             transferir.setVisible(false);
-            nube.setVisible(false);
+          //  nube.setVisible(false);
             corte.setVisible(false);
             confi.setVisible(false);
             
@@ -379,7 +381,7 @@ if (evt.equals(btnActualizaciones)) {
             usuarios.setVisible(false);
             productos.setVisible(false);
             transferir.setVisible(false);
-            nube.setVisible(false);
+         //   nube.setVisible(false);
             corte.setVisible(false);
             confi.setVisible(false);
            
@@ -393,7 +395,7 @@ if (evt.equals(btnActualizaciones)) {
          else       if (evt.equals(btnInventario)) {
 actualizaciones.setVisible(false);
             objVentas.setVisible(false);
-            nube.setVisible(false);
+         //   nube.setVisible(false);
             inventarios.setVisible(true);
             clientes.setVisible(false);
             usuarios.setVisible(false);
@@ -414,7 +416,7 @@ actualizaciones.setVisible(false);
         } else if (evt.equals(btnCliente)) {
 actualizaciones.setVisible(false);
             objVentas.setVisible(false);
-            nube.setVisible(false);
+        //    nube.setVisible(false);
             inventarios.setVisible(false);
             clientes.setVisible(true);
             usuarios.setVisible(false);
@@ -432,7 +434,7 @@ actualizaciones.setVisible(false);
         } else if (evt.equals(btnUsuario)) {
             actualizaciones.setVisible(false);
             objVentas.setVisible(false);
-            nube.setVisible(false);
+       //     nube.setVisible(false);
             inventarios.setVisible(false);
             clientes.setVisible(false);
             usuarios.setVisible(true);
@@ -449,7 +451,7 @@ actualizaciones.setVisible(false);
         } else if (evt.equals(btnProductos)) {
             actualizaciones.setVisible(false);
             objVentas.setVisible(false);
-            nube.setVisible(false);
+         //   nube.setVisible(false);
             inventarios.setVisible(false);
             clientes.setVisible(false);
             usuarios.setVisible(false);
@@ -467,7 +469,7 @@ actualizaciones.setVisible(false);
         } else if (evt.equals(btnTransferir)) {
             actualizaciones.setVisible(false);
             objVentas.setVisible(false);
-            nube.setVisible(false);
+      //      nube.setVisible(false);
             inventarios.setVisible(false);
             clientes.setVisible(false);
             usuarios.setVisible(false);
@@ -487,7 +489,7 @@ actualizaciones.setVisible(false);
         } else if (evt.equals(btnCorte)) {
             actualizaciones.setVisible(false);
             objVentas.setVisible(false);
-            nube.setVisible(false);
+      //      nube.setVisible(false);
             inventarios.setVisible(false);
             clientes.setVisible(false);
             usuarios.setVisible(false);
@@ -521,7 +523,7 @@ actualizaciones.setVisible(false);
         confi.llenarCombo();
         confi.llenarDatos();
         objVentas.setVisible(false);
-            nube.setVisible(false);
+         //   nube.setVisible(false);
             inventarios.setVisible(false);
             clientes.setVisible(false);
             usuarios.setVisible(false);
@@ -539,7 +541,7 @@ actualizaciones.setVisible(false);
     
     public void muestraEstructuraProductos(){
      objVentas.setVisible(false);
-            nube.setVisible(false);
+     //       nube.setVisible(false);
             inventarios.setVisible(false);
             clientes.setVisible(false);
             usuarios.setVisible(false);

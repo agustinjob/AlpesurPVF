@@ -75,8 +75,8 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
     public VentasEstructura() {
 
         initComponents();
-        btn1.setVisible(false);
-        btn1.setEnabled(false);
+        btnNSVarios.setVisible(false);
+        btnNSVarios.setEnabled(false);
         tipoPrecio = 1;
         md = new DefaultTableModel();
         //   this.txtTabla.setModel(md);
@@ -173,7 +173,7 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
         comboProductos.addItem(vacio);
 
         ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos/" + Datos.idSucursal);
-        
+
         for (Producto p : res.getProductos()) {
             comboProductos.addItem(p);
         }
@@ -327,8 +327,8 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
         btn4 = new javax.swing.JButton();
         btn5 = new javax.swing.JButton();
         btn6 = new javax.swing.JButton();
-        btn2 = new javax.swing.JButton();
-        btn1 = new javax.swing.JButton();
+        btnBusqueda = new javax.swing.JButton();
+        btnNSVarios = new javax.swing.JButton();
         panelDevo = new javax.swing.JPanel();
         btndevoluciones = new javax.swing.JButton();
         btn7 = new javax.swing.JButton();
@@ -343,6 +343,11 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
         addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 formMouseClicked(evt);
+            }
+        });
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
             }
         });
 
@@ -385,6 +390,11 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
         comboProductos.setEditable(true);
         comboProductos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         comboProductos.setModel(new javax.swing.DefaultComboBoxModel<Producto>());
+        comboProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboProductosActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 0, 102));
@@ -532,33 +542,33 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
         });
         panelSuperiorBotones.add(btn6);
 
-        btn2.setBackground(new java.awt.Color(0, 51, 153));
-        btn2.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
-        btn2.setForeground(new java.awt.Color(255, 255, 255));
-        btn2.setText("F2 Busqueda");
-        btn2.setBorder(null);
-        btn2.setMaximumSize(new java.awt.Dimension(140, 19));
-        btn2.setPreferredSize(new java.awt.Dimension(140, 19));
-        btn2.addActionListener(new java.awt.event.ActionListener() {
+        btnBusqueda.setBackground(new java.awt.Color(0, 51, 153));
+        btnBusqueda.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
+        btnBusqueda.setForeground(new java.awt.Color(255, 255, 255));
+        btnBusqueda.setText("F10 Busqueda");
+        btnBusqueda.setBorder(null);
+        btnBusqueda.setMaximumSize(new java.awt.Dimension(140, 19));
+        btnBusqueda.setPreferredSize(new java.awt.Dimension(140, 19));
+        btnBusqueda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn2ActionPerformed(evt);
+                btnBusquedaActionPerformed(evt);
             }
         });
-        panelSuperiorBotones.add(btn2);
+        panelSuperiorBotones.add(btnBusqueda);
 
-        btn1.setBackground(new java.awt.Color(0, 51, 153));
-        btn1.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
-        btn1.setForeground(new java.awt.Color(255, 255, 255));
-        btn1.setText("F10 Busqueda");
-        btn1.setBorder(null);
-        btn1.setMaximumSize(new java.awt.Dimension(140, 19));
-        btn1.setPreferredSize(new java.awt.Dimension(140, 19));
-        btn1.addActionListener(new java.awt.event.ActionListener() {
+        btnNSVarios.setBackground(new java.awt.Color(0, 51, 153));
+        btnNSVarios.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
+        btnNSVarios.setForeground(new java.awt.Color(255, 255, 255));
+        btnNSVarios.setText("F2 Busqueda");
+        btnNSVarios.setBorder(null);
+        btnNSVarios.setMaximumSize(new java.awt.Dimension(140, 19));
+        btnNSVarios.setPreferredSize(new java.awt.Dimension(140, 19));
+        btnNSVarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn1ActionPerformed(evt);
+                btnNSVariosActionPerformed(evt);
             }
         });
-        panelSuperiorBotones.add(btn1);
+        panelSuperiorBotones.add(btnNSVarios);
 
         panelDevo.setBackground(new java.awt.Color(255, 255, 255));
         panelDevo.setLayout(new java.awt.GridLayout(1, 0));
@@ -712,25 +722,20 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
 
     }//GEN-LAST:event_txtagregarActionPerformed
     public String[] asignarPrecio(Producto pro) {
-      if(pro==null) return null;
+        if (pro == null) {
+            return null;
+        }
         String res[] = new String[7];
         res[0] = pro.getCodigo();
         res[1] = pro.getDescripcion();
+        res[2] = pro.getPrecioVenta() + "";
         res[3] = "1";
+        res[4] = pro.getPrecioVenta() + "";
         res[5] = pro.getCantidad() + "";
         res[6] = pro.getPrecioCosto() + "";
-        if (tipoPrecio == 1) {
-            res[2] = pro.getPrecioVenta() + "";
-            res[4] = pro.getPrecioVenta() + "";
-        }
-        if (tipoPrecio == 2) {
-            res[2] = pro.getPrecioMayoreo() + "";
-            res[4] = pro.getPrecioMayoreo() + "";
-        }
-        if (tipoPrecio == 3) {
-            res[2] = pro.getPrecioDistribuidor() + "";
-            res[4] = pro.getPrecioDistribuidor() + "";
-        }
+        res[7] = pro.getPrecioMayoreo() + "";
+        res[8] = pro.getPrecioDistribuidor() + "";
+        res[9] = pro.getPrecioVenta() + "";
         return res;
     }
 
@@ -742,10 +747,10 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
             md = (DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel();
             boolean bandera = revisarRepetidos(pro.getDescripcion());
             if (bandera == false) {
-                String[] info = new String[7];
+                String[] info = new String[9];
                 info = asignarPrecio(pro);// obj.getProductoPorNombre(nombre, p, 1, tipoPrecio);
 
-                if (info==null) {
+                if (info == null) {
                     mensaje("Producto no encontrado", 1);
                 } else {
                     double can = Double.parseDouble(info[5]);
@@ -769,14 +774,15 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
         }
     }
 
+    // Forma anterior de agregar a la tabla desde la opción de buscar por nombre
     public void agregarDesdeTablaExterna(String idProducto) {
-ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos-id/" + idProducto);
-List<Producto> lis= res.getProductos();
+        ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos-id/" + idProducto);
+        List<Producto> lis = res.getProductos();
 
         if (lis.isEmpty()) {
-            mensaje("Por favor ingresa el nombre del producto", 1);
+            mensaje("Producto no encontrado", 1);
         } else {
-            Producto pro1= lis.get(0);
+            Producto pro1 = lis.get(0);
             md = (DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel();
             boolean bandera = revisarRepetidos(pro1.getDescripcion());
             if (bandera == false) {
@@ -790,7 +796,7 @@ List<Producto> lis= res.getProductos();
                         md.addRow(info);
                         int tamano = md.getRowCount();
                         tablas[jTabbedPane1.getSelectedIndex()].setTotal(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + (Double.parseDouble(info[2]) * Double.parseDouble(info[3])));
-                      txtTotal.setText(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + "");
+                        txtTotal.setText(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + "");
                         tablas[jTabbedPane1.getSelectedIndex()].setNumArticulos(tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() + 1);
                         tablas[jTabbedPane1.getSelectedIndex()].getTabla().changeSelection(tamano - 1, 0, false, false);
                     } else {
@@ -798,18 +804,50 @@ List<Producto> lis= res.getProductos();
                     }
 
                 }
+            } else {
+
             }
             comboProductos.setSelectedIndex(0);
         }
 
     }
 
+    public void agregarDesdeTablaExternaConCantidad(Producto pro, String cantidadIngresada, String importe) {
+
+        md = (DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel();
+        boolean bandera = revisarRepetidos(pro.getDescripcion());
+        if (bandera == false) {
+            String[] res = new String[10];
+            res[0] = pro.getCodigo();
+            res[1] = pro.getDescripcion();
+            res[2] = pro.getPrecioVenta() + "";
+            res[3] = cantidadIngresada; // cantidad ingresada
+            res[4] = importe + "";
+            res[5] = pro.getCantidad() + "";
+            res[6] = pro.getPrecioCosto() + "";
+            res[7] = pro.getPrecioMayoreo() + "";
+            res[8] = pro.getPrecioDistribuidor() + "";
+            res[9] = pro.getPrecioVenta() + "";
+            md.addRow(res);
+            int tamano = md.getRowCount();
+            tablas[jTabbedPane1.getSelectedIndex()].setTotal(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + Double.parseDouble(importe));
+            txtTotal.setText(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + "");
+            tablas[jTabbedPane1.getSelectedIndex()].setNumArticulos(tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() + 1);
+            tablas[jTabbedPane1.getSelectedIndex()].getTabla().changeSelection(tamano - 1, 0, false, false);
+
+        } else {
+
+        }
+        comboProductos.setSelectedIndex(0);
+
+    }
+
     private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
 //requerirFoco();
         String nombre = txtCodigo.getText();
-ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos/" + Datos.idSucursal+"/"+nombre);
-List<Producto> lis= res.getProductos();
-Producto pro1= lis.get(0);
+        ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos/" + Datos.idSucursal + "/" + nombre);
+        List<Producto> lis = res.getProductos();
+        Producto pro1 = lis.get(0);
         if (nombre.equalsIgnoreCase("")) {
 
             mensaje("Por favor ingresa un código", 1);
@@ -817,15 +855,13 @@ Producto pro1= lis.get(0);
             md = (DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel();
             boolean bandera = revisarRepetidos(nombre);
             if (bandera == false) {
-                String[] info = new String[7];
-                info = asignarPrecio(pro1);//obj.getProductoPorNombre(nombre, p, 1, tipoPrecio);
-                if (info==null) {
+                String[] info = asignarPrecio(pro1);//obj.getProductoPorNombre(nombre, p, 1, tipoPrecio);
+                if (info == null) {
                     mensaje("Producto no encontrado", 1);
                 } else {
                     double can = Double.parseDouble(info[5]);
                     if (can > 0) {
                         md.addRow(info);
-
                         tablas[jTabbedPane1.getSelectedIndex()].setTotal(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + (Double.parseDouble(info[2]) * Double.parseDouble(info[3])));
                         //  tablas[jTabbedPane1.getSelectedIndex()].setTotal(total[jTabbedPane1.getSelectedIndex()]);
                         txtTotal.setText(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + "");
@@ -842,16 +878,34 @@ Producto pro1= lis.get(0);
 
     }//GEN-LAST:event_txtCodigoActionPerformed
 
-    private void btn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn1ActionPerformed
-        InsVarios objeto = new InsVarios(md, tipoPrecio);
-        objeto.setVisible(true);
-    }//GEN-LAST:event_btn1ActionPerformed
+    private void btnBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBusquedaActionPerformed
+        BusquedaProductos bus = new BusquedaProductos(this, 1);
+        bus.setVisible(true);
+    }//GEN-LAST:event_btnBusquedaActionPerformed
 
     private void btn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn3ActionPerformed
-        mensaje("Se ha activado el precio de mayoreo", 1);
-        tipoPrecio = 2;
+        asignarPrecioMayoreo();
     }//GEN-LAST:event_btn3ActionPerformed
-
+    public void asignarPrecioMayoreo() {
+        int row = tablas[jTabbedPane1.getSelectedIndex()].getTabla().getSelectedRow();
+        if (row < 0) {
+            Utilidades.mensajePorTiempo("Por favor selecciona un elemento");
+        } else {
+            float cantidad = Float.parseFloat((String) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getValueAt(row, 3));
+            float precioMayoreo = Float.parseFloat((String) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getValueAt(row, 7));
+            tablas[jTabbedPane1.getSelectedIndex()].getTabla().setValueAt((cantidad * precioMayoreo) + "", row, 4);
+            tablas[jTabbedPane1.getSelectedIndex()].getTabla().setValueAt((cantidad * precioMayoreo) + "", row, 2);
+            String importe = tablas[jTabbedPane1.getSelectedIndex()].obtenerDatosDelModelo();
+            tablas[jTabbedPane1.getSelectedIndex()].setTotal(Float.parseFloat(importe));
+            txtTotal.setText(importe);
+            int tamano = tablas[jTabbedPane1.getSelectedIndex()].getTabla().getRowCount();
+            if (tamano > 0) {
+                tamano = tamano - 2;
+                tablas[jTabbedPane1.getSelectedIndex()].getTabla().changeSelection(tamano, 0, false, false);
+            }
+            Utilidades.mensajePorTiempo("Modificado a precio de mayoreo", 1500);
+        }
+    }
     private void btn4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn4ActionPerformed
         EntradaEfectivo objeto = new EntradaEfectivo(this);
         objeto.setVisible(true);
@@ -948,10 +1002,9 @@ Producto pro1= lis.get(0);
         }
     }//GEN-LAST:event_jTabbedPane1MouseClicked
 
-    private void btn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2ActionPerformed
-        BusquedaProductos bus = new BusquedaProductos(this, 1);
-        bus.setVisible(true);
-    }//GEN-LAST:event_btn2ActionPerformed
+    private void btnNSVariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNSVariosActionPerformed
+
+    }//GEN-LAST:event_btnNSVariosActionPerformed
 
     private void txtCodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyPressed
         Utilidades.im("Ests es el numero " + evt.getKeyCode());
@@ -976,14 +1029,58 @@ Producto pro1= lis.get(0);
     }//GEN-LAST:event_txtCodigoKeyTyped
 
     private void btn9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn9ActionPerformed
-        mensaje("Se ha activado el precio de distribuidor", 1);
-        tipoPrecio = 3;
+        asignarPrecioDistribuidor();
     }//GEN-LAST:event_btn9ActionPerformed
-
+    public void asignarPrecioDistribuidor() {
+        int row = tablas[jTabbedPane1.getSelectedIndex()].getTabla().getSelectedRow();
+        if (row < 0) {
+            Utilidades.mensajePorTiempo("Por favor selecciona un elemento");
+        } else {
+            float cantidad = Float.parseFloat((String) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getValueAt(row, 3));
+            float precioDistribuidor = Float.parseFloat((String) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getValueAt(row, 8));
+            tablas[jTabbedPane1.getSelectedIndex()].getTabla().setValueAt((cantidad * precioDistribuidor) + "", row, 4);
+            tablas[jTabbedPane1.getSelectedIndex()].getTabla().setValueAt((cantidad * precioDistribuidor) + "", row, 2);
+            String importe = tablas[jTabbedPane1.getSelectedIndex()].obtenerDatosDelModelo();
+            tablas[jTabbedPane1.getSelectedIndex()].setTotal(Float.parseFloat(importe));
+            txtTotal.setText(importe);
+            int tamano = tablas[jTabbedPane1.getSelectedIndex()].getTabla().getRowCount();
+            if (tamano > 0) {
+                tamano = tamano - 2;
+                tablas[jTabbedPane1.getSelectedIndex()].getTabla().changeSelection(tamano, 0, false, false);
+            }
+            Utilidades.mensajePorTiempo("Modificado a precio de distribuidor", 1500);
+        }
+    }
     private void btn10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn10ActionPerformed
-        mensaje("Se ha activado el precio de venta regular", 1);
-        tipoPrecio = 1;
+        asignarPrecioVenta();
     }//GEN-LAST:event_btn10ActionPerformed
+    public void asignarPrecioVenta() {
+        int row = tablas[jTabbedPane1.getSelectedIndex()].getTabla().getSelectedRow();
+        if (row < 0) {
+            Utilidades.mensajePorTiempo("Por favor selecciona un elemento");
+        } else {
+            float cantidad = Float.parseFloat((String) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getValueAt(row, 3));
+            float precioVenta = Float.parseFloat((String) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getValueAt(row, 9));
+            tablas[jTabbedPane1.getSelectedIndex()].getTabla().setValueAt((cantidad * precioVenta) + "", row, 4);
+            tablas[jTabbedPane1.getSelectedIndex()].getTabla().setValueAt((cantidad * precioVenta) + "", row, 2);
+            String importe = tablas[jTabbedPane1.getSelectedIndex()].obtenerDatosDelModelo();
+            tablas[jTabbedPane1.getSelectedIndex()].setTotal(Float.parseFloat(importe));
+            txtTotal.setText(importe);
+            int tamano = tablas[jTabbedPane1.getSelectedIndex()].getTabla().getRowCount();
+            if (tamano > 0) {
+                tamano = tamano - 2;
+                tablas[jTabbedPane1.getSelectedIndex()].getTabla().changeSelection(tamano, 0, false, false);
+            }
+            Utilidades.mensajePorTiempo("Modificado a precio de venta", 1500);
+        }
+    }
+    private void comboProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboProductosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboProductosActionPerformed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+    ejecutaOnKey(evt.getKeyCode());
+    }//GEN-LAST:event_formKeyPressed
     public void inicializarIconos() {
         System.out.println("Si entro aca");
 
@@ -1000,10 +1097,10 @@ Producto pro1= lis.get(0);
         ImageIcon iconoCap = new ImageIcon("iconos/ico_cap.png");
         ImageIcon lupa = new ImageIcon("iconos/lupa.png");
 
-        btn1.setIcon(aa);
+        btnBusqueda.setIcon(aa);
         btnReiniciarFolio.setIcon(e);
         btndevoluciones.setIcon(aa);
-        btn2.setIcon(lupa);
+        btnNSVarios.setIcon(lupa);
         btn3.setIcon(ccc);
         btn4.setIcon(dd);
         btn5.setIcon(ee);
@@ -1023,16 +1120,6 @@ Producto pro1= lis.get(0);
     }
 
     public void ejecutaOnKey(int num) {
-        if (num == 122) {
-
-            if (tipoPrecio == 1) {
-                mensaje("Se ha activado el precio de mayoreo", 1);
-                tipoPrecio = 2;
-            } else {
-                mensaje("Se ha desactivado el precio de mayoreo", 1);
-                tipoPrecio = 1;
-            }
-        }
 
         if (num == 118) {
             EntradaEfectivo objeto = new EntradaEfectivo(this);
@@ -1061,6 +1148,24 @@ Producto pro1= lis.get(0);
                 tablas[jTabbedPane1.getSelectedIndex()].restarDeUno();
             }
         }
+
+        if (num == 120) {
+            asignarPrecioDistribuidor();
+        }
+
+        if (num == 121) {
+            BusquedaProductos bus = new BusquedaProductos(this, 1);
+            bus.setVisible(true);
+        }
+
+        if (num == 122) {
+            asignarPrecioMayoreo();
+        }
+
+        if (num == 117) {
+            asignarPrecioVenta();
+        }
+
         if (num == 123) {
             realizaCobro();
         }
@@ -1071,9 +1176,7 @@ Producto pro1= lis.get(0);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn1;
     private javax.swing.JButton btn10;
-    private javax.swing.JButton btn2;
     private javax.swing.JButton btn3;
     private javax.swing.JButton btn4;
     private javax.swing.JButton btn5;
@@ -1081,6 +1184,8 @@ Producto pro1= lis.get(0);
     private javax.swing.JButton btn7;
     private javax.swing.JButton btn8;
     private javax.swing.JButton btn9;
+    private javax.swing.JButton btnBusqueda;
+    private javax.swing.JButton btnNSVarios;
     private javax.swing.JButton btnReiniciarFolio;
     private javax.swing.JButton btndevoluciones;
     private javax.swing.JComboBox<Producto> comboProductos;
@@ -1094,7 +1199,7 @@ Producto pro1= lis.get(0);
     private javax.swing.JPanel panelDevo;
     private javax.swing.JPanel panelSuperiorBotones;
     private javax.swing.JPanel panelTicket;
-    private javax.swing.JTextField txtCodigo;
+    public static javax.swing.JTextField txtCodigo;
     private javax.swing.JLabel txtTicket;
     public static javax.swing.JTextField txtTotal;
     private javax.swing.JButton txtagregar;
@@ -1119,6 +1224,5 @@ Producto pro1= lis.get(0);
     public void keyReleased(KeyEvent e) {
         Utilidades.im("1");
     }
-    
 
 }

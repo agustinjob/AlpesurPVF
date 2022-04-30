@@ -31,6 +31,7 @@ public class NubeEstructura extends javax.swing.JPanel {
         ImageIcon local = new ImageIcon("iconos/tienda.png");
         ImageIcon nube2 = new ImageIcon("iconos/computacion-en-la-nube.png");
         imagen.setIcon(nube2);
+      
    
     }
 

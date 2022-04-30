@@ -59,6 +59,8 @@ public class InicioSesion extends javax.swing.JFrame {
         asignarFolioTicket();
         AutoCompleteDecorator.decorate(comboUsuario, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
         llenarCombo();
+        ImageIcon logo = new ImageIcon("iconos/lavicentina.jpg");
+        this.setIconImage(logo.getImage());
 
     }
 
@@ -96,9 +98,9 @@ public class InicioSesion extends javax.swing.JFrame {
     public void efectivoInicial() throws ClassNotFoundException, SQLException {
         boolean ban = false;
         ResultSet rs;
-      
-     MovimientosExtrasResponse mov= api.getMovimientosExtrasGET(EnviromentLocal.urlG+"movimientos-efectivo-inicial/"+UsuarioDAO.idUsuario+"/"+Datos.idSucursal);
-       
+
+        MovimientosExtrasResponse mov = api.getMovimientosExtrasGET(EnviromentLocal.urlG + "movimientos-efectivo-inicial/" + UsuarioDAO.idUsuario + "/" + Datos.idSucursal);
+
         if (mov.getMovimientos().isEmpty()) {
             EfectivoInicial objeto = new EfectivoInicial();
             objeto.setVisible(true);
@@ -258,12 +260,12 @@ public class InicioSesion extends javax.swing.JFrame {
 
         try {
             if (usuario.getPassword().equals(pass)) {
-               //   obj.modificarFechaYhoraSesionUsuario();
-               UsuarioDAO.idUsuario=usuario.getIdUsuario();
-               UsuarioDAO.nombre=usuario.getNombre();
-               UsuarioDAO.tipo= usuario.getTipoUsuario();
-               UsuarioDAO.username=usuario.getUsername();
-               
+                //   obj.modificarFechaYhoraSesionUsuario();
+                UsuarioDAO.idUsuario = usuario.getIdUsuario();
+                UsuarioDAO.nombre = usuario.getNombre();
+                UsuarioDAO.tipo = usuario.getTipoUsuario();
+                UsuarioDAO.username = usuario.getUsername();
+
                 efectivoInicial();
             } else {
                 mensaje("Usuario o contraseña incorrectos");

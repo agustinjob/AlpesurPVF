@@ -53,13 +53,6 @@ public class Paso1 extends javax.swing.JPanel {
         };
 
         centrarTabla();
-        try {
-            llenarTabla();
-        } catch (Exception e) {
-
-            men = "No hay internet, por favor revisa tu conexión y vuelve a intentarlo";
-        }
-
         jLabel1.setText(men);
 
     }

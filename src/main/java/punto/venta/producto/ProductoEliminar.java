@@ -32,8 +32,6 @@ import punto.venta.utilidades.Utilidades;
  */
 public class ProductoEliminar extends javax.swing.JPanel {
 
-    ProductoDAO obj = new ProductoDAO();
-    ArrayList<Producto> lista = new ArrayList();
     Confirmacion confirma = new Confirmacion();
     ApiSend api = new ApiSend();
 

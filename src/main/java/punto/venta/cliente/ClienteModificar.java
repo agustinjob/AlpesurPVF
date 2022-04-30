@@ -35,8 +35,6 @@ import punto.venta.utilidades.Utilidades;
 public class ClienteModificar extends javax.swing.JPanel {
 
     int filas;
-    ClienteDAO obj = new ClienteDAO();
-
     Cliente cliente = new Cliente();
     Confirmacion confirma = new Confirmacion();
     ApiSend api = new ApiSend();

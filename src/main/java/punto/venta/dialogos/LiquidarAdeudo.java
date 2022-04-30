@@ -38,6 +38,8 @@ public class LiquidarAdeudo extends javax.swing.JFrame {
         lblAdeudo.setText(monto);
         this.monto=monto;
         this.cEI=cEI;
+            ImageIcon logo = new ImageIcon("iconos/lavicentina.jpg");
+        this.setIconImage(logo.getImage());
     }
 
     /**

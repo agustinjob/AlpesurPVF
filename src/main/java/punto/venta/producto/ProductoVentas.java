@@ -37,7 +37,7 @@ import punto.venta.utilidades.Utilidades;
  */
 public class ProductoVentas extends javax.swing.JPanel {
 
-   VentasDAO objVen = new VentasDAO();
+
    Confirmacion confirma = new Confirmacion();
    ApiSend api = new ApiSend();
     DateFormat formatoFecha=new SimpleDateFormat("yyyy-MM-dd");

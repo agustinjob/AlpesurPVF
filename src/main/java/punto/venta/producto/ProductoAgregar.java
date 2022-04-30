@@ -39,8 +39,6 @@ import punto.venta.utilidades.Utilidades;
 public class ProductoAgregar extends javax.swing.JPanel {
 
     Confirmacion confirma = new Confirmacion();
-    ProductoDAO obj = new ProductoDAO();
-    AreaDAO objArea = new AreaDAO();
     ApiSend api = new ApiSend();
 
     public ProductoAgregar() {
@@ -315,6 +313,8 @@ public class ProductoAgregar extends javax.swing.JPanel {
                 btnMostrarTodosActionPerformed(evt);
             }
         });
+
+        jScrollPane2.setOpaque(false);
 
         tblListado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

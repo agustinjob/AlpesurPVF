@@ -16,6 +16,7 @@ public class Abonar extends javax.swing.JPanel {
      */
     public Abonar() {
         initComponents();
+        
     }
 
     /**

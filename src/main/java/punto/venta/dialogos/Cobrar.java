@@ -107,6 +107,8 @@ public class Cobrar extends javax.swing.JFrame {
         });
 
         AutoCompleteDecorator.decorate(comboClientes, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
+            ImageIcon logo = new ImageIcon("iconos/lavicentina.jpg");
+        this.setIconImage(logo.getImage());
     }
 
     public void cerrar() {

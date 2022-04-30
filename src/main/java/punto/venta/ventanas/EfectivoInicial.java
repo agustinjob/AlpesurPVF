@@ -36,6 +36,8 @@ public class EfectivoInicial extends javax.swing.JFrame {
         setTitle("Efectivo inicial");
         ImageIcon bille = new ImageIcon("iconos/billetes.png");
         btnRegistrar.setIcon(bille);
+          ImageIcon logo = new ImageIcon("iconos/lavicentina.jpg");
+        this.setIconImage(logo.getImage());
         
     }
 

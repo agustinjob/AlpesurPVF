@@ -65,8 +65,7 @@ public class Paso2 extends javax.swing.JPanel {
             }
         };
         configurarTablas();
-        llenarTabla();
-
+     
     }
 
     public void requerirFoco() {

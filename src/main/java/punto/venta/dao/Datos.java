@@ -12,5 +12,5 @@ package punto.venta.dao;
 public class Datos {
     public static String propietario="Jely";
     public static int idSucursal=1;
-    public static String sucursal="Alpesur Fortin";
+    public static String sucursal="Fortin";
 }

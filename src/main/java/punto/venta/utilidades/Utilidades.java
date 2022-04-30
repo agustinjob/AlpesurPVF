@@ -17,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,7 +47,12 @@ public class Utilidades {
     static DateFormat formatoCompleto = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     static DateFormat formatoCompletoConT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     static DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
+    public static DecimalFormat df = new DecimalFormat("#,###.##");
 
+     public static String formaDos(float val) {
+        return df.format(val);
+    }
+     
     public static void im(String mensaje) {
         System.out.println(mensaje);
     }
@@ -63,7 +69,6 @@ public class Utilidades {
             if (a[i].equalsIgnoreCase("")) {
                 bandera = true;
             }
-
         }
         return bandera;
     }
@@ -139,6 +144,23 @@ public class Utilidades {
         confirma.setVisible(true);
 
         Timer timer = new Timer(3000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                confirma.dispose();
+
+            }
+
+        });
+
+        timer.setRepeats(false);
+        timer.start();
+    }
+    
+     public static void mensajePorTiempo(String men, int tiempo) {
+        confirma.setMensaje(men);
+        confirma.setVisible(true);
+
+        Timer timer = new Timer(tiempo, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 confirma.dispose();

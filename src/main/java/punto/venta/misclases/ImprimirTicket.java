@@ -12,6 +12,7 @@ import punto.venta.dao.TicketDAO;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.print.Doc;
@@ -31,6 +32,9 @@ import javax.swing.table.DefaultTableModel;
 import punto.venta.configuracion.Configuracion;
 import punto.venta.dao.Conexion;
 import punto.venta.dao.ConfiguracionDAO;
+import punto.venta.dao.UsuarioDAO;
+import punto.venta.modelo.Area;
+import punto.venta.modelo.Producto;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -125,14 +129,15 @@ public class ImprimirTicket {
         return a;
     }
     
-        public String convertirModeloAString(DefaultTableModel model, String total){
+     public String convertirModeloAString(DefaultTableModel model, String total){
     int numTic = ticket.getNumero();
     String d[] = recuperarDatos();
     
         String titulo = " ===="+d[1]+"==== \n"
+                  +       " Cajero:"+UsuarioDAO.nombre+". \n"
          +       " Direccion:"+d[2]+". \n"
-        + "     Fecha: "+this.fecha+"\n"
-               + "        Hora: "+this.hora+" \n"
+        + "     Fecha: "+Utilidades.getFechaString(da)+"\n"
+               + "        Hora: "+Utilidades.getHora(da)+" \n"
          +       "     Num. de Ticket: "+numTic+" \n"
                   +       "============================== \n"
          +       "Cant.   Descripcion      Importe  \n";
@@ -155,7 +160,7 @@ public class ImprimirTicket {
         }
         String ultima =      "============================== \n"
          +        "       Total : $"+total+"           \n"
-         +        "   Gracias por su preferencia  \n\n\n";
+         +        "   Gracias por su preferencia  \n\n\n\n\n";
         titulo = titulo + ultima;
         System.out.println(titulo);
         return titulo;
@@ -166,6 +171,7 @@ public class ImprimirTicket {
     String d[] = recuperarDatos();
     
         String titulo = " ===="+d[1]+"==== \n"
+                 +       " Cajero:"+UsuarioDAO.nombre+". \n"
          +       " Dirección:"+d[2]+". \n"
         + "     Fecha: "+fecha+"\n"
                + "        Hora: "+hora+" \n"
@@ -197,12 +203,12 @@ public class ImprimirTicket {
         return titulo;
     }
     
-    public String convertirModeloParaInventario(ResultSet res, String area){
-   
-     try {
+    public String convertirModeloParaInventario(List<Producto> lista, String area){
+
          String d[] = recuperarDatos();
          
          String titulo = " ===="+d[1]+"==== \n"
+                  +       " Cajero:"+UsuarioDAO.nombre+". \n"
                  +       " Dirección:"+d[2]+". \n"
                  + "     Fecha: "+formatoFecha.format(da)+"\n"
                  + "        Hora: "+formatoHora.format(da)+" \n"
@@ -212,18 +218,20 @@ public class ImprimirTicket {
          
          int i=0;
          int indice=0;
-         while(res.next()){
+         for(Producto p:lista){
              String productos ="";
-             String can =res.getString(7);
-             String pro =res.getString(3);
+             String can =p.getCantidad()+"";
+             String pro =p.getDescripcion();
              if(pro.length()>=20){
                  indice = 20;
              }else{
                  indice = pro.length();
              }
              productos = padRight(can,8)  + padRight(pro.substring(0, indice),17) +"\n";
+             if(p.getArea().equalsIgnoreCase(area)){
              titulo = titulo + productos;
-             i++;
+             }
+             
          }
          String ultima =      "============================== \n"
                  
@@ -231,11 +239,7 @@ public class ImprimirTicket {
          titulo = titulo + ultima;
          System.out.println(titulo);
          return titulo;
-     } catch (SQLException ex) {
-              
-         Logger.getLogger(ImprimirTicket.class.getName()).log(Level.SEVERE, null, ex);
-     }
-     return "";
+
     }
     // 6 cantidad
     // 2

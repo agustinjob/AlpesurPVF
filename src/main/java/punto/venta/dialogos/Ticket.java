@@ -6,6 +6,7 @@
 package punto.venta.dialogos;
 
 import java.sql.SQLException;
+import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
@@ -48,6 +49,8 @@ public class Ticket extends javax.swing.JFrame {
         txtCantidad.setText("La cantidad es de " + cantidad);
         txtCantidad.setHorizontalAlignment(SwingConstants.CENTER);
         txtCantidad.setVerticalAlignment(SwingConstants.CENTER);
+            ImageIcon logo = new ImageIcon("iconos/lavicentina.jpg");
+        this.setIconImage(logo.getImage());
     }
 
     /**

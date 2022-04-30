@@ -29,12 +29,12 @@ import punto.venta.ventanas.VentasEstructura;
 
 public class SalidaEfectivo extends javax.swing.JFrame {
 
-    Confirmacion confirma= new Confirmacion();
+    Confirmacion confirma = new Confirmacion();
     VentasEstructura ventas;
     Movimientos obj = new Movimientos();
     int ocultar = 0;
     ApiSend api = new ApiSend();
-      DateFormat formatoFecha = new SimpleDateFormat("yyyy/MM/dd");
+    DateFormat formatoFecha = new SimpleDateFormat("yyyy/MM/dd");
 
     public SalidaEfectivo(VentasEstructura ventas) {
         initComponents();
@@ -49,7 +49,9 @@ public class SalidaEfectivo extends javax.swing.JFrame {
         btncancelar.setIcon(b);
         btnversalidas.setIcon(c);
         txtCantidad.requestFocus();
-        setSize(550, 250);
+        ImageIcon logo = new ImageIcon("iconos/lavicentina.jpg");
+        this.setIconImage(logo.getImage());
+         setSize(530, 205);
     }
 
     public void limpiaTabla() {
@@ -62,9 +64,8 @@ public class SalidaEfectivo extends javax.swing.JFrame {
 
     public void actualizaTabla() {
 
-       
-            DefaultTableModel modelo = (DefaultTableModel) tablaSalidas.getModel();
-             MovimientosExtras obj = new MovimientosExtras();
+        DefaultTableModel modelo = (DefaultTableModel) tablaSalidas.getModel();
+        MovimientosExtras obj = new MovimientosExtras();
         obj.setTipo("salida_efectivo");
         MovimientosExtrasResponse res = api.getMovimientosExtras(EnviromentLocal.urlG + "movimientos-fecha", obj);
         List<MovimientosExtras> lista = res.getMovimientos();
@@ -80,9 +81,6 @@ public class SalidaEfectivo extends javax.swing.JFrame {
             }
             tablaSalidas.setModel(modelo);
         }
-            
-           
-        
 
     }
 
@@ -106,6 +104,7 @@ public class SalidaEfectivo extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -304,15 +303,17 @@ public class SalidaEfectivo extends javax.swing.JFrame {
 
     private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
         guardar();
+        VentasEstructura.txtCodigo.requestFocus();
     }//GEN-LAST:event_btnguardarActionPerformed
-public void guardar(){
+    public void guardar() {
         String a[] = new String[2];
         a[0] = txtCantidad.getText();
         a[1] = txtRazon.getText();
 
         if (Utilidades.hayVacios(a)) {
-            mensaje( "Por favor ingresa todos los datos",1);
+            mensaje("Por favor ingresa todos los datos", 1);
         } else {
+            try {
                 double tem = Double.parseDouble(a[0]);
                 MovimientosExtras mov = new MovimientosExtras();
                 mov.setDescripcion(a[1]);
@@ -320,47 +321,51 @@ public void guardar(){
                 mov.setMonto(Float.parseFloat(a[0]));
                 mov.setTipo("salida_efectivo");
                 ResponseGeneral res = api.usarAPI(EnviromentLocal.urlG + "movimientos", mov, "POST");
-                mensaje( res.getMensaje(),2);
+                mensaje(res.getMensaje(), 2);
                 txtCantidad.setText("");//Cantidad
                 txtRazon.setText("");//Proveedor
                 this.dispose();
+            } catch (NumberFormatException e) {
+                Utilidades.mensajePorTiempo("Por favor ingresa valores númericos en el campo cantidad", 2000);
+            }
         }        // TODO add your handling code here:
-}
+    }
     private void btncancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelarActionPerformed
-        dispose();
+        this.dispose();
+        VentasEstructura.txtCodigo.requestFocus();
     }//GEN-LAST:event_btncancelarActionPerformed
 
-      public void mensaje(String men, int tipo){
-    confirma.setMensaje(men);
-    confirma.setVisible(true);
-    
-    Timer timer = new Timer(1000, new ActionListener(){
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                 confirma.dispose();
-                 if(tipo == 1){
-                 txtCantidad.requestFocus();
-                 }else{
-                 ventas.requerirFoco();
-                 }
-                }
-                
-            });
+    public void mensaje(String men, int tipo) {
+        confirma.setMensaje(men);
+        confirma.setVisible(true);
 
-    timer.setRepeats(false);
-            timer.start();
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                confirma.dispose();
+                if (tipo == 1) {
+                    txtCantidad.requestFocus();
+                } else {
+                    ventas.requerirFoco();
+                }
+            }
+
+        });
+
+        timer.setRepeats(false);
+        timer.start();
     }
 
-    
+
     private void btnversalidasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnversalidasActionPerformed
         if (ocultar == 0) {
             btnversalidas.setText("Ocultar salidas");
-            setSize(550, 500);
+            setSize(530, 500);
             actualizaTabla();
             ocultar = 1;
         } else {
             btnversalidas.setText("Mostrar salidas");
-            setSize(550, 250);
+             setSize(530, 205);
             ocultar = 0;
             limpiaTabla();
         }
@@ -368,14 +373,13 @@ public void guardar(){
     }//GEN-LAST:event_btnversalidasActionPerformed
 
     private void txtCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadActionPerformed
-       guardar();
+        guardar();
     }//GEN-LAST:event_txtCantidadActionPerformed
 
     private void txtRazonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRazonActionPerformed
-    guardar();
+        guardar();
     }//GEN-LAST:event_txtRazonActionPerformed
 
- 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btncancelar;

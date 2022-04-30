@@ -52,6 +52,8 @@ public class BusquedaProductos extends javax.swing.JFrame {
         this.ventas = ventas;
         this.opcion = opcion;
         inicializacionGeneral();
+        ImageIcon logo = new ImageIcon("iconos/lavicentina.jpg");
+        this.setIconImage(logo.getImage());
     }
 
     public BusquedaProductos(Paso2 paso2, int opcion) {
@@ -61,7 +63,7 @@ public class BusquedaProductos extends javax.swing.JFrame {
         inicializacionGeneral();
     }
 
-     public void inicializacionGeneral() {
+    public void inicializacionGeneral() {
         setLocationRelativeTo(null);
         setTitle("Busqueda");
         ImageIcon modificar = new ImageIcon("iconos/modificar_datos.png");
@@ -276,7 +278,7 @@ public class BusquedaProductos extends javax.swing.JFrame {
     }
     private void tablaProductosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tablaProductosKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            agregarEnTablaVentas();
+            funcionalidadAgregarTablaAhoraConCantidad();
         }
 
         if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
@@ -284,7 +286,7 @@ public class BusquedaProductos extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_tablaProductosKeyPressed
-    public void agregarEnTablaVentas() {
+  /*  public void agregarEnTablaVentas() {
         int row = tablaProductos.getSelectedRow();
 
         if (row < 0) {
@@ -304,26 +306,37 @@ public class BusquedaProductos extends javax.swing.JFrame {
             this.dispose();
         }
 
-    }
+    }*/
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    funcionalidadAgregarTablaAhoraConCantidad();
+    }//GEN-LAST:event_jButton3ActionPerformed
+    public void funcionalidadAgregarTablaAhoraConCantidad(){
         int row = tablaProductos.getSelectedRow();
         if (row < 0) {
             mensaje("Por favor selecciona un producto", 2);
         } else {
             String idProducto = (String) model.getValueAt(row, 3);
-            if (opcion == 1) {
-                ventas.agregarDesdeTablaExterna(idProducto);
-                mensaje("Producto agregado correctamente", 1);
-            } else {
-                paso2.agregarDesdeTablaExterna(idProducto);
+            String inventario = (String) model.getValueAt(row, 2);
+            if (Float.parseFloat(inventario) > 0) {
+                if (opcion == 1) {
+                    // aquí
+                    // ventas.agregarDesdeTablaExterna(idProducto);
+                    CantidadProducto cantidad = new CantidadProducto(ventas);
+                    cantidad.asignarCantidad(idProducto);
+                    cantidad.setVisible(true);
 
+                } else {
+                    paso2.agregarDesdeTablaExterna(idProducto);
+
+                }
+                limpiarTabla();
+                this.dispose();
+            } else {
+                Utilidades.mensajePorTiempo("No puedes agregar un producto con inventario de 0");
             }
 
-            limpiarTabla();
-            this.dispose();
         }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
+    }
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         Utilidades.im("Desde busqueda productos " + evt.getKeyCode());
     }//GEN-LAST:event_formKeyPressed
@@ -333,7 +346,7 @@ public class BusquedaProductos extends javax.swing.JFrame {
             this.dispose();
         }
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            agregarEnTablaVentas();
+            funcionalidadAgregarTablaAhoraConCantidad();
         }
 
         modificaSelectTabla(evt.getKeyCode(), texto.getText().length());
@@ -346,34 +359,34 @@ public class BusquedaProductos extends javax.swing.JFrame {
 
     private void textoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textoKeyTyped
         if (evt.getKeyCode() != KeyEvent.VK_UP && evt.getKeyCode() != KeyEvent.VK_DOWN) {
-            
-                String cad= texto.getText().equalsIgnoreCase("")==true?"a":texto.getText();
-                ProductoResponse res=api.getProductos(EnviromentLocal.urlG+"productos-caracter/"+cad);
-                System.out.println(EnviromentLocal.urlG+"productos-caracter/"+cad);
-                List<Producto> lista=res.getProductos();
-                model = (DefaultTableModel) tablaProductos.getModel();
-                int r = 0;
 
-                while (model.getRowCount() > r) {
-                    model.removeRow(r);
-                }
+            String cad = texto.getText().equalsIgnoreCase("") == true ? "a" : texto.getText();
+            ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos-caracter/" + cad);
+            System.out.println(EnviromentLocal.urlG + "productos-caracter/" + cad);
+            List<Producto> lista = res.getProductos();
+            model = (DefaultTableModel) tablaProductos.getModel();
+            int r = 0;
 
-                int i = 0;
-                String a[] = new String[4];
-                for (Producto p: lista) {
-                    a[0] = p.getDescripcion();
-                    a[1] = p.getPrecioVenta()+"";
-                    a[2] = p.getCantidad()+"";
-                    a[3] = p.getIdProducto()+"";
-                    model.addRow(a);
-                    i++;
+            while (model.getRowCount() > r) {
+                model.removeRow(r);
+            }
 
-                }
-                if (model.getRowCount() > 0) {
-                    tablaProductos.changeSelection(0, 0, false, false);
-                }
+            int i = 0;
+            String a[] = new String[4];
+            for (Producto p : lista) {
+                a[0] = p.getDescripcion();
+                a[1] = p.getPrecioVenta() + "";
+                a[2] = p.getCantidad() + "";
+                a[3] = p.getIdProducto() + "";
+                model.addRow(a);
+                i++;
+
+            }
+            if (model.getRowCount() > 0) {
+                tablaProductos.changeSelection(0, 0, false, false);
+            }
         }
-          
+
     }//GEN-LAST:event_textoKeyTyped
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
