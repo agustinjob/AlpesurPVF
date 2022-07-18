@@ -190,6 +190,11 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
         btnConfiguracion.setMaximumSize(new java.awt.Dimension(115, 19));
         btnConfiguracion.setMinimumSize(new java.awt.Dimension(20, 19));
         btnConfiguracion.setPreferredSize(new java.awt.Dimension(120, 35));
+        btnConfiguracion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfiguracionActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnConfiguracion);
 
         btnCorte.setBackground(new java.awt.Color(0, 51, 102));
@@ -329,6 +334,10 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
                
         }
     }//GEN-LAST:event_btnCapturaActionPerformed
+
+    private void btnConfiguracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfiguracionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnConfiguracionActionPerformed
 
     @Override
     public void actionPerformed(ActionEvent e) {

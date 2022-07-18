@@ -18,6 +18,7 @@ import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
+import punto.venta.dao.Datos;
 import punto.venta.dao.ProductoDAO;
 import punto.venta.dao.UsuarioDAO;
 import punto.venta.transferencia.Paso2;
@@ -361,8 +362,8 @@ public class BusquedaProductos extends javax.swing.JFrame {
         if (evt.getKeyCode() != KeyEvent.VK_UP && evt.getKeyCode() != KeyEvent.VK_DOWN) {
 
             String cad = texto.getText().equalsIgnoreCase("") == true ? "a" : texto.getText();
-            ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos-caracter/" + cad);
-            System.out.println(EnviromentLocal.urlG + "productos-caracter/" + cad);
+            ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos-caracter/" + cad+"/"+Datos.idSucursal);
+            System.out.println(EnviromentLocal.urlG + "productos-caracter/" + cad+"/"+Datos.idSucursal);
             List<Producto> lista = res.getProductos();
             model = (DefaultTableModel) tablaProductos.getModel();
             int r = 0;

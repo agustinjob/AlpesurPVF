@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -19,14 +20,17 @@ import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
 import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
 import punto.venta.dao.Datos;
+import static punto.venta.dao.Datos.formatoSistema;
 import punto.venta.dao.Movimientos;
 import punto.venta.dao.TicketDAO;
 import punto.venta.dao.UsuarioDAO;
 import static punto.venta.dialogos.Cobrar.txtn1;
 import punto.venta.dialogos.Confirmacion;
 import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.Sucursal;
 import punto.venta.modelo.Usuario;
 import punto.venta.modelo.response.MovimientosExtrasResponse;
+import punto.venta.modelo.response.SucursalResponse;
 import punto.venta.modelo.response.UsuarioResponse;
 import punto.venta.utilidades.Imagen;
 import punto.venta.utilidades.Utilidades;
@@ -59,12 +63,16 @@ public class InicioSesion extends javax.swing.JFrame {
         asignarFolioTicket();
         AutoCompleteDecorator.decorate(comboUsuario, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
         llenarCombo();
+        llenarComboSucursal();
         ImageIcon logo = new ImageIcon("iconos/lavicentina.jpg");
         this.setIconImage(logo.getImage());
+        if(!formatoSistema.equalsIgnoreCase("Administrador")){
+        comboSucursales.setVisible(false);
+        }
 
     }
 
-    public void llenarCombo() {
+    public final void llenarCombo() {
         UsuarioResponse res = api.getUsuarios(EnviromentLocal.urlG + "/usuarios/" + Datos.idSucursal);
         Usuario vacio = new Usuario();
         vacio.setIdUsuario(0);
@@ -79,7 +87,17 @@ public class InicioSesion extends javax.swing.JFrame {
             u.setTipo(1);
             comboUsuario.addItem(u);
         }
-
+        
+        
+    }
+    
+    public final void llenarComboSucursal(){
+        SucursalResponse sucu = api.getSucursales(EnviromentLocal.urlG + "sucursales/" + Datos.propietario + "/" + 0);
+        List<Sucursal> lista = sucu.getSucursal();
+        
+        for(Sucursal s: lista){
+        comboSucursales.addItem(s);
+        }
     }
 
     public void asignarFolioTicket() {
@@ -127,6 +145,7 @@ public class InicioSesion extends javax.swing.JFrame {
         btnIniciar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         comboUsuario = new javax.swing.JComboBox<Usuario>();
+        comboSucursales = new javax.swing.JComboBox<Sucursal>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -189,6 +208,15 @@ public class InicioSesion extends javax.swing.JFrame {
             }
         });
 
+        comboSucursales.setEditable(true);
+        comboSucursales.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        comboSucursales.setModel(new javax.swing.DefaultComboBoxModel<Sucursal>());
+        comboSucursales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboSucursalesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -197,18 +225,20 @@ public class InicioSesion extends javax.swing.JFrame {
                 .addGap(17, 17, 17)
                 .addComponent(cajaSeguro, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(comboUsuario, 0, 276, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(comboUsuario, 0, 276, Short.MAX_VALUE)
+                        .addComponent(password, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
+                        .addComponent(labelc, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)
+                        .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2)
+                        .addComponent(comboSucursales, javax.swing.GroupLayout.Alignment.TRAILING, 0, 276, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(password, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE)
-                    .addComponent(labelc, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addContainerGap(93, Short.MAX_VALUE))
+                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(92, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -229,10 +259,11 @@ public class InicioSesion extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(comboSucursales, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(49, Short.MAX_VALUE))
+                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -265,7 +296,8 @@ public class InicioSesion extends javax.swing.JFrame {
                 UsuarioDAO.nombre = usuario.getNombre();
                 UsuarioDAO.tipo = usuario.getTipoUsuario();
                 UsuarioDAO.username = usuario.getUsername();
-
+                Sucursal sucu= (Sucursal)comboSucursales.getSelectedItem();
+                Datos.idSucursal =Integer.parseInt(sucu.getIdSucursal()+"");
                 efectivoInicial();
             } else {
                 mensaje("Usuario o contraseña incorrectos");
@@ -295,6 +327,10 @@ public class InicioSesion extends javax.swing.JFrame {
     private void comboUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboUsuarioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboUsuarioActionPerformed
+
+    private void comboSucursalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboSucursalesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboSucursalesActionPerformed
 
     public void mensaje(String men) {
         confirma.setMensaje(men);
@@ -356,6 +392,7 @@ public class InicioSesion extends javax.swing.JFrame {
     private javax.swing.JButton btnIniciar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JLabel cajaSeguro;
+    private javax.swing.JComboBox<Sucursal> comboSucursales;
     private javax.swing.JComboBox<Usuario> comboUsuario;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

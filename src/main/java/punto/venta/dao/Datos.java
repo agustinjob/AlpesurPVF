@@ -13,4 +13,5 @@ public class Datos {
     public static String propietario="Jely";
     public static int idSucursal=1;
     public static String sucursal="Fortin";
+    public static String formatoSistema="Empleado";
 }

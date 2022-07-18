@@ -272,7 +272,6 @@ public class Configuracion extends javax.swing.JPanel {
             timer.start();
     }
     public void registrar(){
-        Utilidades.im("Si entro");
             try {
             String variables[]=new String[4];
             variables[1]=nombre.getText();
@@ -292,7 +291,7 @@ public class Configuracion extends javax.swing.JPanel {
                  
             Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-                 
+                 System.out.println(ex.getLocalizedMessage());
             Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

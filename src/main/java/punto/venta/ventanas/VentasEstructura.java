@@ -725,7 +725,7 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
         if (pro == null) {
             return null;
         }
-        String res[] = new String[7];
+        String res[] = new String[10];
         res[0] = pro.getCodigo();
         res[1] = pro.getDescripcion();
         res[2] = pro.getPrecioVenta() + "";
@@ -969,7 +969,11 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
                     obj.setVisible(true);
                     String info = txtTotal.getText();
                     Cobrar.txtn2.setText(info);
-                    obj.numArticulos.setText(tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() + "");
+                    int numArticulos=tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos();
+                    if(numArticulos<0){
+                    numArticulos=numArticulos*-1;
+                    }
+                    obj.numArticulos.setText(numArticulos+"");
                     obj.requerirFoco();
                 }
             } catch (NumberFormatException e) {

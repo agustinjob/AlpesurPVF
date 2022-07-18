@@ -49,7 +49,6 @@ public class TicketDAO {
             Statement s = conn.createStatement();
             s.executeUpdate("UPDATE `ticketc` SET `numero`=" + numero + " where idTicket=1;");
             System.out.println("UPDATE `ticketc` SET `numero`=" + numero + " where idTicket=1;");
-            conn.commit();
         } catch (SQLException ex) {
                  
             System.out.println(ex.toString());

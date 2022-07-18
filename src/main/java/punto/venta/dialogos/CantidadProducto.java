@@ -284,7 +284,7 @@ public class CantidadProducto extends javax.swing.JFrame {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
 
-        ventas.agregarDesdeTablaExternaConCantidad(pro, txfCantidad.getText(), txfImporte.getText());
+        ventas.agregarDesdeTablaExternaConCantidad(pro, txfCantidad.getText(), txfImporte.getText().replace(",", ""));
         mostrarMensajeAlCerrar();
     }//GEN-LAST:event_btnAceptarActionPerformed
 

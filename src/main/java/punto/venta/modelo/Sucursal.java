@@ -115,4 +115,9 @@ public class Sucursal {
         this.estatusSucursal = estatusSucursal;
     }
     
+    @Override
+    public String toString(){
+    return getNombre();
+    }
+    
 }
