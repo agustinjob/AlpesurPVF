@@ -32,6 +32,7 @@ import punto.venta.modelo.response.ProductoResponse;
 import punto.venta.modelo.response.ProductoUtilidadResponse;
 import punto.venta.modelo.response.ResponseGeneral;
 import punto.venta.modelo.response.SucursalResponse;
+import punto.venta.modelo.response.TicketResponse;
 import punto.venta.modelo.response.UsuarioResponse;
 import punto.venta.modelo.response.VentasResponse;
 
@@ -128,6 +129,19 @@ public class ApiSend {
 
         try ( CloseableHttpClient httpClient = HttpClients.createDefault();  CloseableHttpResponse response = httpClient.execute(envio)) {
             pro = gson.fromJson(EntityUtils.toString(response.getEntity()), UsuarioResponse.class);
+
+        } catch (IOException ex) {
+            Logger.getLogger(ApiSend.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return pro;
+    }
+         public TicketResponse getTicket(String url) {
+        HttpGet envio = new HttpGet(url);
+        Gson gson = new Gson();
+        TicketResponse pro = new TicketResponse();
+
+        try ( CloseableHttpClient httpClient = HttpClients.createDefault();  CloseableHttpResponse response = httpClient.execute(envio)) {
+            pro = gson.fromJson(EntityUtils.toString(response.getEntity()), TicketResponse.class);
 
         } catch (IOException ex) {
             Logger.getLogger(ApiSend.class.getName()).log(Level.SEVERE, null, ex);

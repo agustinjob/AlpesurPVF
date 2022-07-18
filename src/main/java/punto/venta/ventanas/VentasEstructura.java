@@ -43,8 +43,11 @@ import punto.venta.dialogos.InsVarios;
 import punto.venta.dialogos.SalidaEfectivo;
 import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.modelo.Producto;
+import punto.venta.modelo.Ticket;
 import punto.venta.modelo.Usuario;
 import punto.venta.modelo.response.ProductoResponse;
+import punto.venta.modelo.response.ResponseGeneral;
+import punto.venta.modelo.response.TicketResponse;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -64,13 +67,14 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
     private Usuario usu;
     // public double total[] = new double[5];
     //public int numeroArticulos[] = new int [5];
-    TicketDAO tick = new TicketDAO();
+    //TicketDAO tick = new TicketDAO();
     Confirmacion confirma = new Confirmacion();
     private Dimension dim;
     Estructura e;
     public PanelTabla tablas[] = new PanelTabla[5];
     int ultimaPestanaSeleccionada = 0;
     ApiSend api = new ApiSend();
+    static Ticket ti = new Ticket();
 
     public VentasEstructura() {
 
@@ -88,8 +92,9 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
             }
         };
         inicializarIconos();
-
-        txtTicket.setText("Folio del ticket: " + tick.getNumero());
+ TicketResponse tick = api.getTicket(EnviromentLocal.urlG + "ticket/" + Datos.idSucursal);
+       
+        txtTicket.setText("Folio del ticket: " + tick.getTickets().get(0).getSerial());
         addKeyListener(this);
         Utilidades.im("Entro a ventas");
         Utilidades.im("" + this.hasFocus());
@@ -928,16 +933,11 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
 
 
     private void btnReiniciarFolioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReiniciarFolioActionPerformed
-        try {
-            tick.modificarEstatus();
-            txtTicket.setText("Folio ticket: " + tick.getNumero());// TODO add your handling code here:
-        } catch (ClassNotFoundException ex) {
-
-            mensaje("Ocurrio un error con el sistema", 1);
-        } catch (SQLException ex) {
-
-            Logger.getLogger(VentasEstructura.class.getName()).log(Level.SEVERE, null, ex);
-        }
+           ti.setSerial(1);
+            ResponseGeneral res= api.usarAPI(EnviromentLocal.urlG + "ticket/guardar" ,ti,"POST");
+           ti=(Ticket)res.getDatos().get(0);
+            txtTicket.setText("Folio ticket: " + ti.getSerial() );// TODO add your handling code here:
+    
     }//GEN-LAST:event_btnReiniciarFolioActionPerformed
 
     private void btndevolucionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndevolucionesActionPerformed
