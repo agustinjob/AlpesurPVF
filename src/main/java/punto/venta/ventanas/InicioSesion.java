@@ -52,6 +52,7 @@ public class InicioSesion extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Inicio de sesión");
+          Utilidades.asignarDatosConfiguracion();
         ImageIcon e = new ImageIcon("iconos/cajaSeguro.png");
         ImageIcon iniciar = new ImageIcon("iconos/check.png");
         ImageIcon salir = new ImageIcon("iconos/cancelar.png");
@@ -65,6 +66,7 @@ public class InicioSesion extends javax.swing.JFrame {
         llenarComboSucursal();
         ImageIcon logo = new ImageIcon("iconos/lavicentina.jpg");
         this.setIconImage(logo.getImage());
+      
         if(!formatoSistema.equalsIgnoreCase("Administrador")){
         comboSucursales.setVisible(false);
         }

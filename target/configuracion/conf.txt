@@ -1,0 +1,4 @@
+propietario=Jely
+idSucursal=5
+sucursal=Monte Blanco
+formatoSistema=Empleado

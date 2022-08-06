@@ -14,7 +14,9 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -32,8 +34,10 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
+import punto.venta.dao.Datos;
 import punto.venta.dao.UsuarioDAO;
 import punto.venta.dialogos.Confirmacion;
+import static punto.venta.enviroment.EnviromentLocal.configuracion;
 import punto.venta.modelo.Usuario;
 
 /**
@@ -85,6 +89,26 @@ public class Utilidades {
 
         }
         return x;
+    }
+    
+    public static void asignarDatosConfiguracion(){
+        try {
+            File doc = new File(configuracion);
+            doc.createNewFile();
+            BufferedReader obj = new BufferedReader(new FileReader(doc));
+            
+           
+            String propietario= (String)obj.readLine().split("=")[1];
+            String idSucursal= (String)obj.readLine().split("=")[1];
+            String sucursal= (String)obj.readLine().split("=")[1];
+            String formatoSistema= (String)obj.readLine().split("=")[1];
+            Datos.propietario=propietario;
+            Datos.idSucursal= Integer.parseInt(idSucursal);
+            Datos.sucursal=sucursal;
+            Datos.formatoSistema=formatoSistema;
+        } catch (IOException ex) {
+            Logger.getLogger(Utilidades.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static void resizeColumnWidth(JTable table) {

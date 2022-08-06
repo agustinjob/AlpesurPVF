@@ -118,16 +118,16 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel3.setBackground(new java.awt.Color(0, 102, 204));
+        jPanel3.setBackground(new java.awt.Color(0, 0, 0));
 
         jLabel3.setFont(new java.awt.Font("Cambria", 2, 48)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("ESCOLARIS");
+        jLabel3.setText("LA VICENTINA");
 
         caja.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         caja.setIcon(new javax.swing.ImageIcon("C:\\Users\\agus_\\Desktop\\punto de venta\\EJECUTABLE\\iconos\\logo.jpeg")); // NOI18N
 
-        jPanel2.setBackground(new java.awt.Color(0, 102, 204));
+        jPanel2.setBackground(new java.awt.Color(0, 0, 0));
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));
 
         btnVentas.setBackground(new java.awt.Color(0, 51, 102));
