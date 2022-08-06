@@ -8,7 +8,6 @@ package punto.venta.misclases;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import punto.venta.dao.TicketDAO;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,13 +28,17 @@ import javax.print.attribute.standard.ColorSupported;
 import javax.print.attribute.standard.PrinterName;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import punto.servicio.rest.ApiSend;
 import punto.venta.configuracion.Configuracion;
 import punto.venta.dao.Conexion;
-import punto.venta.dao.ConfiguracionDAO;
+import punto.venta.dao.Datos;
 import punto.venta.dao.UsuarioDAO;
+import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.modelo.Area;
+import punto.venta.modelo.ConfiguracionModelo;
 import punto.venta.modelo.Producto;
 import punto.venta.utilidades.Utilidades;
+import punto.venta.ventanas.VentasEstructura;
 
 /**
  *
@@ -46,10 +49,9 @@ public class ImprimirTicket {
  Date da = new Date();
  DateFormat formatoFecha = new SimpleDateFormat("dd, MMM yyyy");
  DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
- TicketDAO ticket = new TicketDAO();
- ConfiguracionDAO configuracion = new ConfiguracionDAO();
  String fecha;
  String hora;
+ ApiSend api= new ApiSend();
  
    public void asignarFechaYHora(String fecha, String hora) throws IOException{
          if(fecha.equalsIgnoreCase("")){
@@ -104,33 +106,20 @@ public class ImprimirTicket {
     }
     
        public String[] recuperarDatos(){
-            String a[] = new String[4];
-        try {
-            ResultSet datos=  configuracion.recuperarDatos();
-            // Impresora , Nombre, RFC , Direccion
-            String info="";
-           
-            while(datos.next()){
-                a[1]=datos.getString("nombreLocal");
-                a[2]=datos.getString("direccion");
-                a[3]=datos.getString("rfc");
-                a[0]=datos.getString("impresora");
-            }
-            System.out.println("ESTE ES EL RECUPERAR DATOOS " + a[0] + " " + a[2]);
-         
-        } catch (ClassNotFoundException ex) {
-                 
-            Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-                 
-            Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return a;
+       String a[] = new String[4];     
+       ConfiguracionModelo datos=   datos= api.getConfiguracion(EnviromentLocal.urlG+"configuracion/"+Datos.idSucursal);
+       // Impresora , Nombre, RFC , Direccion
+       String info="";
+       a[1]=datos.getNombreLocal();
+       a[2]=datos.getDireccion();
+       a[3]=datos.getRfc();
+       a[0]=datos.getImpresora();    
+       System.out.println("ESTE ES EL RECUPERAR DATOOS " + a[0] + " " + a[2]);
+       return a;
     }
     
      public String convertirModeloAString(DefaultTableModel model, String total){
-    int numTic = ticket.getNumero();
+    int numTic = VentasEstructura.ti.getSerial();
     String d[] = recuperarDatos();
     
         String titulo = " ===="+d[1]+"==== \n"

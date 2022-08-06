@@ -10,7 +10,6 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
-import punto.venta.dao.TicketDAO;
 import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.modelo.Devolucion;
 import punto.venta.modelo.response.ResponseGeneral;
@@ -151,7 +150,7 @@ public class Ticket extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        TicketDAO obj = new TicketDAO();
+  
         float cantidadText = Float.parseFloat(txtCanti.getText());
         float cantidadPro = Float.parseFloat(cantidad);
         float montod = Float.parseFloat(monto);

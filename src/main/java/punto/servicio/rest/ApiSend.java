@@ -21,6 +21,8 @@ import java.util.logging.Logger;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.ContentType;
+import punto.venta.configuracion.Configuracion;
+import punto.venta.modelo.ConfiguracionModelo;
 import punto.venta.modelo.CorteModelo;
 import punto.venta.modelo.Usuario;
 import punto.venta.modelo.response.AreaResponse;
@@ -60,6 +62,28 @@ public class ApiSend {
 
     }
      */
+    public TicketResponse usarAPITicket(String url, Object obj) {
+         ContentType contentType = ContentType.APPLICATION_JSON;
+        TicketResponse res = new TicketResponse();
+
+        HttpPost envio = new HttpPost(url);
+            Gson gson = new Gson();
+            // System.out.println(url);
+            System.out.println(gson.toJson(obj));
+            envio.setEntity(new StringEntity(gson.toJson(obj), contentType));
+
+            try ( CloseableHttpClient httpClient = HttpClients.createDefault();  CloseableHttpResponse response = httpClient.execute(envio)) {
+
+                res = gson.fromJson(EntityUtils.toString(response.getEntity()), TicketResponse.class);
+
+            } catch (IOException ex) {
+                Logger.getLogger(ApiSend.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            return res;
+        
+    }
+    
     public ResponseGeneral usarAPI(String url, Object obj, String tipo) {
         ContentType contentType = ContentType.APPLICATION_JSON;
         ResponseGeneral res = new ResponseGeneral();
@@ -129,6 +153,20 @@ public class ApiSend {
 
         try ( CloseableHttpClient httpClient = HttpClients.createDefault();  CloseableHttpResponse response = httpClient.execute(envio)) {
             pro = gson.fromJson(EntityUtils.toString(response.getEntity()), UsuarioResponse.class);
+
+        } catch (IOException ex) {
+            Logger.getLogger(ApiSend.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return pro;
+    }
+    
+       public ConfiguracionModelo getConfiguracion(String url) {
+        HttpGet envio = new HttpGet(url);
+        Gson gson = new Gson();
+        ConfiguracionModelo pro = new ConfiguracionModelo();
+
+        try ( CloseableHttpClient httpClient = HttpClients.createDefault();  CloseableHttpResponse response = httpClient.execute(envio)) {
+            pro = gson.fromJson(EntityUtils.toString(response.getEntity()), ConfiguracionModelo.class);
 
         } catch (IOException ex) {
             Logger.getLogger(ApiSend.class.getName()).log(Level.SEVERE, null, ex);

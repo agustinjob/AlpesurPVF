@@ -14,9 +14,12 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Timer;
+import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
-import punto.venta.dao.ConfiguracionDAO;
+import punto.venta.dao.Datos;
 import punto.venta.dialogos.Confirmacion;
+import punto.venta.enviroment.EnviromentLocal;
+import punto.venta.modelo.ConfiguracionModelo;
 import punto.venta.pruebas.PrintExamples;
 import punto.venta.utilidades.Utilidades;
 import static punto.venta.utilidades.Utilidades.confirma;
@@ -28,9 +31,9 @@ import punto.venta.ventanas.VentasEstructura;
  */
 public class Configuracion extends javax.swing.JPanel {
 
-    ConfiguracionDAO conf = new ConfiguracionDAO();
+    ApiSend api=new ApiSend();
     Confirmacion confirma = new Confirmacion();
-    
+    ConfiguracionModelo datos;
     public Configuracion() {
         initComponents();
      
@@ -57,25 +60,16 @@ public class Configuracion extends javax.swing.JPanel {
     }
     
     public void llenarDatos(){
-        try {
-            ResultSet datos=  conf.recuperarDatos();
+ 
+           datos= api.getConfiguracion(EnviromentLocal.urlG+"configuracion/"+Datos.idSucursal);
+       
             // Impresora , Nombre, RFC , Direccion
-            String info="";
-            while(datos.next()){
-                nombre.setText(datos.getString(3));
-                rfc.setText(datos.getString(4));
-                direccion.setText(datos.getString(5));
-                info= datos.getString(2);
-            }
-            
-            informacionLocal.setText("Impresora seleccionada: "+ info);
-        } catch (ClassNotFoundException ex) {
-                 
-            Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-                 
-            Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                nombre.setText(datos.getNombreLocal());
+                rfc.setText(datos.getRfc());
+                direccion.setText(datos.getDireccion());
+                 String info= datos.getImpresora();
+                informacionLocal.setText("Impresora seleccionada: "+ info);
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -272,7 +266,9 @@ public class Configuracion extends javax.swing.JPanel {
             timer.start();
     }
     public void registrar(){
-            try {
+        
+       
+        
             String variables[]=new String[4];
             variables[1]=nombre.getText();
             variables[3]=direccion.getText();
@@ -282,18 +278,16 @@ public class Configuracion extends javax.swing.JPanel {
             
           mensaje("Hay datos vacios por favor registra y selecciona todos los datos");
           }else{
-              
-            String x=conf.almacena(variables);
-            mensaje(x);
-            llenarDatos();
+             
+              datos.setDireccion(variables[3]);
+              datos.setImpresora(variables[0]);
+              datos.setNombreLocal(variables[1]);
+              datos.setRfc(variables[2]);
+            api.usarAPI(EnviromentLocal.urlG+"configuracion", datos, "PUT");
+            mensaje("Datos modificados correctamente");
+          
           }
-        } catch (ClassNotFoundException ex) {
-                 
-            Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-                 System.out.println(ex.getLocalizedMessage());
-            Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

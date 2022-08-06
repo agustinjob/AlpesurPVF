@@ -33,7 +33,6 @@ import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
 import punto.venta.dao.Datos;
 import punto.venta.dao.ProductoDAO;
-import punto.venta.dao.TicketDAO;
 import punto.venta.dialogos.BusquedaProductos;
 import punto.venta.dialogos.Cobrar;
 import punto.venta.dialogos.Confirmacion;
@@ -74,7 +73,7 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
     public PanelTabla tablas[] = new PanelTabla[5];
     int ultimaPestanaSeleccionada = 0;
     ApiSend api = new ApiSend();
-    static Ticket ti = new Ticket();
+    public static Ticket ti = new Ticket();
 
     public VentasEstructura() {
 
@@ -93,8 +92,8 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
         };
         inicializarIconos();
  TicketResponse tick = api.getTicket(EnviromentLocal.urlG + "ticket/" + Datos.idSucursal);
-       
-        txtTicket.setText("Folio del ticket: " + tick.getTickets().get(0).getSerial());
+       ti=tick.getTickets().get(0);
+        txtTicket.setText("Folio del ticket: " + ti.getSerial());
         addKeyListener(this);
         Utilidades.im("Entro a ventas");
         Utilidades.im("" + this.hasFocus());
@@ -178,7 +177,9 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
         comboProductos.addItem(vacio);
 
         ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos/" + Datos.idSucursal);
-
+        Producto pp= new Producto();
+        pp.setIdProducto(0);
+        comboProductos.addItem(pp);
         for (Producto p : res.getProductos()) {
             comboProductos.addItem(p);
         }
@@ -934,8 +935,10 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
 
     private void btnReiniciarFolioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReiniciarFolioActionPerformed
            ti.setSerial(1);
-            ResponseGeneral res= api.usarAPI(EnviromentLocal.urlG + "ticket/guardar" ,ti,"POST");
-           ti=(Ticket)res.getDatos().get(0);
+           ti.setActualizada(null);
+           TicketResponse res= api.usarAPITicket(EnviromentLocal.urlG + "ticket/guardar" ,ti);
+           System.out.println(EnviromentLocal.urlG + "ticket/guardar");
+           ti=res.getTickets().get(0);
             txtTicket.setText("Folio ticket: " + ti.getSerial() );// TODO add your handling code here:
     
     }//GEN-LAST:event_btnReiniciarFolioActionPerformed

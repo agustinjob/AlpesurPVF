@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import punto.servicio.rest.ApiSend;
 import punto.venta.dao.Conexion;
 import punto.venta.dao.Datos;
-import punto.venta.dao.TicketDAO;
+
 import punto.venta.dao.VentasDAO;
 import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.misclases.ImprimirTicket;
@@ -39,7 +39,6 @@ public class Devoluciones extends javax.swing.JFrame {
     Date d = new Date();
     DateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
     DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
-    TicketDAO t = new TicketDAO();
     VentasDAO v = new VentasDAO();
     Confirmacion confir;
     String idTicket = "";

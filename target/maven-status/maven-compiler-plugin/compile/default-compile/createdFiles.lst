@@ -19,7 +19,6 @@ punto\venta\producto\ProductoModificar$4.class
 punto\venta\producto\ProductoEliminar$3.class
 punto\venta\usuario\UsuarioModificar$1.class
 punto\venta\producto\ProductoAgregar$1.class
-punto\venta\dao\TicketDAO.class
 punto\venta\usuario\UsuarioEliminar$1.class
 punto\venta\actualizaciones\EstructuraActualizaciones$7.class
 punto\venta\ventanas\InicioSesion$3.class
@@ -38,7 +37,6 @@ punto\venta\usuario\UsuarioEstructura$1.class
 punto\venta\modelo\MovimientosInv.class
 punto\venta\ventanas\VentasEstructura$14.class
 punto\venta\ventanas\Estructura$1.class
-punto\venta\dao\ConfiguracionDAO.class
 punto\venta\ventanas\VentasEstructura$1.class
 punto\venta\ventanas\TransferirEstructura.class
 punto\venta\transferencia\Paso2$3.class
@@ -319,6 +317,7 @@ punto\venta\dialogos\Cobrar$2.class
 punto\venta\modelo\Sucursal.class
 punto\venta\actualizaciones\EstructuraActualizaciones$5.class
 punto\venta\misclases\ActualizacionesNecesarias.class
+punto\venta\modelo\ConfiguracionModelo.class
 punto\venta\ventanas\VentasEstructura$20.class
 punto\venta\ventanas\InicioSesion$5.class
 punto\venta\dao\Movimientos.class

@@ -10,8 +10,8 @@ package punto.venta.dao;
  * @author agus_
  */
 public class Datos {
-    public static String propietario="Jely";
+    public static String propietario="Alan";
     public static int idSucursal=1;
-    public static String sucursal="Fortin";
+    public static String sucursal="Circunvalación";
     public static String formatoSistema="Empleado";
 }

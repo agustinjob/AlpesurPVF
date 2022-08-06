@@ -22,7 +22,6 @@ import punto.venta.dao.Conexion;
 import punto.venta.dao.Datos;
 import static punto.venta.dao.Datos.formatoSistema;
 import punto.venta.dao.Movimientos;
-import punto.venta.dao.TicketDAO;
 import punto.venta.dao.UsuarioDAO;
 import static punto.venta.dialogos.Cobrar.txtn1;
 import punto.venta.dialogos.Confirmacion;
@@ -60,7 +59,7 @@ public class InicioSesion extends javax.swing.JFrame {
         btnSalir.setIcon(salir);
         btnIniciar.setIcon(iniciar);
         comboUsuario.setRequestFocusEnabled(true);
-        asignarFolioTicket();
+       
         AutoCompleteDecorator.decorate(comboUsuario, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
         llenarCombo();
         llenarComboSucursal();
@@ -100,7 +99,7 @@ public class InicioSesion extends javax.swing.JFrame {
         }
     }
 
-    public void asignarFolioTicket() {
+    /*public void asignarFolioTicket() {
         try {
             TicketDAO tick = new TicketDAO();
             tick.consultarNumeroTicket();
@@ -111,7 +110,7 @@ public class InicioSesion extends javax.swing.JFrame {
 
             System.out.println("Error " + ex.getLocalizedMessage() + "Asinar folio");
         }
-    }
+    }*/
 
     public void efectivoInicial() throws ClassNotFoundException, SQLException {
         boolean ban = false;
@@ -296,8 +295,8 @@ public class InicioSesion extends javax.swing.JFrame {
                 UsuarioDAO.nombre = usuario.getNombre();
                 UsuarioDAO.tipo = usuario.getTipoUsuario();
                 UsuarioDAO.username = usuario.getUsername();
-                Sucursal sucu= (Sucursal)comboSucursales.getSelectedItem();
-                Datos.idSucursal =Integer.parseInt(sucu.getIdSucursal()+"");
+              //  Sucursal sucu= (Sucursal)comboSucursales.getSelectedItem();
+            
                 efectivoInicial();
             } else {
                 mensaje("Usuario o contraseña incorrectos");

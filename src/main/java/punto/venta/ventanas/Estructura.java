@@ -79,8 +79,9 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
         objVentas.setEstructura(this);
         inicializarIconos();
         objVentas.requerirFoco();
-        ImageIcon logo = new ImageIcon("iconos/lavicentina.jpg");
+        ImageIcon logo = new ImageIcon("iconos/logo.jpg");
         this.setIconImage(logo.getImage());
+        btnTransferencia.setVisible(false);
 
     }
 
@@ -117,13 +118,16 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel3.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel3.setBackground(new java.awt.Color(0, 102, 204));
 
         jLabel3.setFont(new java.awt.Font("Cambria", 2, 48)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("La Vicentina");
+        jLabel3.setText("ESCOLARIS");
 
-        jPanel2.setBackground(new java.awt.Color(0, 0, 0));
+        caja.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        caja.setIcon(new javax.swing.ImageIcon("C:\\Users\\agus_\\Desktop\\punto de venta\\EJECUTABLE\\iconos\\logo.jpeg")); // NOI18N
+
+        jPanel2.setBackground(new java.awt.Color(0, 102, 204));
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));
 
         btnVentas.setBackground(new java.awt.Color(0, 51, 102));
@@ -564,7 +568,7 @@ actualizaciones.setVisible(false);
     }
 
     public void inicializarIconos() {
-        ImageIcon registradora = new ImageIcon("iconos/comprar.png");
+        ImageIcon registradora = new ImageIcon("iconos/logo.jpeg");
         //iconos/comprar.png
         ImageIcon cc = new ImageIcon("iconos/cancelar.png");
         ImageIcon bc = new ImageIcon("iconos/boton_cerrar.png");

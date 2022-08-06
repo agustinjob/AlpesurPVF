@@ -29,7 +29,6 @@ import punto.servicio.rest.RestDatos;
 import punto.venta.dao.ClienteDAO;
 import punto.venta.dao.Conexion;
 import punto.venta.dao.Datos;
-import punto.venta.dao.TicketDAO;
 import punto.venta.dao.VentasDAO;
 import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.misclases.ImprimirTicket;
@@ -38,8 +37,10 @@ import punto.venta.modelo.Ventas;
 import punto.venta.modelo.VentasModel;
 import punto.venta.modelo.response.ClienteResponse;
 import punto.venta.modelo.response.ResponseGeneral;
+import punto.venta.modelo.response.TicketResponse;
 import punto.venta.utilidades.Utilidades;
 import punto.venta.ventanas.VentasEstructura;
+import static punto.venta.ventanas.VentasEstructura.ti;
 
 /**
  *
@@ -50,7 +51,6 @@ public class Cobrar extends javax.swing.JFrame {
     DefaultTableModel md;
     VentasDAO ventas = new VentasDAO();
     VentasEstructura ven3;
-    TicketDAO tick = new TicketDAO();
     Confirmacion confirma = new Confirmacion();
     ClienteDAO obj = new ClienteDAO();
     ArrayList<Cliente> c;
@@ -107,7 +107,7 @@ public class Cobrar extends javax.swing.JFrame {
         });
 
         AutoCompleteDecorator.decorate(comboClientes, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
-            ImageIcon logo = new ImageIcon("iconos/lavicentina.jpg");
+        ImageIcon logo = new ImageIcon("iconos/lavicentina.jpg");
         this.setIconImage(logo.getImage());
     }
 
@@ -573,8 +573,8 @@ public class Cobrar extends javax.swing.JFrame {
             v.setIdTicket(idTicket);
             v.setIdCliente(idCliente);
             v.setIdVenta(0);
-            v.setTipoCompra(tipoVenta==2?"Credito":"Efectivo");
-            v.setFinalizada(tipoVenta==2?false:true);
+            v.setTipoCompra(tipoVenta == 2 ? "Credito" : "Efectivo");
+            v.setFinalizada(tipoVenta == 2 ? false : true);
 
             i++;
             ven.add(v);
@@ -591,37 +591,37 @@ public class Cobrar extends javax.swing.JFrame {
     public void imprimeTicket() {
         ImprimirTicket obj = new ImprimirTicket();
         String x = "";
-        int numTic = tick.getNumero();
+        VentasEstructura.ti.getSerial();
 
         boolean ban = true;
 
-        Integer idCliente=0;
+        Integer idCliente = 0;
         if (tipoVenta == 2) {
-           Cliente c = (Cliente) comboClientes.getSelectedItem();
+            Cliente c = (Cliente) comboClientes.getSelectedItem();
             idCliente = c.getIdCliente();
         }
         if (ban == true) {
 
-            try {
-                //    x= ventas.registrarVenta(md, tipoVenta, idCliente, "Local", "Actualizada", "Registro", numTic);
+            //    x= ventas.registrarVenta(md, tipoVenta, idCliente, "Local", "Actualizada", "Registro", numTic);
+            ResponseGeneral resul = api.usarAPI(EnviromentLocal.urlG + "ventas", modeloAVentasModel(md, ti.getSerial(), idCliente), "POST");
+            ti.setSerial(ti.getSerial() + 1);
+                  ti.setActualizada(null);
+            TicketResponse resTicket = api.usarAPITicket(EnviromentLocal.urlG + "ticket/guardar", ti);
+            x = resul.getMensaje();
 
-                ResponseGeneral resul = api.usarAPI(EnviromentLocal.urlG + "ventas", modeloAVentasModel(md, numTic, idCliente), "POST");
-                x = resul.getMensaje();
-                tick.sumarTicket();
-                String res = obj.convertirModeloAString(md, txtn2.getText());
-                obj.imprimirTicket(res);
-                ven3.eliminaCelda(2);
-                ven3.tablas[indexTabbed].setNumArticulos(0);
-                ven3.tablas[indexTabbed].setTotal(0);
-                ven3.llenarCombo();
-                ven3.actualizaTicket(tick.getNumero() + "");
-                ven3.requerirFoco();
+            String res = obj.convertirModeloAString(md, txtn2.getText());
+            obj.imprimirTicket(res);
+            ven3.eliminaCelda(2);
+            ven3.tablas[indexTabbed].setNumArticulos(0);
+            ven3.tablas[indexTabbed].setTotal(0);
+            ven3.llenarCombo();
+            ti=resTicket.getTickets().get(0);
+            ven3.actualizaTicket(ti.getSerial() + "");
+            ven3.requerirFoco();
 
-                this.dispose();
-                mensaje(x, tipoVenta);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Cobrar.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            this.dispose();
+            mensaje(x, tipoVenta);
+
         }
 
     }
@@ -629,16 +629,16 @@ public class Cobrar extends javax.swing.JFrame {
         soloRegistraVenta();
     }//GEN-LAST:event_btn2ActionPerformed
     public void soloRegistraVenta() {
-        try {
+    
 
             boolean ban = true;
-            Integer idCliente=0;
+            Integer idCliente = 0;
             if (tipoVenta == 2) {
-                Cliente c= (Cliente) comboClientes.getSelectedItem();
+                Cliente c = (Cliente) comboClientes.getSelectedItem();
                 if (ban == true) {
                     idCliente = c.getIdCliente();
                     double totalPro = Double.parseDouble(txtn2.getText());
-                    String saldoC=api.getDato(EnviromentLocal.urlG+"saldo-cliente/"+idCliente+"/"+Datos.idSucursal);
+                    String saldoC = api.getDato(EnviromentLocal.urlG + "saldo-cliente/" + idCliente + "/" + Datos.idSucursal);
                     double saldo = Double.parseDouble(saldoC);
                     double totalTotal = totalPro + saldo;
                     if (totalTotal > c.getLimiteCredito()) {
@@ -650,19 +650,20 @@ public class Cobrar extends javax.swing.JFrame {
             if (ban == true) {
                 String x = "";
 
-                int numTic = tick.getNumero();
 
                 //  x = ventas.registrarVenta(md, tipoVenta, idCliente, "Local", "Actualizada", "Registro", numTic);
-                ResponseGeneral resul = api.usarAPI(EnviromentLocal.urlG + "ventas", modeloAVentasModel(md, numTic, idCliente), "POST");
+                ResponseGeneral resul = api.usarAPI(EnviromentLocal.urlG + "ventas", modeloAVentasModel(md, ti.getSerial(), idCliente), "POST");
                 x = resul.getMensaje();
-                tick.sumarTicket();
+                ti.setSerial(ti.getSerial() + 1);
+                ti.setActualizada(null);
+            TicketResponse resTicket = api.usarAPITicket(EnviromentLocal.urlG + "ticket/guardar", ti);
                 if (resul.isRealizado()) {
                     ven3.eliminaCelda(2);
                     ven3.tablas[indexTabbed].setNumArticulos(0);
                     ven3.tablas[indexTabbed].setTotal(0); // mod aqui
-
+ ti=resTicket.getTickets().get(0);
                     ven3.llenarCombo();
-                    ven3.actualizaTicket(tick.getNumero() + "");
+                    ven3.actualizaTicket(ti.getSerial() + "");
                     ven3.requerirFoco();
                     this.dispose();
                 }
@@ -671,10 +672,7 @@ public class Cobrar extends javax.swing.JFrame {
 
             }
 
-        } catch (ClassNotFoundException ex) {
 
-            System.out.println(ex.getLocalizedMessage());
-        }
     }
     private void btn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn3ActionPerformed
         this.dispose();
