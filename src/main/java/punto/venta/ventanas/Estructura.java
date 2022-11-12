@@ -103,14 +103,13 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
         btnProductos = new javax.swing.JButton();
         btnTransferir = new javax.swing.JButton();
         btnUsuario = new javax.swing.JButton();
-        btnInventario = new javax.swing.JButton();
         btnConfiguracion = new javax.swing.JButton();
+        btnInventario = new javax.swing.JButton();
         btnCorte = new javax.swing.JButton();
         btnTransferencia = new javax.swing.JButton();
         btnActualizaciones = new javax.swing.JButton();
         nombreUsuario = new javax.swing.JLabel();
         btnCerrarSesion = new javax.swing.JButton();
-        btnCaptura = new javax.swing.JButton();
         contenedor = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -122,10 +121,9 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
 
         jLabel3.setFont(new java.awt.Font("Cambria", 2, 48)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("LA VICENTINA");
+        jLabel3.setText("PUNTO DE VENTA");
 
         caja.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        caja.setIcon(new javax.swing.ImageIcon("C:\\Users\\agus_\\Desktop\\punto de venta\\EJECUTABLE\\iconos\\logo.jpeg")); // NOI18N
 
         jPanel2.setBackground(new java.awt.Color(0, 0, 0));
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));
@@ -177,15 +175,6 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
         btnUsuario.setPreferredSize(new java.awt.Dimension(80, 35));
         jPanel2.add(btnUsuario);
 
-        btnInventario.setBackground(new java.awt.Color(0, 51, 102));
-        btnInventario.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
-        btnInventario.setForeground(new java.awt.Color(255, 255, 255));
-        btnInventario.setText("Inventario");
-        btnInventario.setBorder(null);
-        btnInventario.setMinimumSize(new java.awt.Dimension(20, 19));
-        btnInventario.setPreferredSize(new java.awt.Dimension(110, 35));
-        jPanel2.add(btnInventario);
-
         btnConfiguracion.setBackground(new java.awt.Color(0, 51, 102));
         btnConfiguracion.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
         btnConfiguracion.setForeground(new java.awt.Color(255, 255, 255));
@@ -200,6 +189,15 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
             }
         });
         jPanel2.add(btnConfiguracion);
+
+        btnInventario.setBackground(new java.awt.Color(0, 51, 102));
+        btnInventario.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
+        btnInventario.setForeground(new java.awt.Color(255, 255, 255));
+        btnInventario.setText("Inventario");
+        btnInventario.setBorder(null);
+        btnInventario.setMinimumSize(new java.awt.Dimension(20, 19));
+        btnInventario.setPreferredSize(new java.awt.Dimension(110, 35));
+        jPanel2.add(btnInventario);
 
         btnCorte.setBackground(new java.awt.Color(0, 51, 102));
         btnCorte.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
@@ -243,16 +241,6 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
             }
         });
 
-        btnCaptura.setBackground(new java.awt.Color(51, 51, 255));
-        btnCaptura.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnCaptura.setForeground(new java.awt.Color(255, 255, 255));
-        btnCaptura.setText("Capturar");
-        btnCaptura.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCapturaActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -265,8 +253,6 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
                         .addGap(18, 18, 18)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCaptura, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
                         .addComponent(btnCerrarSesion)
                         .addGap(18, 18, 18)
                         .addComponent(nombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -284,8 +270,7 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(nombreUsuario)
-                            .addComponent(btnCerrarSesion)
-                            .addComponent(btnCaptura))
+                            .addComponent(btnCerrarSesion))
                         .addGap(14, 14, 14)))
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -328,16 +313,6 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
         ini.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
-
-    private void btnCapturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapturaActionPerformed
-        try {
-            Utilidades.capturaPantalla("ProductosVendidos");
-        } catch (AWTException ex) {
-               
-        } catch (IOException ex) {
-               
-        }
-    }//GEN-LAST:event_btnCapturaActionPerformed
 
     private void btnConfiguracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfiguracionActionPerformed
         // TODO add your handling code here:
@@ -612,9 +587,7 @@ actualizaciones.setVisible(false);
             btnConfiguracion.setEnabled(false);
             btnConfiguracion.setVisible(false);
        //     btnBitacora.setEnabled(false);
-         //   btnBitacora.setVisible(false);
-            btnInventario.setEnabled(false);
-            btnInventario.setVisible(false);
+         //   btnBitacora.setVisible(false)
             btnTransferencia.setVisible(false);
             btnTransferencia.setEnabled(false);
             btnActualizaciones.setVisible(false);
@@ -665,7 +638,6 @@ actualizaciones.setVisible(false);
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizaciones;
-    private javax.swing.JButton btnCaptura;
     private javax.swing.JButton btnCerrarSesion;
     private javax.swing.JButton btnCliente;
     private javax.swing.JButton btnConfiguracion;

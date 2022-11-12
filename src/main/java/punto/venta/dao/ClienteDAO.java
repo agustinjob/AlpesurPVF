@@ -31,7 +31,7 @@ public class ClienteDAO {
     Confirmacion confirma;
     Date d = new Date();
     DateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
-     Connection conn= Conexion.conectarMySQL(); 
+     Connection conn= null; 
 
     public String almacena(String[] a, String estatus, String operacion){
     

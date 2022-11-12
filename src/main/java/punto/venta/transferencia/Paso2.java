@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import punto.servicio.rest.ApiSend;
 import punto.venta.dao.ActualizacionDAO;
-import punto.venta.dao.Conexion;
+
 import punto.venta.dao.Datos;
 import punto.venta.dao.SucursalDAO;
 import punto.venta.dialogos.BusquedaProductos;

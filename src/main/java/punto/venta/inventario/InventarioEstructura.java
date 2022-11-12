@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import punto.venta.dao.UsuarioDAO;
 import punto.venta.utilidades.Utilidades;
 
 /**
@@ -40,10 +41,21 @@ public class InventarioEstructura extends javax.swing.JPanel implements ActionLi
         btnDatos.setIcon(inventario);
         btnBajos.setIcon(reporte);
         btnMovimientos.setIcon(reporte);
+        permitirFuncionesPorUsuario();
        
         contenedor.add(iagregar);
     }
 
+    public void permitirFuncionesPorUsuario(){
+     String tipo = UsuarioDAO.getTipo();
+      if (tipo.equalsIgnoreCase("Empleado")) {
+      btnBajos.setVisible(false);
+      btnMovimientos.setVisible(false);
+      btnDatos.setVisible(false);
+      
+      }
+    }
+    
     public void requerirFoco(){
     getIagregar().requerirFoco();
     }

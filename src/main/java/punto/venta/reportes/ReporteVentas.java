@@ -21,7 +21,7 @@ import javax.swing.Timer;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import punto.venta.dao.ClienteDAO;
-import punto.venta.dao.Conexion;
+
 import punto.venta.dao.VentasDAO;
 import punto.venta.dialogos.Confirmacion;
 import punto.venta.utilidades.Utilidades;

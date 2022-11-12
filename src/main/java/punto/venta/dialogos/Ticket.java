@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import punto.servicio.rest.ApiSend;
-import punto.venta.dao.Conexion;
+
 import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.modelo.Devolucion;
 import punto.venta.modelo.response.ResponseGeneral;

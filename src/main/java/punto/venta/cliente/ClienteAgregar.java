@@ -15,7 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.Timer;
 import punto.servicio.rest.ApiSend;
 import punto.venta.dao.ClienteDAO;
-import punto.venta.dao.Conexion;
+
 import punto.venta.dialogos.Confirmacion;
 import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.modelo.Cliente;

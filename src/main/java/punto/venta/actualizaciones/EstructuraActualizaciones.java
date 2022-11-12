@@ -6,7 +6,7 @@
 package punto.venta.actualizaciones;
 
 import punto.venta.dao.ActualizacionDAO;
-import punto.venta.dao.Conexion;
+
 import punto.venta.dialogos.Confirmacion;
 import punto.venta.misclases.ActualizacionesNecesarias;
 import punto.venta.utilidades.Utilidades;

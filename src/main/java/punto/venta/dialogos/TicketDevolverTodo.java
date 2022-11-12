@@ -8,7 +8,7 @@ package punto.venta.dialogos;
 import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import punto.servicio.rest.ApiSend;
-import punto.venta.dao.Conexion;
+
 import punto.venta.dao.Datos;
 import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.modelo.response.ResponseGeneral;

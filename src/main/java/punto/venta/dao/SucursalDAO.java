@@ -23,7 +23,7 @@ import punto.venta.utilidades.Utilidades;
  * @author agus_
  */
 public class SucursalDAO {
-     Connection conn=Conexion.conectarMySQL();
+     Connection conn=null;
      DateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
         Date d = new Date();
      

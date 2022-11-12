@@ -24,11 +24,10 @@ public class Movimientos {
       Date d = new Date();
       DateFormat formatoFecha = new SimpleDateFormat("yyyy/MM/dd");
       DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
-      Conexion SQL = new Conexion();
       int idUsuario = UsuarioDAO.getIdUsuario();
       BitacoraDAO bita = new BitacoraDAO();
       
-      Connection conn=Conexion.conectarMySQL();
+      Connection conn=null;
 
       
     
@@ -72,8 +71,8 @@ public class Movimientos {
       public ResultSet getEntradasProducto(String tipo, String codigo, String mes, String year){
           ResultSet rs = null;
           try {
-              Conexion SQL = new Conexion();
-              Connection conn = SQL.conectarMySQL();
+         
+           
               Statement s = conn.createStatement();
               rs = s.executeQuery("SELECT DAY(fecha) dia,sum(monto) cantidad FROM `movimientos_extras` where tipo= '"+ tipo + "' and descripcion = '"+codigo+"' and MONTH(fecha) = " + mes +
               " AND YEAR(fecha) = "+year +" group by fecha");

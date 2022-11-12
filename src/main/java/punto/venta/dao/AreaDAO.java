@@ -19,7 +19,7 @@ import punto.venta.utilidades.Utilidades;
  */
 public class AreaDAO {
     
-    Connection conn=Conexion.conectarMySQL();
+    Connection conn=null;
     
   
     public int guardar(String nombre,String estatus, String operacion){
