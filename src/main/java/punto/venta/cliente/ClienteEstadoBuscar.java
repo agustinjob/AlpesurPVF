@@ -8,21 +8,17 @@ package punto.venta.cliente;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Timer;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
 import punto.servicio.rest.ApiSend;
-import punto.venta.dao.ClienteDAO;
-import punto.venta.dao.Conexion;
+
 import punto.venta.dao.Datos;
 import punto.venta.dialogos.Confirmacion;
 import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.modelo.Cliente;
 import punto.venta.modelo.response.ClienteResponse;
-import punto.venta.utilidades.Utilidades;
 
 /**
  *

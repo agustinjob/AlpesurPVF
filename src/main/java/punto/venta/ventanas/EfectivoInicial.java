@@ -11,7 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import punto.servicio.rest.ApiSend;
-import punto.venta.dao.Conexion;
+
 import punto.venta.dao.Movimientos;
 import punto.venta.dialogos.Confirmacion;
 import punto.venta.enviroment.EnviromentLocal;

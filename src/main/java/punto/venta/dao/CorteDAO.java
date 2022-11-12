@@ -24,7 +24,7 @@ public class CorteDAO {
     DateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
     DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
     int idUsuario = UsuarioDAO.getIdUsuario();
-    Connection conn= Conexion.conectarMySQL();
+    Connection conn= null;
 
 
 

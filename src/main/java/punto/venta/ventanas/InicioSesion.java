@@ -10,20 +10,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
 import punto.servicio.rest.ApiSend;
-import punto.venta.dao.Conexion;
+
 import punto.venta.dao.Datos;
 import static punto.venta.dao.Datos.formatoSistema;
 import punto.venta.dao.Movimientos;
 import punto.venta.dao.UsuarioDAO;
-import static punto.venta.dialogos.Cobrar.txtn1;
 import punto.venta.dialogos.Confirmacion;
 import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.modelo.Sucursal;
@@ -31,7 +27,6 @@ import punto.venta.modelo.Usuario;
 import punto.venta.modelo.response.MovimientosExtrasResponse;
 import punto.venta.modelo.response.SucursalResponse;
 import punto.venta.modelo.response.UsuarioResponse;
-import punto.venta.utilidades.Imagen;
 import punto.venta.utilidades.Utilidades;
 
 public class InicioSesion extends javax.swing.JFrame {
@@ -63,7 +58,7 @@ public class InicioSesion extends javax.swing.JFrame {
        
         AutoCompleteDecorator.decorate(comboUsuario, ObjectToStringConverter.DEFAULT_IMPLEMENTATION);
         llenarCombo();
-        llenarComboSucursal();
+        //llenarComboSucursal();
         ImageIcon logo = new ImageIcon("iconos/lavicentina.jpg");
         this.setIconImage(logo.getImage());
       
@@ -75,6 +70,7 @@ public class InicioSesion extends javax.swing.JFrame {
 
     public final void llenarCombo() {
         UsuarioResponse res = api.getUsuarios(EnviromentLocal.urlG + "/usuarios/" + Datos.idSucursal);
+        System.out.println(EnviromentLocal.urlG + "/usuarios/" + Datos.idSucursal);
         Usuario vacio = new Usuario();
         vacio.setIdUsuario(0);
         vacio.setNombre("");
@@ -115,9 +111,7 @@ public class InicioSesion extends javax.swing.JFrame {
     }*/
 
     public void efectivoInicial() throws ClassNotFoundException, SQLException {
-        boolean ban = false;
-        ResultSet rs;
-
+       
         MovimientosExtrasResponse mov = api.getMovimientosExtrasGET(EnviromentLocal.urlG + "movimientos-efectivo-inicial/" + UsuarioDAO.idUsuario + "/" + Datos.idSucursal);
 
         if (mov.getMovimientos().isEmpty()) {
@@ -356,11 +350,7 @@ public class InicioSesion extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {

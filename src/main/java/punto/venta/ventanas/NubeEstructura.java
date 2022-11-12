@@ -14,7 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import punto.venta.dao.BitacoraDAO;
-import punto.venta.dao.Conexion;
+
 import punto.venta.utilidades.Utilidades;
 
 /**

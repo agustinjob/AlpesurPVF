@@ -28,7 +28,7 @@ public class ProductoDAO {
     Movimientos mov = new Movimientos();
     Confirmacion x;
 
-    Connection conn=Conexion.conectarMySQL();
+    Connection conn=null;
 
 
 

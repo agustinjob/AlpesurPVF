@@ -8,6 +8,8 @@ package punto.venta.utilidades;
 import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -34,6 +36,11 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
+import net.sourceforge.barbecue.Barcode;
+import net.sourceforge.barbecue.BarcodeException;
+import net.sourceforge.barbecue.BarcodeFactory;
+import net.sourceforge.barbecue.BarcodeImageHandler;
+import net.sourceforge.barbecue.output.OutputException;
 import punto.venta.dao.Datos;
 import punto.venta.dao.UsuarioDAO;
 import punto.venta.dialogos.Confirmacion;
@@ -52,6 +59,7 @@ public class Utilidades {
     static DateFormat formatoCompletoConT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     static DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
     public static DecimalFormat df = new DecimalFormat("#,###.##");
+    static Desktop dt = Desktop.getDesktop();
 
      public static String formaDos(float val) {
         return df.format(val);
@@ -125,6 +133,35 @@ public class Utilidades {
                 width = 300;
             }
             columnModel.getColumn(column).setPreferredWidth(width);
+        }
+    }
+    
+    public static void crearCodigoDeBarras(String codigo){
+        try {
+            final Barcode barcode = BarcodeFactory.createCode128(codigo);
+            barcode.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+            BufferedImage bufferedImage =BarcodeImageHandler.getImage(barcode);
+              File directorio = new File("C:\\punto_venta\\codbarr\\");
+        if (!directorio.exists()) {
+            if (directorio.mkdirs()) {
+                System.out.println("Directorio creado");
+            } else {
+
+                System.out.println("Error al crear directorio");
+            }
+        }
+            File codigoBarras= new File("C:\\punto_venta\\codbarr\\"+barcode+".jpg");
+            ImageIO.write(bufferedImage, "jpg", codigoBarras);
+              File myFile = new File("C:\\punto_venta\\codbarr\\"+barcode+".jpg");
+        myFile.createNewFile();
+        dt.open(myFile);
+            
+        } catch (BarcodeException ex) {
+           mensajePorTiempo("Ocurrio un error, por favor vuelve a intentarlo",3000);
+        } catch (OutputException ex) {
+           mensajePorTiempo("Ocurrio un error, por favor vuelve a intentarlo",3000);
+        } catch (IOException ex) {
+           mensajePorTiempo("Ocurrio un error, por favor vuelve a intentarlo",3000);
         }
     }
 

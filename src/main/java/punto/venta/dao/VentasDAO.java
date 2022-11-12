@@ -28,7 +28,7 @@ public class VentasDAO {
       String fecha,hora;
     BitacoraDAO bita = new BitacoraDAO();
  
-     Connection conn=Conexion.conectarMySQL();
+     Connection conn=null;
      public VentasDAO(){
      String datos[]=RestDatos.sendPOST();
          formatoFecha=new SimpleDateFormat("yyyy-MM-dd");

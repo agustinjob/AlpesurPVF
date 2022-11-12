@@ -32,7 +32,7 @@ import org.apache.poi.ss.usermodel.Header;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import punto.servicio.rest.ApiSend;
-import punto.venta.dao.Conexion;
+
 import punto.venta.dao.Datos;
 import punto.venta.dao.ProductoDAO;
 import punto.venta.dialogos.Confirmacion;

@@ -17,6 +17,7 @@ import java.awt.event.KeyListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -30,7 +31,7 @@ import javax.swing.table.JTableHeader;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
 import punto.servicio.rest.ApiSend;
-import punto.venta.dao.Conexion;
+
 import punto.venta.dao.Datos;
 import punto.venta.dao.ProductoDAO;
 import punto.venta.dialogos.BusquedaProductos;
@@ -91,8 +92,8 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
             }
         };
         inicializarIconos();
- TicketResponse tick = api.getTicket(EnviromentLocal.urlG + "ticket/" + Datos.idSucursal);
-       ti=tick.getTickets().get(0);
+        TicketResponse tick = api.getTicket(EnviromentLocal.urlG + "ticket/" + Datos.idSucursal);
+        ti = tick.getTickets().get(0);
         txtTicket.setText("Folio del ticket: " + ti.getSerial());
         addKeyListener(this);
         Utilidades.im("Entro a ventas");
@@ -172,12 +173,8 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
     public void llenarCombo() {
 
         comboProductos.removeAllItems();
-        Producto vacio = new Producto();
-        vacio.setIdProducto(0);
-        comboProductos.addItem(vacio);
-
         ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos/" + Datos.idSucursal);
-        Producto pp= new Producto();
+        Producto pp = new Producto();
         pp.setIdProducto(0);
         comboProductos.addItem(pp);
         for (Producto p : res.getProductos()) {
@@ -746,6 +743,7 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
     }
 
     public void buscarDesdeCombo() {
+        try{
         Producto pro = (Producto) comboProductos.getSelectedItem();
         if (pro.getIdProducto() == 0) {
             mensaje("Por favor ingresa el nombre del producto", 2);
@@ -760,23 +758,20 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
                     mensaje("Producto no encontrado", 1);
                 } else {
                     double can = Double.parseDouble(info[5]);
-                    if (can > 0) {
-                        md.addRow(info);
-                        int tamano = md.getRowCount();
-                        tablas[jTabbedPane1.getSelectedIndex()].setTotal(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + (Double.parseDouble(info[2]) * Double.parseDouble(info[3])));
-
-                        //  tablas[jTabbedPane1.getSelectedIndex()].setTotal(total[jTabbedPane1.getSelectedIndex()]);
-                        txtTotal.setText(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + "");
-                        tablas[jTabbedPane1.getSelectedIndex()].setNumArticulos(tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() + 1);
-                        tablas[jTabbedPane1.getSelectedIndex()].getTabla().changeSelection(tamano - 1, 0, false, false);
-                    } else {
-                        mensaje("El producto esta registrado pero su invenario esta en 0, por favor agregar más producto en la sección correspondiente", 1);
-                    }
+                    md.addRow(info);
+                    int tamano = md.getRowCount();
+                    tablas[jTabbedPane1.getSelectedIndex()].setTotal(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + (Double.parseDouble(info[2]) * Double.parseDouble(info[3])));
+                    txtTotal.setText(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + "");
+                    tablas[jTabbedPane1.getSelectedIndex()].setNumArticulos(tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() + 1);
+                    tablas[jTabbedPane1.getSelectedIndex()].getTabla().changeSelection(tamano - 1, 0, false, false);
 
                 }
             }
             comboProductos.setSelectedIndex(0);
             txtCodigo.requestFocus();
+        }
+        }catch(Exception e){
+         mensaje("Por favor ingresa el nombre del producto", 2);
         }
     }
 
@@ -866,16 +861,13 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
                     mensaje("Producto no encontrado", 1);
                 } else {
                     double can = Double.parseDouble(info[5]);
-                    if (can > 0) {
-                        md.addRow(info);
-                        tablas[jTabbedPane1.getSelectedIndex()].setTotal(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + (Double.parseDouble(info[2]) * Double.parseDouble(info[3])));
-                        //  tablas[jTabbedPane1.getSelectedIndex()].setTotal(total[jTabbedPane1.getSelectedIndex()]);
-                        txtTotal.setText(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + "");
-                        tablas[jTabbedPane1.getSelectedIndex()].setNumArticulos(tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() + 1);
-                    } else {
-                        mensaje("El producto esta registrado pero su inventario esta en 0, por favor agregar más producto en la sección correspondiente", 1);
 
-                    }
+                    md.addRow(info);
+                    tablas[jTabbedPane1.getSelectedIndex()].setTotal(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + (Double.parseDouble(info[2]) * Double.parseDouble(info[3])));
+                    //  tablas[jTabbedPane1.getSelectedIndex()].setTotal(total[jTabbedPane1.getSelectedIndex()]);
+                    txtTotal.setText(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + "");
+                    tablas[jTabbedPane1.getSelectedIndex()].setNumArticulos(tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() + 1);
+
                 }
 
             }
@@ -934,13 +926,13 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
 
 
     private void btnReiniciarFolioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReiniciarFolioActionPerformed
-           ti.setSerial(1);
-           ti.setActualizada(null);
-           TicketResponse res= api.usarAPITicket(EnviromentLocal.urlG + "ticket/guardar" ,ti);
-           System.out.println(EnviromentLocal.urlG + "ticket/guardar");
-           ti=res.getTickets().get(0);
-            txtTicket.setText("Folio ticket: " + ti.getSerial() );// TODO add your handling code here:
-    
+        ti.setSerial(1);
+        ti.setActualizada(null);
+        TicketResponse res = api.usarAPITicket(EnviromentLocal.urlG + "ticket/guardar", ti);
+        System.out.println(EnviromentLocal.urlG + "ticket/guardar");
+        ti = res.getTickets().get(0);
+        txtTicket.setText("Folio ticket: " + ti.getSerial());// TODO add your handling code here:
+
     }//GEN-LAST:event_btnReiniciarFolioActionPerformed
 
     private void btndevolucionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndevolucionesActionPerformed
@@ -967,18 +959,18 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
             mensaje("Por favor ingresa productos para realizar el cobro", 1);
         } else {
             try {
-                if (!masCantidadQueInventario()) {
+               
                     Cobrar obj = new Cobrar(this, (DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel(), jTabbedPane1.getSelectedIndex());
                     obj.setVisible(true);
                     String info = txtTotal.getText();
                     Cobrar.txtn2.setText(info);
-                    int numArticulos=tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos();
-                    if(numArticulos<0){
-                    numArticulos=numArticulos*-1;
+                    int numArticulos = tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos();
+                    if (numArticulos < 0) {
+                        numArticulos = numArticulos * -1;
                     }
-                    obj.numArticulos.setText(numArticulos+"");
+                    obj.numArticulos.setText(numArticulos + "");
                     obj.requerirFoco();
-                }
+                
             } catch (NumberFormatException e) {
 
                 mensaje("Ingresaste una letra u otro caracter en lugar de un número. Por favor revisa la información ingresada", 1);
@@ -1086,7 +1078,7 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
     }//GEN-LAST:event_comboProductosActionPerformed
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-    ejecutaOnKey(evt.getKeyCode());
+        ejecutaOnKey(evt.getKeyCode());
     }//GEN-LAST:event_formKeyPressed
     public void inicializarIconos() {
         System.out.println("Si entro aca");

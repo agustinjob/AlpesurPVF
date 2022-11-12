@@ -21,7 +21,7 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
 import punto.servicio.rest.ApiSend;
 import punto.venta.dao.AreaDAO;
-import punto.venta.dao.Conexion;
+
 import punto.venta.dao.Datos;
 import punto.venta.dao.ProductoDAO;
 import punto.venta.dialogos.Confirmacion;
@@ -110,6 +110,8 @@ public class ProductoModificar extends javax.swing.JPanel {
         comboArea = new javax.swing.JComboBox<Area>();
         txtPrecioDistribuidor = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        txtCantidadMayoreo = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -180,7 +182,7 @@ public class ProductoModificar extends javax.swing.JPanel {
                 .addComponent(comboProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btn5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(341, Short.MAX_VALUE))
         );
 
         formulario.setBackground(new java.awt.Color(255, 255, 255));
@@ -286,40 +288,51 @@ public class ProductoModificar extends javax.swing.JPanel {
         jLabel17.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
         jLabel17.setText("Precio distribuidor");
 
+        jLabel19.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
+        jLabel19.setText("Precio distribuidor");
+
+        txtCantidadMayoreo.setPreferredSize(new java.awt.Dimension(300, 30));
+
         javax.swing.GroupLayout formularioLayout = new javax.swing.GroupLayout(formulario);
         formulario.setLayout(formularioLayout);
         formularioLayout.setHorizontalGroup(
             formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(formularioLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(formularioLayout.createSequentialGroup()
-                            .addComponent(jLabel18)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(comboArea, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(formularioLayout.createSequentialGroup()
-                            .addComponent(jLabel17)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtPrecioDistribuidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(formularioLayout.createSequentialGroup()
-                            .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel14)
-                                .addComponent(jLabel15)
-                                .addComponent(jLabel16)
-                                .addComponent(jLabel12)
-                                .addComponent(jLabel13))
-                            .addGap(24, 24, 24)
-                            .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtPrecioCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtPrecioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtPrecioMayoreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(65, 65, 65)
-                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(formularioLayout.createSequentialGroup()
+                        .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(formularioLayout.createSequentialGroup()
+                                    .addComponent(jLabel18)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(comboArea, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(formularioLayout.createSequentialGroup()
+                                    .addComponent(jLabel17)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtPrecioDistribuidor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(formularioLayout.createSequentialGroup()
+                                    .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel14)
+                                        .addComponent(jLabel15)
+                                        .addComponent(jLabel16)
+                                        .addComponent(jLabel12)
+                                        .addComponent(jLabel13))
+                                    .addGap(24, 24, 24)
+                                    .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtPrecioCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtPrecioVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtPrecioMayoreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(65, 65, 65)
+                        .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(formularioLayout.createSequentialGroup()
+                        .addComponent(jLabel19)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtCantidadMayoreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 27, Short.MAX_VALUE))
         );
         formularioLayout.setVerticalGroup(
@@ -358,11 +371,15 @@ public class ProductoModificar extends javax.swing.JPanel {
                 .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(comboArea, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel18))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(formularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCantidadMayoreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel19))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addGap(25, 25, 25))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -381,9 +398,10 @@ public class ProductoModificar extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
-                    .addComponent(formulario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addComponent(formulario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -402,8 +420,14 @@ public class ProductoModificar extends javax.swing.JPanel {
         a[2] = txtPrecioCosto.getText();
         a[5] = cantidad.getText();
         a[6] = inventarioMinimo.getText();
-         Area ar=(Area) comboArea.getSelectedItem(); //? (String) comboArea.getSelectedItem() : "S/A";
-        a[7] =ar.getNombre();
+        System.out.println("Este es el index= " + comboArea.getSelectedIndex());
+        if (comboArea.getSelectedIndex() == -1) {
+            a[7] = "-- Sin Departamento --";
+        } else {
+            Area ar = (Area) comboArea.getSelectedItem(); //? (String) comboArea.getSelectedItem() : "S/A";
+            a[7] = ar.getNombre();
+        }
+    
         a[8] = txtPrecioDistribuidor.getText();
 
         boolean bandera = Utilidades.hayVacios(a);
@@ -436,6 +460,7 @@ public class ProductoModificar extends javax.swing.JPanel {
                 prod.setPrecioMayoreo(Float.parseFloat(a[4]));
                 prod.setPrecioVenta(Float.parseFloat(a[3]));
                 prod.setArea(a[7]);
+                prod.setCantidadMayoreo(txtCantidadMayoreo.getText().trim().equalsIgnoreCase("") ? 0 : Integer.parseInt(txtCantidadMayoreo.getText()));
                 prod.setPrecioDistribuidor(Float.parseFloat(a[8]));
                 banLimpiar = true;
             } catch (NumberFormatException e) {
@@ -475,20 +500,21 @@ public class ProductoModificar extends javax.swing.JPanel {
                 if (res.isRealizado() == true) {
                     llenarCombo();
                     txtCodigo.setText("");
-            txtNombre.setText("");
-            txtPrecioVenta.setText("");
-            txtPrecioCosto.setText("");
-            txtPrecioMayoreo.setText("");
-            cantidad.setText("");
-            inventarioMinimo.setText("");
-            txtPrecioDistribuidor.setText("");
-            formulario.setVisible(false);
+                    txtNombre.setText("");
+                    txtPrecioVenta.setText("");
+                    txtPrecioCosto.setText("");
+                    txtPrecioMayoreo.setText("");
+                    cantidad.setText("");
+                    inventarioMinimo.setText("");
+                    txtPrecioDistribuidor.setText("");
+                    formulario.setVisible(false);
+                    txtCantidadMayoreo.setText("");
                 }
 
             }
 
         }
-        info=null;
+        info = null;
 
     }
 
@@ -498,8 +524,8 @@ public class ProductoModificar extends javax.swing.JPanel {
     }
 
     public void buscarProducto() {
-         info = (Producto) comboProductos.getSelectedItem();
-            if (info.getIdProducto() == 0) {
+        info = (Producto) comboProductos.getSelectedItem();
+        if (info.getIdProducto() == 0) {
             mensaje("El producto no fue encontrado en la base de datos");
             Timer timer = new Timer(1000, new ActionListener() {
                 @Override
@@ -522,7 +548,8 @@ public class ProductoModificar extends javax.swing.JPanel {
             txtPrecioCosto.setText(info.getPrecioCosto() + "");
             txtPrecioMayoreo.setText(info.getPrecioMayoreo() + "");
             cantidad.setText(info.getCantidad() + "");
-            inventarioMinimo.setText(((int)info.getInventarioMinimo()) + "");
+            txtCantidadMayoreo.setText(info.getCantidadMayoreo() + "");
+            inventarioMinimo.setText(((int) info.getInventarioMinimo()) + "");
             txtCodigo.requestFocus();
             txtPrecioDistribuidor.setText(info.getPrecioDistribuidor() + "");
             llenarComboArea(info.getArea());
@@ -534,26 +561,26 @@ public class ProductoModificar extends javax.swing.JPanel {
 
     public void llenarComboArea(String tipo) {
         comboArea.removeAllItems();
-        List<Area> ordenada= new ArrayList<Area>();
+        List<Area> ordenada = new ArrayList<Area>();
         AreaResponse res = api.getAreas(EnviromentLocal.urlG + "areas/" + Datos.idSucursal);
-      
+
         for (Area a : res.getAreas()) {
-           
-           if(a.getNombre().equalsIgnoreCase(tipo)){
-           ordenada.add(0, a);
-           }else{
-           ordenada.add(a);
-           }
+
+            if (a.getNombre().equalsIgnoreCase(tipo)) {
+                ordenada.add(0, a);
+            } else {
+                ordenada.add(a);
+            }
         }
-        for(Area a: ordenada){
-        comboArea.addItem(a);
+        for (Area a : ordenada) {
+            comboArea.addItem(a);
         }
 
     }
 
     public void buscarProductoDesdeVentas(String idProducto) {
-       ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos-id/" + idProducto);
-List<Producto> lis= res.getProductos();
+        ProductoResponse res = api.getProductos(EnviromentLocal.urlG + "productos-id/" + idProducto);
+        List<Producto> lis = res.getProductos();
 
         if (lis.isEmpty()) {
             mensaje("El producto no fue encontrado en la base de datos");
@@ -570,7 +597,7 @@ List<Producto> lis= res.getProductos();
             timer.start();
 
         } else {
-            Producto info= lis.get(0);
+            Producto info = lis.get(0);
             formulario.setVisible(true);
 
             txtCodigo.setText(info.getCodigo());
@@ -583,10 +610,10 @@ List<Producto> lis= res.getProductos();
             inventarioMinimo.setText(info.getInventarioMinimo() + "");
             txtCodigo.requestFocus();
             llenarComboArea(info.getArea());
-            this.info=info;
+            this.info = info;
 
         }
-            
+
     }
     private void btn5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn5ActionPerformed
 
@@ -662,12 +689,14 @@ List<Producto> lis= res.getProductos();
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JTextField txtCantidadMayoreo;
     private javax.swing.JTextField txtCodigo;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPrecioCosto;

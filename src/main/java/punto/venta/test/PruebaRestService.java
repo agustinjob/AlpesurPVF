@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import punto.servicio.rest.ApiSend;
 import punto.servicio.rest.RestDatos;
-import punto.venta.dao.Conexion;
+
 import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.modelo.Credito;
 import punto.venta.modelo.response.VentasResponse;

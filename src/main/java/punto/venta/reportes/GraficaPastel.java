@@ -14,7 +14,7 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
-import punto.venta.dao.Conexion;
+
 import punto.venta.dao.VentasDAO;
 import punto.venta.utilidades.Utilidades;
 

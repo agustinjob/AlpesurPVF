@@ -26,7 +26,7 @@ public class BitacoraDAO {
     DateFormat formatoFecha = new SimpleDateFormat("yyyy-MM-dd");
     DateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
     int idUsuario = UsuarioDAO.getIdUsuario();
-      Connection conn=Conexion.conectarMySQL();;
+      Connection conn=null;
       
      
      public void registrarBitacora(String descripcion) throws ClassNotFoundException, SQLException{

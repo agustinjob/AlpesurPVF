@@ -8,22 +8,16 @@ package punto.venta.configuracion;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.Timer;
 import punto.servicio.rest.ApiSend;
-import punto.venta.dao.Conexion;
+
 import punto.venta.dao.Datos;
 import punto.venta.dialogos.Confirmacion;
 import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.modelo.ConfiguracionModelo;
 import punto.venta.pruebas.PrintExamples;
 import punto.venta.utilidades.Utilidades;
-import static punto.venta.utilidades.Utilidades.confirma;
-import punto.venta.ventanas.VentasEstructura;
 
 /**
  *

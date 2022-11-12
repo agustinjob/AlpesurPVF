@@ -8,20 +8,15 @@ package punto.venta.cliente;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 import punto.servicio.rest.ApiSend;
 import punto.venta.dao.ClienteDAO;
-import punto.venta.dao.Conexion;
 import punto.venta.dialogos.Confirmacion;
 import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.modelo.Cliente;
 import punto.venta.modelo.response.ResponseGeneral;
 import punto.venta.utilidades.Utilidades;
-import static punto.venta.utilidades.Utilidades.confirma;
 
 /**
  *
@@ -216,7 +211,6 @@ public class ClienteAgregar extends javax.swing.JPanel {
 
     public void guardar(){
       
-            ClienteDAO obj = new ClienteDAO();
      
             String [] a = new String[7];
             String [] obligatorios=new String[3];
@@ -231,7 +225,6 @@ public class ClienteAgregar extends javax.swing.JPanel {
             obligatorios[1]=a[3];
             obligatorios[2]=a[5];
             boolean bandera = Utilidades.hayVacios(obligatorios);
-            String ban = "";
             if(bandera == true){
                 mensaje("Por favor ingresa todos los datos, el nombre, limite de credito y email son obligatorios");
             }else{

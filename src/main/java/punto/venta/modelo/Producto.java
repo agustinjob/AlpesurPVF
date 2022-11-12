@@ -12,6 +12,8 @@ import punto.venta.dao.UsuarioDAO;
  * @author agus_
  */
 public class Producto {
+
+
     private Integer idProducto;
     private Integer idSucursal= Datos.idSucursal;
     private String codigo;
@@ -23,6 +25,7 @@ public class Producto {
     private float cantidad;
     private float inventarioMinimo;
     private boolean eliminado;
+    private Integer cantidadMayoreo;
     private String area;
     private String propietario=Datos.propietario;
     private Integer idUSuario= UsuarioDAO.getIdUsuario();
@@ -41,6 +44,19 @@ public class Producto {
         this.idProducto = idProducto;
     }
 
+        /**
+     * @return the cantidadMayoreo
+     */
+    public Integer getCantidadMayoreo() {
+        return cantidadMayoreo;
+    }
+
+    /**
+     * @param cantidadMayoreo the cantidadMayoreo to set
+     */
+    public void setCantidadMayoreo(Integer cantidadMayoreo) {
+        this.cantidadMayoreo = cantidadMayoreo;
+    }
     /**
      * @return the idSucursal
      */

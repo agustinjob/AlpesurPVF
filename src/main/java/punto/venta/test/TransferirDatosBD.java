@@ -12,7 +12,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import punto.servicio.rest.ApiSend;
-import punto.venta.dao.Conexion;
+
 import punto.venta.enviroment.EnviromentLocal;
 import punto.venta.modelo.Producto;
 import punto.venta.modelo.response.ResponseGeneral;
@@ -25,7 +25,7 @@ public class TransferirDatosBD {
     public static void main(String[]Job){
         ApiSend api=new ApiSend();
         try {
-            Connection conn=Conexion.conectarMySQL();
+            Connection conn=null;
             Statement s = conn.createStatement();
             ResultSet resa = s.executeQuery("Select * from producto");
             Producto p = new Producto();

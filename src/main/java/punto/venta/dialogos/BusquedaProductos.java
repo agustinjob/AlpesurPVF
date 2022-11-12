@@ -17,7 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import punto.servicio.rest.ApiSend;
-import punto.venta.dao.Conexion;
+
 import punto.venta.dao.Datos;
 import punto.venta.dao.ProductoDAO;
 import punto.venta.dao.UsuarioDAO;
@@ -317,8 +317,7 @@ public class BusquedaProductos extends javax.swing.JFrame {
             mensaje("Por favor selecciona un producto", 2);
         } else {
             String idProducto = (String) model.getValueAt(row, 3);
-            String inventario = (String) model.getValueAt(row, 2);
-            if (Float.parseFloat(inventario) > 0) {
+          
                 if (opcion == 1) {
                     // aquí
                     // ventas.agregarDesdeTablaExterna(idProducto);
@@ -332,9 +331,7 @@ public class BusquedaProductos extends javax.swing.JFrame {
                 }
                 limpiarTabla();
                 this.dispose();
-            } else {
-                Utilidades.mensajePorTiempo("No puedes agregar un producto con inventario de 0");
-            }
+           
 
         }
     }

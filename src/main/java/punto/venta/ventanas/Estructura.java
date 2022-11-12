@@ -5,7 +5,6 @@
  */
 package punto.venta.ventanas;
 
-import java.awt.AWTException;
 import punto.venta.producto.ProductoEstructura;
 import punto.venta.inventario.InventarioEstructura;
 import punto.venta.usuario.UsuarioEstructura;
@@ -14,9 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.IOException;
 import javax.swing.ImageIcon;
-import punto.venta.actualizaciones.EstructuraActualizaciones;
 import punto.venta.configuracion.Configuracion;
 import punto.venta.dao.UsuarioDAO;
 import punto.venta.dialogos.Confirmacion;
@@ -24,7 +21,6 @@ import punto.venta.dialogos.EntradaEfectivo;
 import punto.venta.dialogos.SalidaEfectivo;
 import punto.venta.transferencia.TransferenciaEstructura;
 import punto.venta.utilidades.Utilidades;
-import static punto.venta.ventanas.VentasEstructura.tipoPrecio;
 
 /**
  *
@@ -42,7 +38,6 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
  //   NubeEstructura nube = new NubeEstructura();
     Configuracion confi = new Configuracion();
 
-    EstructuraActualizaciones actualizaciones = new EstructuraActualizaciones();
     TransferenciaEstructura transferencia = new TransferenciaEstructura();
     Confirmacion confir;
 
@@ -50,7 +45,6 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
         initComponents();
         setLocationRelativeTo(null);
         this.setExtendedState(MAXIMIZED_BOTH);
-        btnActualizaciones.addActionListener(this);
         btnVentas.addActionListener(this);
         btnTransferencia.addActionListener(this);
         btnInventario.addActionListener(this);
@@ -60,8 +54,7 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
         btnTransferir.addActionListener(this);
         btnCorte.addActionListener(this);
     //    btnBitacora.addActionListener(this);
-        btnConfiguracion.addActionListener(this);
-        btnActualizaciones.setVisible(false);
+        btnConfiguracion.addActionListener(this);      
         btnVentas.setFocusable(false);
         btnInventario.setFocusable(false);
         btnCliente.setFocusable(false);
@@ -107,10 +100,8 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
         btnConfiguracion = new javax.swing.JButton();
         btnCorte = new javax.swing.JButton();
         btnTransferencia = new javax.swing.JButton();
-        btnActualizaciones = new javax.swing.JButton();
         nombreUsuario = new javax.swing.JLabel();
         btnCerrarSesion = new javax.swing.JButton();
-        btnCaptura = new javax.swing.JButton();
         contenedor = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -122,10 +113,9 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
 
         jLabel3.setFont(new java.awt.Font("Cambria", 2, 48)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("LA VICENTINA");
+        jLabel3.setText("PUNTO DE VENTA");
 
         caja.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        caja.setIcon(new javax.swing.ImageIcon("C:\\Users\\agus_\\Desktop\\punto de venta\\EJECUTABLE\\iconos\\logo.jpeg")); // NOI18N
 
         jPanel2.setBackground(new java.awt.Color(0, 0, 0));
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));
@@ -219,16 +209,6 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
         btnTransferencia.setPreferredSize(new java.awt.Dimension(110, 35));
         jPanel2.add(btnTransferencia);
 
-        btnActualizaciones.setBackground(new java.awt.Color(0, 51, 102));
-        btnActualizaciones.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
-        btnActualizaciones.setForeground(new java.awt.Color(255, 255, 255));
-        btnActualizaciones.setText("Actualizar");
-        btnActualizaciones.setBorder(null);
-        btnActualizaciones.setMaximumSize(new java.awt.Dimension(120, 19));
-        btnActualizaciones.setMinimumSize(new java.awt.Dimension(20, 19));
-        btnActualizaciones.setPreferredSize(new java.awt.Dimension(120, 35));
-        jPanel2.add(btnActualizaciones);
-
         nombreUsuario.setFont(new java.awt.Font("Cambria", 1, 18)); // NOI18N
         nombreUsuario.setForeground(new java.awt.Color(255, 255, 255));
         nombreUsuario.setText("jLabel1");
@@ -240,16 +220,6 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
         btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCerrarSesionActionPerformed(evt);
-            }
-        });
-
-        btnCaptura.setBackground(new java.awt.Color(51, 51, 255));
-        btnCaptura.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnCaptura.setForeground(new java.awt.Color(255, 255, 255));
-        btnCaptura.setText("Capturar");
-        btnCaptura.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCapturaActionPerformed(evt);
             }
         });
 
@@ -265,8 +235,6 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
                         .addGap(18, 18, 18)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCaptura, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
                         .addComponent(btnCerrarSesion)
                         .addGap(18, 18, 18)
                         .addComponent(nombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -284,8 +252,7 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(nombreUsuario)
-                            .addComponent(btnCerrarSesion)
-                            .addComponent(btnCaptura))
+                            .addComponent(btnCerrarSesion))
                         .addGap(14, 14, 14)))
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -329,16 +296,6 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
         this.dispose();
     }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
-    private void btnCapturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapturaActionPerformed
-        try {
-            Utilidades.capturaPantalla("ProductosVendidos");
-        } catch (AWTException ex) {
-               
-        } catch (IOException ex) {
-               
-        }
-    }//GEN-LAST:event_btnCapturaActionPerformed
-
     private void btnConfiguracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfiguracionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnConfiguracionActionPerformed
@@ -346,27 +303,7 @@ public class Estructura extends javax.swing.JFrame implements ActionListener, Ke
     @Override
     public void actionPerformed(ActionEvent e) {
         Object evt = e.getSource();
-if (evt.equals(btnActualizaciones)) {
-            actualizaciones.setVisible(true);
-            inventarios.setVisible(false);
-            objVentas.setVisible(false);
-            clientes.setVisible(false);
-            usuarios.setVisible(false);
-            productos.setVisible(false);
-            transferir.setVisible(false);
-      //      nube.setVisible(false);
-            corte.setVisible(false);
-            confi.setVisible(false);
-            
-            transferencia.setVisible(false);
-            contenedor.add(actualizaciones);
-            //objVentas.requerirFoco();
-            contenedor.validate();
-
-           // Utilidades.im("Entro a btnVentas");
-
-        } else if (evt.equals(btnVentas)) {
- actualizaciones.setVisible(false);
+        if (evt.equals(btnVentas)) {
             inventarios.setVisible(false);
             objVentas.setVisible(true);
             objVentas.llenarCombo();
@@ -386,7 +323,6 @@ if (evt.equals(btnActualizaciones)) {
            // Utilidades.im("Entro a btnVentas");
 
         } else if(evt.equals(btnTransferencia)){
-            actualizaciones.setVisible(false);
         inventarios.setVisible(false);
             objVentas.setVisible(false);
             transferencia.setVisible(true);
@@ -406,7 +342,7 @@ if (evt.equals(btnActualizaciones)) {
     
         }
          else       if (evt.equals(btnInventario)) {
-actualizaciones.setVisible(false);
+
             objVentas.setVisible(false);
          //   nube.setVisible(false);
             inventarios.setVisible(true);
@@ -427,7 +363,7 @@ actualizaciones.setVisible(false);
             contenedor.validate();
 
         } else if (evt.equals(btnCliente)) {
-actualizaciones.setVisible(false);
+
             objVentas.setVisible(false);
         //    nube.setVisible(false);
             inventarios.setVisible(false);
@@ -445,7 +381,7 @@ actualizaciones.setVisible(false);
             contenedor.validate();
 
         } else if (evt.equals(btnUsuario)) {
-            actualizaciones.setVisible(false);
+            
             objVentas.setVisible(false);
        //     nube.setVisible(false);
             inventarios.setVisible(false);
@@ -462,7 +398,7 @@ actualizaciones.setVisible(false);
             contenedor.validate();
 
         } else if (evt.equals(btnProductos)) {
-            actualizaciones.setVisible(false);
+            
             objVentas.setVisible(false);
          //   nube.setVisible(false);
             inventarios.setVisible(false);
@@ -480,7 +416,7 @@ actualizaciones.setVisible(false);
             contenedor.validate();
 
         } else if (evt.equals(btnTransferir)) {
-            actualizaciones.setVisible(false);
+            
             objVentas.setVisible(false);
       //      nube.setVisible(false);
             inventarios.setVisible(false);
@@ -500,7 +436,7 @@ actualizaciones.setVisible(false);
             contenedor.validate();
 
         } else if (evt.equals(btnCorte)) {
-            actualizaciones.setVisible(false);
+            
             objVentas.setVisible(false);
       //      nube.setVisible(false);
             inventarios.setVisible(false);
@@ -516,7 +452,7 @@ actualizaciones.setVisible(false);
             contenedor.validate();
 
         }else  /*if (evt.equals(btnBitacora)) {
-            actualizaciones.setVisible(false);
+            
             objVentas.setVisible(false);
             nube.setVisible(true);
             inventarios.setVisible(false);
@@ -531,7 +467,7 @@ actualizaciones.setVisible(false);
             contenedor.add(nube);
             contenedor.validate();
         }else */if (evt.equals(btnConfiguracion)){
-            actualizaciones.setVisible(false);
+            
         confi.setVisible(true);
         confi.llenarCombo();
         confi.llenarDatos();
@@ -596,7 +532,6 @@ actualizaciones.setVisible(false);
         btnConfiguracion.setIcon(configuracion);
         btnTransferir.setIcon(j);
         btnTransferencia.setIcon(j);
-        btnActualizaciones.setIcon(actualizarVarios);
         caja.setIcon(registradora);
         String tipo = UsuarioDAO.getTipo();
         nombreUsuario.setText(Utilidades.regresarNombre());
@@ -617,9 +552,7 @@ actualizaciones.setVisible(false);
             btnInventario.setVisible(false);
             btnTransferencia.setVisible(false);
             btnTransferencia.setEnabled(false);
-            btnActualizaciones.setVisible(false);
-            btnActualizaciones.setEnabled(false);
-
+        
         }
 
     }
@@ -664,8 +597,6 @@ actualizaciones.setVisible(false);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnActualizaciones;
-    private javax.swing.JButton btnCaptura;
     private javax.swing.JButton btnCerrarSesion;
     private javax.swing.JButton btnCliente;
     private javax.swing.JButton btnConfiguracion;
