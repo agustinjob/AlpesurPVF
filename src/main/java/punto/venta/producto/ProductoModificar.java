@@ -289,7 +289,7 @@ public class ProductoModificar extends javax.swing.JPanel {
         jLabel17.setText("Precio distribuidor");
 
         jLabel19.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
-        jLabel19.setText("Precio distribuidor");
+        jLabel19.setText("Mayoreo cantidad");
 
         txtCantidadMayoreo.setPreferredSize(new java.awt.Dimension(300, 30));
 

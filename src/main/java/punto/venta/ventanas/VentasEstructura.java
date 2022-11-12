@@ -5,7 +5,6 @@
  */
 package punto.venta.ventanas;
 
-import bd.PanelTabla;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -728,7 +727,7 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
         if (pro == null) {
             return null;
         }
-        String res[] = new String[10];
+        String res[] = new String[11];
         res[0] = pro.getCodigo();
         res[1] = pro.getDescripcion();
         res[2] = pro.getPrecioVenta() + "";
@@ -739,39 +738,40 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
         res[7] = pro.getPrecioMayoreo() + "";
         res[8] = pro.getPrecioDistribuidor() + "";
         res[9] = pro.getPrecioVenta() + "";
+        res[10] = pro.getCantidadMayoreo()+"";
         return res;
     }
 
     public void buscarDesdeCombo() {
-        try{
-        Producto pro = (Producto) comboProductos.getSelectedItem();
-        if (pro.getIdProducto() == 0) {
-            mensaje("Por favor ingresa el nombre del producto", 2);
-        } else {
-            md = (DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel();
-            boolean bandera = revisarRepetidos(pro.getDescripcion());
-            if (bandera == false) {
-                String[] info = new String[9];
-                info = asignarPrecio(pro);// obj.getProductoPorNombre(nombre, p, 1, tipoPrecio);
+        try {
+            Producto pro = (Producto) comboProductos.getSelectedItem();
+            if (pro.getIdProducto() == 0) {
+                mensaje("Por favor ingresa el nombre del producto", 2);
+            } else {
+                md = (DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel();
+                boolean bandera = revisarRepetidos(pro.getDescripcion());
+                if (bandera == false) {
+                    String[] info = new String[9];
+                    info = asignarPrecio(pro);// obj.getProductoPorNombre(nombre, p, 1, tipoPrecio);
 
-                if (info == null) {
-                    mensaje("Producto no encontrado", 1);
-                } else {
-                    double can = Double.parseDouble(info[5]);
-                    md.addRow(info);
-                    int tamano = md.getRowCount();
-                    tablas[jTabbedPane1.getSelectedIndex()].setTotal(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + (Double.parseDouble(info[2]) * Double.parseDouble(info[3])));
-                    txtTotal.setText(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + "");
-                    tablas[jTabbedPane1.getSelectedIndex()].setNumArticulos(tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() + 1);
-                    tablas[jTabbedPane1.getSelectedIndex()].getTabla().changeSelection(tamano - 1, 0, false, false);
+                    if (info == null) {
+                        mensaje("Producto no encontrado", 1);
+                    } else {
+                        double can = Double.parseDouble(info[5]);
+                        md.addRow(info);
+                        int tamano = md.getRowCount();
+                        tablas[jTabbedPane1.getSelectedIndex()].setTotal(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + (Double.parseDouble(info[2]) * Double.parseDouble(info[3])));
+                        txtTotal.setText(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + "");
+                        tablas[jTabbedPane1.getSelectedIndex()].setNumArticulos(tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos() + 1);
+                        tablas[jTabbedPane1.getSelectedIndex()].getTabla().changeSelection(tamano - 1, 0, false, false);
 
+                    }
                 }
+                comboProductos.setSelectedIndex(0);
+                txtCodigo.requestFocus();
             }
-            comboProductos.setSelectedIndex(0);
-            txtCodigo.requestFocus();
-        }
-        }catch(Exception e){
-         mensaje("Por favor ingresa el nombre del producto", 2);
+        } catch (Exception e) {
+            mensaje("Por favor ingresa el nombre del producto", 2);
         }
     }
 
@@ -818,17 +818,30 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
         md = (DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel();
         boolean bandera = revisarRepetidos(pro.getDescripcion());
         if (bandera == false) {
-            String[] res = new String[10];
+            float cantidadIngresadaFloat = Float.parseFloat(cantidadIngresada);
+            String[] res = new String[11];
+            if (cantidadIngresadaFloat >= pro.getCantidadMayoreo()) {
+                res[2] = pro.getPrecioMayoreo() + "";
+      
+                importe=(pro.getPrecioMayoreo() * cantidadIngresadaFloat)+"";
+                res[4] = importe;
+                Utilidades.mensajePorTiempo("Se aplicó el precio de mayoreo por la cantidade seleccionada", 2000);
+            } else {
+                res[2] = pro.getPrecioVenta() + ""; 
+                res[4] = importe + "";
+            }
+
             res[0] = pro.getCodigo();
             res[1] = pro.getDescripcion();
-            res[2] = pro.getPrecioVenta() + "";
             res[3] = cantidadIngresada; // cantidad ingresada
-            res[4] = importe + "";
+        
             res[5] = pro.getCantidad() + "";
             res[6] = pro.getPrecioCosto() + "";
             res[7] = pro.getPrecioMayoreo() + "";
             res[8] = pro.getPrecioDistribuidor() + "";
             res[9] = pro.getPrecioVenta() + "";
+            res[10] = pro.getCantidadMayoreo()+"";
+
             md.addRow(res);
             int tamano = md.getRowCount();
             tablas[jTabbedPane1.getSelectedIndex()].setTotal(tablas[jTabbedPane1.getSelectedIndex()].getTotal() + Double.parseDouble(importe));
@@ -959,18 +972,18 @@ public class VentasEstructura extends javax.swing.JPanel implements ActionListen
             mensaje("Por favor ingresa productos para realizar el cobro", 1);
         } else {
             try {
-               
-                    Cobrar obj = new Cobrar(this, (DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel(), jTabbedPane1.getSelectedIndex());
-                    obj.setVisible(true);
-                    String info = txtTotal.getText();
-                    Cobrar.txtn2.setText(info);
-                    int numArticulos = tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos();
-                    if (numArticulos < 0) {
-                        numArticulos = numArticulos * -1;
-                    }
-                    obj.numArticulos.setText(numArticulos + "");
-                    obj.requerirFoco();
-                
+
+                Cobrar obj = new Cobrar(this, (DefaultTableModel) tablas[jTabbedPane1.getSelectedIndex()].getTabla().getModel(), jTabbedPane1.getSelectedIndex());
+                obj.setVisible(true);
+                String info = txtTotal.getText();
+                Cobrar.txtn2.setText(info);
+                int numArticulos = tablas[jTabbedPane1.getSelectedIndex()].getNumArticulos();
+                if (numArticulos < 0) {
+                    numArticulos = numArticulos * -1;
+                }
+                obj.numArticulos.setText(numArticulos + "");
+                obj.requerirFoco();
+
             } catch (NumberFormatException e) {
 
                 mensaje("Ingresaste una letra u otro caracter en lugar de un número. Por favor revisa la información ingresada", 1);

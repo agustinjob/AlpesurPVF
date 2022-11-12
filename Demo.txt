@@ -1,5 +1,5 @@
 * Que los datos de registro de proudctos sean opcionales precio de mayoreo y precio distribuidor- Listo
 * Que se deje vender aunque tenga valores negativos- Listo
-* Generar Código de barras
-* Poner cantidad por la cual se va a poner a mayoreo (Se ponga el precio de mayoreo automaticamente)
-* Ganancia por mes
+* Generar Código de barras - Listo
+* Poner cantidad por la cual se va a poner a mayoreo (Se ponga el precio de mayoreo automaticamente) - Listo
+* Ganancia por mes - Listo

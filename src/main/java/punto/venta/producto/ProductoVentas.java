@@ -128,6 +128,8 @@ public void llenaTabla() throws SQLException {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla_ventas = new javax.swing.JTable();
         btnGenerarExcel = new javax.swing.JButton();
+        txttotalutilidad = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -186,7 +188,7 @@ public void llenaTabla() throws SQLException {
 
             },
             new String [] {
-                "Código", "Descripción del Producto", "Cantidad", "Precio de Venta"
+                "Código", "Descripción del Producto", "Cantidad", "Precio de Venta", "Precio de Compra"
             }
         ));
         jScrollPane1.setViewportView(tabla_ventas);
@@ -200,6 +202,9 @@ public void llenaTabla() throws SQLException {
                 btnGenerarExcelActionPerformed(evt);
             }
         });
+
+        jLabel8.setFont(new java.awt.Font("Cambria", 1, 14)); // NOI18N
+        jLabel8.setText("Total utilidad:");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -232,9 +237,13 @@ public void llenaTabla() throws SQLException {
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel2)))
-                .addContainerGap(133, Short.MAX_VALUE))
+                .addContainerGap(137, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txttotalutilidad, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txttotalvendido, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -261,12 +270,15 @@ public void llenaTabla() throws SQLException {
                     .addComponent(btnBuscarLapso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnGenerarExcel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(combo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 30, Short.MAX_VALUE)
+                .addGap(18, 28, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(txttotalvendido, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txttotalvendido, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel8)
+                        .addComponent(txttotalutilidad, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(59, 59, 59))
         );
 
@@ -321,11 +333,13 @@ public void llenaTabla() throws SQLException {
             modelo.addColumn("Descripción del producto");
             modelo.addColumn("Cantidad");
             modelo.addColumn("Precio venta");
+             modelo.addColumn("Precio compra");
             modelo.addColumn("fecha");
             modelo.addColumn("hora");
             
             double total = 0.0d;
-            String x[] = new String[6];
+            double utilidad = 0.0d;
+            String x[] = new String[7];
             if (listaV.isEmpty()) {
                 Utilidades.mensajePorTiempo("No hay datos de ventas en esa fecha especifica");
             } else {
@@ -336,15 +350,18 @@ public void llenaTabla() throws SQLException {
                 x[1] = v.getNombre();
                 x[2] = v.getCantidad()+"";
                 x[3] = v.getPrecioVenta()+"";
-                x[4] = formatoFecha.format(v.getFecha());
-                x[5] = formatoHora.format(v.getFecha());
+                x[4] = v.getPrecioCosto()+"";
+                x[5] = formatoFecha.format(v.getFecha());
+                x[6] = formatoHora.format(v.getFecha());
                     modelo.addRow(x);
                     total = total + v.getImporte();
+                    utilidad = utilidad + ((v.getPrecioVenta()-v.getPrecioCosto())*v.getCantidad());
                     
                 }
 
                 tabla_ventas.setModel(modelo);
                 txttotalvendido.setText(total + "");
+                txttotalutilidad.setText(utilidad+"");
 
             }
            }
@@ -418,10 +435,12 @@ public void llenaTabla() throws SQLException {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabla_ventas;
+    private javax.swing.JTextField txttotalutilidad;
     private javax.swing.JTextField txttotalvendido;
     // End of variables declaration//GEN-END:variables
 }

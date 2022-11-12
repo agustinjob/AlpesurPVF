@@ -1,122 +1,122 @@
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\ConfiguracionModelo.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\inventario\InventarioDatos.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\ProductoUtilidad.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\cliente\ClienteAgregar.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\transferencia\TransferenciaEstructura.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\test\PruebasLog.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dialogos\Confirmacion.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\producto\ProductoVentas.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\ventanas\TransferirEstructura.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\utilidades\Utilidades.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\misclases\FormatoTabla.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\usuario\UsuarioEstructura.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\inventario\InventarioAgregar.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dialogos\Devoluciones.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dao\AreaDAO.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\enviroment\Enviroment.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\misclases\ImprimirTicket.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\Ventas.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\response\MovimientosExtrasResponse.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\servicio\rest\RestDatos.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dao\ProductoDAO.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\reportes\GraficaBarras.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\response\ClienteResponse.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\cliente\ClienteEstructura.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\ModeloFechas.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dialogos\InsVarios.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\reportes\ReporteVentas.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dao\SucursalDAO.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\ventanas\formatoSistema.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\response\TicketResponse.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\inventario\InventarioMovimientos.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dao\ClienteDAO.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\response\ProductoUtilidadResponse.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\misclases\Cliente.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\producto\ProductoAgregar.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\utilidades\Imagen.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\Credito.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\Respuesta.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\Ticket.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\misclases\TransferenciaProductos.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\misclases\ServicioDeImpresion.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\usuario\UsuarioModificar.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dao\CreditoDAO.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\cliente\ClienteEstadoInformacion.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\servicio\rest\FechaYHora.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\pruebas\PrintExamples.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\test\PruebaRestService.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\MovimientosExtras.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\misclases\ConexionModel.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\producto\ProductoArea.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\response\AreaResponse.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\response\CreditoResponse.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\ventanas\NubeEstructura.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\ventanas\VentasEstructura.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dialogos\Abono.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\inventario\InventarioEstructura.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\bd\PanelTabla.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\transferencia\Paso1.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\bd\Tabbed.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\response\ResponseGeneral.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\ventanas\CorteAmbosEstructura.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dialogos\BusquedaProductos.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dao\UsuarioDAO.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\producto\ProductoEstructura.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\misclases\InventaMovi.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\response\SucursalResponse.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dao\InventaMovimiDAO.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\cliente\ClienteEstadoBuscar.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\reportes\ReporteGraficas.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dao\ActualizacionDAO.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\misclases\ListaClientes.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\ventanas\EfectivoInicial.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\misclases\ActualizacionesNecesarias.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\tabla\TablaVentas.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\misclases\Credito.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\Sucursal.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dialogos\SalidaEfectivo.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\response\VentasResponse.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dao\Datos.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\inventario\InventarioBajos.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\Area.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\Producto.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\producto\ProductoModificar.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\response\UsuarioResponse.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\ventanas\CorteSemanal.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\producto\ProductoEliminar.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dialogos\Ticket.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\pruebas\PruebasCliente.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\misclases\ListaProducto.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\response\ProductoResponse.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\response\MovimientosInvResponse.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\VentasModel.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\cliente\ClienteEliminar.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\enviroment\EnviromentLocal.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dialogos\Cobrar.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\cliente\ClienteEstadoEstructura.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\transferencia\Paso2.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dao\VentasDAO.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dialogos\Abonar.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dao\BitacoraDAO.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dialogos\CantidadProducto.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\ventanas\InicioSesion.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dao\CorteDAO.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\Usuario.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\ventanas\CorteEstructura.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\servicio\rest\ApiSend.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dialogos\LiquidarAdeudo.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\CorteModelo.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\Cliente.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\test\TransferirDatosBD.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dialogos\TicketDevolverTodo.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\ventanas\Estructura.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\usuario\UsuarioAgregar.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\configuracion\Configuracion.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dao\Movimientos.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\reportes\GraficaPastel.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\misclases\CrearExcel.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\Devolucion.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\dialogos\EntradaEfectivo.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\cliente\ClienteModificar.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\modelo\MovimientosInv.java
-C:\Users\agus_\Desktop\Punto de Venta back-front\AlpesurPVF\src\main\java\punto\venta\usuario\UsuarioEliminar.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\cliente\ClienteEstructura.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\response\MovimientosExtrasResponse.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\misclases\Credito.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\response\ProductoResponse.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dao\Datos.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\misclases\ConexionModel.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dao\CreditoDAO.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dao\ProductoDAO.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\inventario\InventarioBajos.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dialogos\LiquidarAdeudo.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\reportes\GraficaPastel.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dialogos\Abono.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\transferencia\TransferenciaEstructura.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dao\Movimientos.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dao\BitacoraDAO.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\producto\ProductoVentas.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dao\ClienteDAO.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\misclases\ServicioDeImpresion.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\ventanas\CorteAmbosEstructura.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\ventanas\TransferirEstructura.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dao\ActualizacionDAO.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\bd\Tabbed.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\Devolucion.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\inventario\InventarioAgregar.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\usuario\UsuarioAgregar.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\enviroment\Enviroment.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dao\CorteDAO.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\tabla\TablaVentas.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\VentasModel.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\cliente\ClienteAgregar.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\Credito.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dialogos\InsVarios.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\usuario\UsuarioEstructura.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\response\ClienteResponse.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\Usuario.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\misclases\Cliente.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\ventanas\CorteSemanal.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\servicio\rest\RestDatos.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\response\TicketResponse.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\response\UsuarioResponse.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\test\PruebasLog.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\ventanas\NubeEstructura.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\Sucursal.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\producto\ProductoEliminar.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dialogos\CantidadProducto.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\bd\PanelTabla.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dao\AreaDAO.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\misclases\ImprimirTicket.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dialogos\Devoluciones.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\MovimientosInv.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\cliente\ClienteEstadoInformacion.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\usuario\UsuarioModificar.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\ventanas\InicioSesion.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\misclases\FormatoTabla.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\reportes\ReporteVentas.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\Area.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\enviroment\EnviromentLocal.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\pruebas\PruebasCliente.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\misclases\TransferenciaProductos.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\ConfiguracionModelo.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\MovimientosExtras.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\response\MovimientosInvResponse.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\producto\ProductoModificar.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\Ventas.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\utilidades\Imagen.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\inventario\InventarioMovimientos.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\CorteModelo.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\misclases\ActualizacionesNecesarias.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\response\ProductoUtilidadResponse.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\cliente\ClienteEstadoBuscar.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\servicio\rest\FechaYHora.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\misclases\ListaClientes.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dialogos\SalidaEfectivo.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dao\SucursalDAO.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\producto\ProductoEstructura.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\ventanas\Estructura.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\test\PruebaRestService.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\Respuesta.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\test\TransferirDatosBD.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\response\AreaResponse.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dao\UsuarioDAO.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\producto\ProductoArea.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\cliente\ClienteEstadoEstructura.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\producto\ProductoAgregar.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dialogos\Cobrar.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\transferencia\Paso2.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\ventanas\formatoSistema.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\cliente\ClienteEliminar.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dao\VentasDAO.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\misclases\InventaMovi.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\utilidades\Utilidades.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\inventario\InventarioDatos.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\Cliente.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\ventanas\EfectivoInicial.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dialogos\Ticket.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\response\SucursalResponse.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\response\CreditoResponse.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\ventanas\VentasEstructura.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\ModeloFechas.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\response\ResponseGeneral.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dialogos\BusquedaProductos.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\servicio\rest\ApiSend.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\misclases\ListaProducto.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\inventario\InventarioEstructura.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\response\VentasResponse.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\reportes\ReporteGraficas.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\ventanas\CorteEstructura.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dialogos\TicketDevolverTodo.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dialogos\Abonar.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dialogos\Confirmacion.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dialogos\EntradaEfectivo.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\transferencia\Paso1.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\dao\InventaMovimiDAO.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\misclases\CrearExcel.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\Producto.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\Ticket.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\pruebas\PrintExamples.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\modelo\ProductoUtilidad.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\cliente\ClienteModificar.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\reportes\GraficaBarras.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\configuracion\Configuracion.java
+C:\Users\agus_\Desktop\punto de venta\PuntoAlpesur\src\main\java\punto\venta\usuario\UsuarioEliminar.java

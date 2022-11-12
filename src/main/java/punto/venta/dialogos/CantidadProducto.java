@@ -346,12 +346,7 @@ public class CantidadProducto extends javax.swing.JFrame {
 
             if (tipo == 1) {
                 if (operacion.equalsIgnoreCase("sumar")) {
-
-                    if (cantidad < pro.getCantidad()) {
                         cantidad = cantidad + .5f;
-                    } else {
-                        Utilidades.mensajePorTiempo("No puedes ingresar más cantidad de lo que se tiene en el inventario");
-                    }
                 } else {
                     if (cantidad > 0) {
                         cantidad = cantidad - .5f;
@@ -364,11 +359,7 @@ public class CantidadProducto extends javax.swing.JFrame {
 
                 if (operacion.equalsIgnoreCase("sumar")) {
                     float total = pro.getCantidad() * pro.getPrecioVenta();
-                    if (cantidad < total) {
                         cantidad = cantidad + .5f;
-                    } else {
-                        Utilidades.mensajePorTiempo("No puedes ingresar más cantidad de lo que se tiene en el inventario");
-                    }
                 } else {
                     if (cantidad > 0) {
                         cantidad = cantidad - .5f;
